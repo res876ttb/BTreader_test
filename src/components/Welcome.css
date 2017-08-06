@@ -1,0 +1,27 @@
+.welcome-main {
+    min-height: 200px;  
+    max-width: 600px;
+    /* background: rgba(255, 255, 255, 0.3); */
+
+    color: white;
+    text-align: center;
+}
+
+.welcome-jumbotron {
+    background: rgba(255, 255, 255, 0.4);
+    margin: 2rem 1rem 2rem 1rem;
+    padding: 1rem 2rem 1rem 2rem;
+    border-radius: 10px;
+}
+
+.welcome-jumbotron-title {
+    font-size: 48px;
+}
+
+.welcome-jumbotron-content {
+    font-size: 20px;
+}
+
+.welcome-buttons {
+     margin: 0.5rem; 
+}

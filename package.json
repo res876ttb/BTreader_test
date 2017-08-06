@@ -1,7 +1,7 @@
 {
   "name": "WebTextReader",
   "version": "1.0.0",
-  "description": "Read text file on browser comfortably.",
+  "description": "User can use browser to read txt file easily.",
   "main": "src/index.jsx",
   "scripts": {
     "build": "webpack",
@@ -10,7 +10,7 @@
     "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["WebTextReader", "Reader"],
   "author": "res876ttb",
   "license": "MIT",
   "dependencies": {

@@ -1,0 +1,47 @@
+.reader-bg {
+    background-image: url('images/welcome_bg.jpeg'); 
+    min-height: 100%;
+    min-width: 270px;
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.main {
+    height: 100%;
+}
+
+.main .footer {
+    /* position: fixed; */
+    width: 100%;
+    /* background: rgba(255, 255, 255, 0.3); */
+    text-align: center;
+    color: rgba(255, 255, 255, 1.0);
+    padding: 1rem 2rem 1rem 2rem;
+}
+
+.main .search {
+    position: relative;
+    width: 100%;
+}
+
+.main .search input {
+    padding-right: 1.5rem;
+}
+
+.main .search i {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+}
+
+.main .search i:hover {
+    color: #5bc0de;
+}
+
+@media (min-width: 576px) {
+    .main .search {
+        width: 10rem;
+    }
+}
