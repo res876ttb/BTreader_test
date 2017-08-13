@@ -1,6 +1,6 @@
 .welcome-main {
     min-height: 200px;  
-    max-width: 600px;
+    max-width: 800px !important;
     /* background: rgba(255, 255, 255, 0.3); */
 
     color: white;
