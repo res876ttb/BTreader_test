@@ -1,6 +1,18 @@
 const initMainState = {
     navbarToggle: false,
-    books: {},
+    books: {
+        // 'empty': {
+        //     bookTotalPages: 0,
+        //     bookCurrentPage: 0,
+        //     bookPath: '',
+        // }
+    },
+    reading: {
+        bookTitle: '',
+        bookTotalPages: 0,
+        bookCurrentPage: 0,
+        bookPath: '',
+    }
 };
 
 export function main(state = initMainState, action) {
@@ -22,11 +34,22 @@ export function main(state = initMainState, action) {
             B[action.bookTitle] = {
                 bookTotalPages: action.bookTotalPages,
                 bookCurrentPage: action.bookCurrentPage,
+                bookPath: action.bookPath,
             };
 
             return {
                 ...state,
                 books: B,
+            }
+        case '@MAIN/CHANGE_READING_BOOK':
+            return {
+                ...state,
+                reading: {
+                    bookTitle: action.bookTitle,
+                    bookCurrentPage: action.bookCurrentPage,
+                    bookTotalPages: action.bookTotalPages,
+                    bookPath: action.bookPath,
+                }
             }
         default:
             return state;

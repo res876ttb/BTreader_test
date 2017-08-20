@@ -49,7 +49,7 @@ class Library extends React.Component {
         let bk = this.props.books;
         for (let p in this.props.books) {
             children.push((
-                <LibraryItem key={p} bookTitle={p} bookTotalPages={bk[p].bookTotalPages} bookCurrentPage={bk[p].bookCurrentPage}/>
+                <LibraryItem key={p} bookTitle={p} bookTotalPages={bk[p].bookTotalPages} bookCurrentPage={bk[p].bookCurrentPage} bookPath={bk[p].bookPath}/>
             ));
         }
 

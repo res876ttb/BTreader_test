@@ -22,9 +22,11 @@ import {
     toggleNavbar, 
     resetBooks,
     addBook,
+    changeReadingBook,
 } from 'states/main-actions.js';
 import Welcome from 'components/Welcome.jsx';
 import Library from 'components/Library.jsx';
+import Reading from 'components/Reading.jsx';
 
 import './Main.css';
 
@@ -32,6 +34,7 @@ class Main extends React.Component {
     static propTypes = {
         navbarToggle: PropTypes.bool,
         books: PropTypes.object,
+        reading: PropTypes.object,
         dispatch: PropTypes.func
     };
 
@@ -60,7 +63,7 @@ class Main extends React.Component {
                                 <Collapse isOpen={this.props.navbarToggle} navbar>
                                     <Nav navbar>
                                         <NavItem>
-                                            <NavLink tag={Link} to='/recent'>最近閱讀</NavLink>
+                                            <NavLink tag={Link} to='/reading'>最近閱讀</NavLink>
                                         </NavItem>
                                         <NavItem>
                                             <NavLink tag={Link} to='/library'>書架</NavLink>
@@ -86,14 +89,15 @@ class Main extends React.Component {
                     <Route exact path="/library" render={() => (
                         <Library books={this.props.books} />
                     )}/>
+                    <Route exact path="/reading" render={() => (
+                        <Reading bookTitle={this.props.reading.bookTitle} bookPath={this.props.reading.bookPath} bookCurrentPage={this.props.reading.bookCurrentPage}
+                         bookTotalPages={this.props.reading.bookTotalPages} />
+                    )}/>
                     {/* <Route exact path="/setting" render={() => (
                         <Setting />
-                    )}/>
-                    <Route exact path="/reading" render={() => (
-                        <Read />
-                    )}/> */}
+                    )}/>  */}
 
-                    <div className='footer' onClick={this.debug}>
+                    <div className='footer'>
                         BTreader By Hsu Keng Jui
                     </div>
                 </div>
@@ -114,35 +118,44 @@ class Main extends React.Component {
         // this is default imformation
         let books = {
             '愛麗絲夢遊仙境': {
-                totalPages: 100,
-                currentPage: 34,
+                bookTotalPages: 98,
+                bookCurrentPage: 89,
+                bookPath: 'path1',
             },
             '西遊記': {
-                totalPages: 100,
-                currentPage: 25,
+                bookTotalPages: 355,
+                bookCurrentPage: 25,
+                bookPath: 'path2',
             },
             '紅樓夢': {
-                totalPages: 100,
-                currentPage: 87,
+                bookTotalPages: 877,
+                bookCurrentPage: 87,
+                bookPath: 'path3',
             },
             '地心歷險記': {
-                totalPages: 100,
-                currentPage: 3,
+                bookTotalPages: 53,
+                bookCurrentPage: 3,
+                bookPath: 'path4',
             },
             '厚黑學': {
-                totalPages: 100,
-                currentPage: 0,
+                bookTotalPages: 239,
+                bookCurrentPage: 0,
+                bookPath: 'path5',
             },
             '賣香屁': {
-                totalPages: 100,
-                currentPage: 56,
+                bookTotalPages: 31,
+                bookCurrentPage: 22,
+                bookPath: 'path6',
             },
         };
 
         // add imformation to memory
         for (let p in books) {
-            this.props.dispatch(addBook(p, books[p].totalPages, books[p].currentPage));
+            this.props.dispatch(addBook(p, books[p].bookTotalPages, books[p].bookCurrentPage, books[p].bookPath));
         };
+
+        // set default recent reading book
+        this.props.dispatch(changeReadingBook('紅樓夢', 87, 877, 'path3'));
     }
 
     debug() {
