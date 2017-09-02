@@ -25,23 +25,6 @@ class Library extends React.Component {
 
     constructor(props) {
         super(props);
-
-        // let tmp = ['one', 'two', 'three'];
-        // let tmp2 = {
-        //     1: 'one',
-        //     2: 'two',
-        //     3: 'three'
-        // };
-        // let spp = tmp.map(p => (
-        //     <LibraryItem bookTitle={p} />
-        // ));
-        // let app = [];
-        // for (let p in tmp2) {
-        //     app.push((
-        //         <LibraryItem bookTitle={tmp2[p]}/>
-        //     ));
-        // }
-        // console.log(spp, app);
     }
 
     render() {
