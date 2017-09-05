@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
     BrowserRouter as Router,
     Route, 
-    Link
+    Link,
+    Redirect,
 } from 'react-router-dom';
 import {
     Collapse,
@@ -23,15 +24,17 @@ import {
     resetBooks,
     addBook,
     changeReadingBook,
+    setInitialize,
 } from 'states/main-actions.js';
 import Welcome from 'components/Welcome.jsx';
 import Library from 'components/Library.jsx';
 import Reading from 'components/Reading.jsx';
 
-import './Main.css';
+import 'components/Main.css';
 
 class Main extends React.Component {
     static propTypes = {
+        initialized: PropTypes.bool,
         navbarToggle: PropTypes.bool,
         books: PropTypes.object,
         reading: PropTypes.object,
@@ -46,11 +49,22 @@ class Main extends React.Component {
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
         this.debug = this.debug.bind(this);
         this.readRecord();
+
+        this.props.dispatch(setInitialize(false));
     }
 
     render() {
         let imageSource = "images/welcome_bg.jpeg";
         let mainStyle = `background-image: url(${imageSource})`;
+
+        if (this.props.initialized === false) {
+            this.props.dispatch(setInitialize(true));
+            return (
+                <Router>
+                    <Redirect to='/'/>
+                </Router>
+            );
+        }
 
         return (
             <Router>
@@ -82,7 +96,7 @@ class Main extends React.Component {
                             </Navbar>
                         </div>
                     </div>
-
+                    
                     <Route exact path="/" render={() => (
                         <Welcome />
                     )}/>

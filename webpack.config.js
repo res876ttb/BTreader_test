@@ -1,10 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const srcPath = path.resolve(__dirname, 'src');
-const distPath = path.resolve(__dirname, 'dist');
+const srcPath = path.resolve(__dirname, 'app/src');
+const distPath = path.resolve(__dirname, 'app/dist');
 
 module.exports = {
+	target: 'electron-renderer',
     context: srcPath,
     resolve: {
         alias: {

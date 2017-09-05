@@ -1,5 +1,6 @@
 const initMainState = {
     navbarToggle: false,
+    initialized: false,
     books: {
         // 'empty': {
         //     bookTotalPages: 0,
@@ -50,6 +51,11 @@ export function main(state = initMainState, action) {
                     bookTotalPages: action.bookTotalPages,
                     bookPath: action.bookPath,
                 }
+            }
+        case '@MAIN/SET_INITIALIZE':
+            return {
+                ...state,
+                initialized: action.status,
             }
         default:
             return state;

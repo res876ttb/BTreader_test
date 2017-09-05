@@ -7,7 +7,7 @@ import {
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 
-import {changeReadingBook} from 'states/main-actions.js';
+import {changeReadingBook} from '../states/main-actions.js';
 
 import './LibraryItem.css';
 

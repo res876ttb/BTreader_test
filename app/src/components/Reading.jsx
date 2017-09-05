@@ -32,8 +32,8 @@ class Reading extends React.Component {
     }
 
     test() {
-        var data = require('../../dist/data/test.json');
-        console.log(data);
+        // var data = require('../../dist/data/test.json');
+        // console.log(data);
     }
 }
 

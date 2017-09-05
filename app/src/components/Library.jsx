@@ -13,7 +13,7 @@ import {
     Col,
 } from 'reactstrap';
 
-import LibraryItem from 'components/LibraryItem.jsx';
+import LibraryItem from '../components/LibraryItem.jsx';
 
 import './Library.css';
 

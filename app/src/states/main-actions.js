@@ -30,3 +30,10 @@ export function changeReadingBook(bookTitle, bookCurrentPage, bookTotalPages, bo
         bookPath: bookPath,
     }
 }
+
+export function setInitialize(status) {
+    return {
+        type: '@MAIN/SET_INITIALIZE',
+        status: status,
+    }
+}
