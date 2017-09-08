@@ -1,9 +1,22 @@
 .library-main {
     margin: 2rem 0rem 2rem 0rem;
     box-sizing: border-box; 
+    text-align: center;
     justify-content: center; 
     display: flex; 
     flex-wrap: wrap; 
 
     max-width: 800px !important;
+}
+
+.library-edit-button {
+    align-items: center;
+    justify-content: center; 
+    display: inline-block; 
+    margin: 0px 10px 20px 10px;
+    width: 200px !important;
+}
+
+.library-button-panel {
+    width: 100%;
 }

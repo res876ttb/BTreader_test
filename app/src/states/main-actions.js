@@ -11,22 +11,22 @@ export function resetBooks(books) {
     };
 }
 
-export function addBook(bookTitle, bookTotalPages, bookCurrentPage, bookPath) {
+export function addBook(bookTitle, bookSize, bookProgress, bookPath) {
     return {
         type: '@MAIN/ADD_BOOK',
         bookTitle: bookTitle,
-        bookTotalPages: bookTotalPages,
-        bookCurrentPage: bookCurrentPage,
+        bookSize: bookSize,
+        bookProgress: bookProgress,
         bookPath: bookPath,
     };
 }
 
-export function changeReadingBook(bookTitle, bookCurrentPage, bookTotalPages, bookPath) {
+export function changeReadingBook(bookTitle, bookSize, bookProgress, bookPath) {
     return {
         type: '@MAIN/CHANGE_READING_BOOK',
         bookTitle: bookTitle,
-        bookCurrentPage: bookCurrentPage,
-        bookTotalPages: bookTotalPages,
+        bookSize: bookSize,
+        bookProgress: bookProgress,
         bookPath: bookPath,
     }
 }
@@ -36,4 +36,19 @@ export function setInitialize(status) {
         type: '@MAIN/SET_INITIALIZE',
         status: status,
     }
+}
+
+export function deleteSelect(bookPaths) {
+    return {
+        type: '@MAIN/DELETE_SELECT',
+        bookPaths: bookPaths
+    };
+}
+
+export function changeReadingContent (content, byteRead) {
+    return {
+        type: '@MAIN/CHANGE_READING_CONTENT',
+        content: content,
+        byteRead: byteRead
+    };
 }

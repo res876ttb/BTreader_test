@@ -3,20 +3,23 @@ const initMainState = {
     initialized: false,
     books: {
         // 'empty': {
-        //     bookTotalPages: 0,
-        //     bookCurrentPage: 0,
+        //     bookSize: 0,
+        //     bookProgress: 0, // this is offset of the book
         //     bookPath: '',
         // }
     },
     reading: {
         bookTitle: '',
-        bookTotalPages: 0,
-        bookCurrentPage: 0,
+        bookSize: 0,
+        bookProgress: 0,
         bookPath: '',
+        content: '',
     }
 };
 
 export function main(state = initMainState, action) {
+    let B;
+    let R;
     switch (action.type) {
         case '@MAIN/TOGGLE_NAVBAR':
             return {
@@ -29,26 +32,49 @@ export function main(state = initMainState, action) {
                 books: action.books,
             };
         case '@MAIN/ADD_BOOK':
-            let B = {
+            B = {
                 ...state.books
             };
-            B[action.bookTitle] = {
-                bookTotalPages: action.bookTotalPages,
-                bookCurrentPage: action.bookCurrentPage,
-                bookPath: action.bookPath,
+            B[action.bookPath] = {
+                bookSize: action.bookSize,
+                bookProgress: action.bookProgress,
+                bookTitle: action.bookTitle,
             };
 
             return {
                 ...state,
                 books: B,
             }
+        case '@MAIN/REMOVE_BOOK':
+            B = {
+                ...state.books
+            };
+            delete B[action.bookPath];
+
+            if (state.reading.bookPath === action.bookPath) {
+                R = {
+                    bookTitle: '',
+                    bookSize: 0,
+                    bookProgress: 0,
+                    bookPath: '',
+                    content: ''
+                };
+            } else {
+                R = state.reading;
+            }
+
+            return {
+                ...state,
+                books: B,
+                reading: R
+            };
         case '@MAIN/CHANGE_READING_BOOK':
             return {
                 ...state,
                 reading: {
                     bookTitle: action.bookTitle,
-                    bookCurrentPage: action.bookCurrentPage,
-                    bookTotalPages: action.bookTotalPages,
+                    bookProgress: action.bookProgress,
+                    bookSize: action.bookSize,
                     bookPath: action.bookPath,
                 }
             }
@@ -56,7 +82,30 @@ export function main(state = initMainState, action) {
             return {
                 ...state,
                 initialized: action.status,
+            };
+        case '@MAIN/DELETE_SELECT':
+            B = {
+                ...state.books,
+            };
+            for (let p in action.bookPaths) {
+                delete B[action.bookPaths[p]];
             }
+            
+            return {
+                ...state,
+                books: B
+            };
+        case '@MAIN/CHANGE_READING_CONTENT':
+            R = {
+                ...state.reading,
+                content: action.content,
+            };
+
+            return {
+                ...state, 
+                reading: R,
+            };
+            break;
         default:
             return state;
     }

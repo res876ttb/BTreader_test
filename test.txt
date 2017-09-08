@@ -1,4 +1,0 @@
-This is test.txt file!
-Every thing is here! 
-I am testing if fs can be used directly in Electron.
-這不過是個小測試罷了。

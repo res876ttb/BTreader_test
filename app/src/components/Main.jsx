@@ -48,27 +48,35 @@ class Main extends React.Component {
 
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
         this.debug = this.debug.bind(this);
-        this.readRecord();
+    }
 
+    componentWillMount() {
         this.props.dispatch(setInitialize(false));
+        this.readRecord();
     }
 
     render() {
-        let imageSource = "images/welcome_bg.jpeg";
-        let mainStyle = `background-image: url(${imageSource})`;
+        let imageSource = "/Users/Ricky/Pictures/3100493.png";
+        let mainStyle = {
+            'backgroundImage': `url(${imageSource})`,
+            'backgroundPosition': 'center',
+            'backgroundRepeat': 'no-repeat',
+            'backgroundAttachment': 'fixed',
+            'backgroundSize': 'cover'
+        };
 
         if (this.props.initialized === false) {
             this.props.dispatch(setInitialize(true));
             return (
                 <Router>
-                    <Redirect to='/'/>
+                    <Redirect to='/reading'/>
                 </Router>
             );
         }
 
         return (
-            <Router>
-                <div className='main'>
+            <div className='main' style={mainStyle}>
+                <Router><div style={{"height": "100vh"}}>
                     <div className='bg-faded'>
                         <div className='container'>
                             <Navbar color='faded' light toggleable>
@@ -104,8 +112,8 @@ class Main extends React.Component {
                         <Library books={this.props.books} />
                     )}/>
                     <Route exact path="/reading" render={() => (
-                        <Reading bookTitle={this.props.reading.bookTitle} bookPath={this.props.reading.bookPath} bookCurrentPage={this.props.reading.bookCurrentPage}
-                         bookTotalPages={this.props.reading.bookTotalPages} />
+                        <Reading bookTitle={this.props.reading.bookTitle} bookPath={this.props.reading.bookPath} bookProgress={this.props.reading.bookProgress}
+                         bookSize={this.props.reading.bookSize} bookContent={this.props.reading.content} />
                     )}/>
                     {/* <Route exact path="/setting" render={() => (
                         <Setting />
@@ -114,8 +122,8 @@ class Main extends React.Component {
                     <div className='footer'>
                         BTreader By Hsu Keng Jui
                     </div>
-                </div>
-            </Router>
+                </div></Router>
+            </div>
         );
     }
 
@@ -132,44 +140,44 @@ class Main extends React.Component {
         // this is default imformation
         let books = {
             '愛麗絲夢遊仙境': {
-                bookTotalPages: 98,
-                bookCurrentPage: 89,
-                bookPath: 'path1',
+                bookSize: 22,
+                bookProgress: 0,
+                bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test1.txt',
             },
             '西遊記': {
-                bookTotalPages: 355,
-                bookCurrentPage: 25,
-                bookPath: 'path2',
+                bookSize: 34,
+                bookProgress: 0,
+                bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test2.txt',
             },
             '紅樓夢': {
-                bookTotalPages: 877,
-                bookCurrentPage: 87,
-                bookPath: 'path3',
+                bookSize: 18,
+                bookProgress: 0,
+                bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test3.txt',
             },
             '地心歷險記': {
-                bookTotalPages: 53,
-                bookCurrentPage: 3,
-                bookPath: 'path4',
+                bookSize: 18,
+                bookProgress: 0,
+                bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test.txt',
             },
             '厚黑學': {
-                bookTotalPages: 239,
-                bookCurrentPage: 0,
-                bookPath: 'path5',
+                bookSize: 3696,
+                bookProgress: 456,
+                bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test5.txt',
             },
             '賣香屁': {
-                bookTotalPages: 31,
-                bookCurrentPage: 22,
-                bookPath: 'path6',
+                bookSize: 4509,
+                bookProgress: 22,
+                bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test test.txt',
             },
         };
 
         // add imformation to memory
         for (let p in books) {
-            this.props.dispatch(addBook(p, books[p].bookTotalPages, books[p].bookCurrentPage, books[p].bookPath));
+            this.props.dispatch(addBook(p, books[p].bookSize, books[p].bookProgress, books[p].bookPath));
         };
 
         // set default recent reading book
-        this.props.dispatch(changeReadingBook('紅樓夢', 87, 877, 'path3'));
+        this.props.dispatch(changeReadingBook('', 0, 0, ''));
     }
 
     debug() {

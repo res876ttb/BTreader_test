@@ -43,6 +43,19 @@
     text-decoration: none;
 }
 
+.libraryItem .libraryItemEdit {
+    color: royalblue;
+}
+
+.libraryItem .libraryItemEdit:hover {
+    color: darkblue;
+    text-decoration: none;
+}
+
+.libraryItem .select {
+    color: red !important;
+}
+
 .progress-text {
     font-size: 10px;
     color: gray !important;
