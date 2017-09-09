@@ -95,7 +95,11 @@ class Reading extends React.Component {
                     if (err2 !== null) {
                         console.error(err2);
                     }
-                    this.props.dispatch(changeReadingContent(readResult.toString(), byteRead));
+                    // this.props.dispatch(changeReadingContent(readResult.toString(), byteRead));
+    
+                    const jcd = require('jschardet');
+                    const iconv = require('iconv-lite');
+                    this.props.dispatch(changeReadingContent(iconv.decode(readResult, jcd.detect(readResult).encoding.toLowerCase()), byteRead));
                 });
             });
         }
