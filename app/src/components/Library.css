@@ -2,8 +2,8 @@
     margin: 2rem 0rem 2rem 0rem;
     box-sizing: border-box; 
     text-align: center;
-    justify-content: center; 
-    display: flex; 
+    justify-content: center;
+    display: flex;
     flex-wrap: wrap; 
 
     max-width: 800px !important;

@@ -1,3 +1,33 @@
+export function setOsVersion() {
+    if (navigator.appVersion.indexOf("Win") !== -1) {
+        console.log('Here');
+        return {
+            type: '@MAIN/SET_OS_VERSION',
+            osVersion: 'Windows'
+        };
+    } else if (navigator.appVersion.indexOf("Mac") !== -1) {
+        return {
+            type: '@MAIN/SET_OS_VERSION',
+            osVersion: 'macOS'
+        };
+    } else if (navigator.appVersion.indexOf("X11") !== -1) {
+        return {
+            type: '@MAIN/SET_OS_VERSION',
+            osVersion: 'UNIX'
+        };
+    } else if (navigator.appVersion.indexOf("Linux") !== -1) {
+        return {
+            type: '@MAIN/SET_OS_VERSION',
+            osVersion: 'Linux'
+        };
+    } else {
+        return {
+            type: '@MAIN/SET_OS_VERSION',
+            osVersion: 'Unknown'
+        };
+    }
+}
+
 export function toggleNavbar() {
     return {
         type: '@MAIN/TOGGLE_NAVBAR'

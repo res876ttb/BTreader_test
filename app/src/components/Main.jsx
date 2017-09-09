@@ -25,6 +25,7 @@ import {
     addBook,
     changeReadingBook,
     setInitialize,
+    setOsVersion,
 } from 'states/main-actions.js';
 import Welcome from 'components/Welcome.jsx';
 import Library from 'components/Library.jsx';
@@ -38,7 +39,8 @@ class Main extends React.Component {
         navbarToggle: PropTypes.bool,
         books: PropTypes.object,
         reading: PropTypes.object,
-        dispatch: PropTypes.func
+        dispatch: PropTypes.func,
+        osVersion: PropTypes.string,
     };
 
     constructor(props) {
@@ -52,31 +54,28 @@ class Main extends React.Component {
 
     componentWillMount() {
         this.props.dispatch(setInitialize(false));
+        this.props.dispatch(setOsVersion());
         this.readRecord();
+
+        let ele = document.getElementsByClassName('reader-bg');
+        for (let i = 0; i < ele.length; i = i + 1) {
+            ele[i].setAttribute("style", "background-image: url('src/image/welcome_bg.jpeg');");
+        }
     }
 
     render() {
-        let imageSource = "/Users/Ricky/Pictures/3100493.png";
-        let mainStyle = {
-            'backgroundImage': `url(${imageSource})`,
-            'backgroundPosition': 'center',
-            'backgroundRepeat': 'no-repeat',
-            'backgroundAttachment': 'fixed',
-            'backgroundSize': 'cover'
-        };
-
         if (this.props.initialized === false) {
             this.props.dispatch(setInitialize(true));
             return (
                 <Router>
-                    <Redirect to='/reading'/>
+                    <Redirect to='/library'/>
                 </Router>
             );
         }
 
         return (
-            <div className='main' style={mainStyle}>
-                <Router><div style={{"height": "100vh"}}>
+            <Router>
+                <div className='main'>
                     <div className='bg-faded'>
                         <div className='container'>
                             <Navbar color='faded' light toggleable>
@@ -94,7 +93,7 @@ class Main extends React.Component {
                                             <NavLink tag={Link} to='/setting'>設定</NavLink>
                                         </NavItem>
                                     </Nav>
-                                     <div className='search ml-auto'>
+                                        <div className='search ml-auto'>
                                         <Input className='ml-auto' type='text' placeholder='搜尋書架' onKeyPress={this.handleSearchKeyPress} getRef={e => this.searchEl = e}></Input>{
                                             this.props.searchText &&
                                             <i className='navbar-text fa fa-times' onClick={this.handleClearSearch}></i>
@@ -113,7 +112,7 @@ class Main extends React.Component {
                     )}/>
                     <Route exact path="/reading" render={() => (
                         <Reading bookTitle={this.props.reading.bookTitle} bookPath={this.props.reading.bookPath} bookProgress={this.props.reading.bookProgress}
-                         bookSize={this.props.reading.bookSize} bookContent={this.props.reading.content} />
+                            bookSize={this.props.reading.bookSize} bookContent={this.props.reading.content} />
                     )}/>
                     {/* <Route exact path="/setting" render={() => (
                         <Setting />
@@ -122,8 +121,8 @@ class Main extends React.Component {
                     <div className='footer'>
                         BTreader By Hsu Keng Jui
                     </div>
-                </div></Router>
-            </div>
+                </div>
+            </Router>
         );
     }
 
@@ -138,38 +137,76 @@ class Main extends React.Component {
 
         // dispatch setting to action
         // this is default imformation
-        let books = {
-            '愛麗絲夢遊仙境': {
-                bookSize: 22,
-                bookProgress: 0,
-                bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test1.txt',
-            },
-            '西遊記': {
-                bookSize: 34,
-                bookProgress: 0,
-                bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test2.txt',
-            },
-            '紅樓夢': {
-                bookSize: 18,
-                bookProgress: 0,
-                bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test3.txt',
-            },
-            '地心歷險記': {
-                bookSize: 18,
-                bookProgress: 0,
-                bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test.txt',
-            },
-            '厚黑學': {
-                bookSize: 3696,
-                bookProgress: 456,
-                bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test5.txt',
-            },
-            '賣香屁': {
-                bookSize: 4509,
-                bookProgress: 22,
-                bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test test.txt',
-            },
-        };
+        let books;
+        console.log(this.props.osVersion);
+        if (navigator.appVersion.indexOf("Win") !== -1) {
+            console.log("HERE!!!");
+            books = {
+                '愛麗絲夢遊仙境': {
+                    bookSize: 22,
+                    bookProgress: 0,
+                    bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test1.txt',
+                },
+                '西遊記': {
+                    bookSize: 34,
+                    bookProgress: 0,
+                    bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test2.txt',
+                },
+                '紅樓夢': {
+                    bookSize: 18,
+                    bookProgress: 0,
+                    bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test3.txt',
+                },
+                '地心歷險記': {
+                    bookSize: 18,
+                    bookProgress: 0,
+                    bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test.txt',
+                },
+                '厚黑學': {
+                    bookSize: 3696,
+                    bookProgress: 456,
+                    bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test5.txt',
+                },
+                '賣香屁': {
+                    bookSize: 4509,
+                    bookProgress: 22,
+                    bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test test.txt',
+                },
+            };
+        } else {
+            books = {
+                '愛麗絲夢遊仙境': {
+                    bookSize: 22,
+                    bookProgress: 0,
+                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test1.txt',
+                },
+                '西遊記': {
+                    bookSize: 34,
+                    bookProgress: 0,
+                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test2.txt',
+                },
+                '紅樓夢': {
+                    bookSize: 18,
+                    bookProgress: 0,
+                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test3.txt',
+                },
+                '地心歷險記': {
+                    bookSize: 18,
+                    bookProgress: 0,
+                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test.txt',
+                },
+                '厚黑學': {
+                    bookSize: 3696,
+                    bookProgress: 456,
+                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test5.txt',
+                },
+                '賣香屁': {
+                    bookSize: 4509,
+                    bookProgress: 22,
+                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test test.txt',
+                },
+            };
+        }
 
         // add imformation to memory
         for (let p in books) {

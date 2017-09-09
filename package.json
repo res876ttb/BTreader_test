@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack && electron .",
+    "startm": "webpack && electron .",
+    "startw": "webpack && .\\node_modules\\.bin\\electron .",
     "comp": "webpack"
   },
   "author": "res876ttb",
@@ -13,6 +14,7 @@
   "dependencies": {
     "ajv": "^5.2.2",
     "bootstrap": "^4.0.0-alpha.6",
+    "electron": "^1.7.6",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",

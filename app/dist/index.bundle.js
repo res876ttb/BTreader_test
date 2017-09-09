@@ -5025,13 +5025,44 @@ var UncontrolledTooltip = components.UncontrolledTooltip;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["f"] = toggleNavbar;
+/* harmony export (immutable) */ __webpack_exports__["f"] = setOsVersion;
+/* harmony export (immutable) */ __webpack_exports__["g"] = toggleNavbar;
 /* unused harmony export resetBooks */
 /* harmony export (immutable) */ __webpack_exports__["a"] = addBook;
 /* harmony export (immutable) */ __webpack_exports__["b"] = changeReadingBook;
 /* harmony export (immutable) */ __webpack_exports__["e"] = setInitialize;
 /* harmony export (immutable) */ __webpack_exports__["d"] = deleteSelect;
 /* harmony export (immutable) */ __webpack_exports__["c"] = changeReadingContent;
+function setOsVersion() {
+    if (navigator.appVersion.indexOf("Win") !== -1) {
+        console.log('Here');
+        return {
+            type: '@MAIN/SET_OS_VERSION',
+            osVersion: 'Windows'
+        };
+    } else if (navigator.appVersion.indexOf("Mac") !== -1) {
+        return {
+            type: '@MAIN/SET_OS_VERSION',
+            osVersion: 'macOS'
+        };
+    } else if (navigator.appVersion.indexOf("X11") !== -1) {
+        return {
+            type: '@MAIN/SET_OS_VERSION',
+            osVersion: 'UNIX'
+        };
+    } else if (navigator.appVersion.indexOf("Linux") !== -1) {
+        return {
+            type: '@MAIN/SET_OS_VERSION',
+            osVersion: 'Linux'
+        };
+    } else {
+        return {
+            type: '@MAIN/SET_OS_VERSION',
+            osVersion: 'Unknown'
+        };
+    }
+}
+
 function toggleNavbar() {
     return {
         type: '@MAIN/TOGGLE_NAVBAR'
@@ -8938,116 +8969,109 @@ var Main = function (_React$Component) {
         key: 'componentWillMount',
         value: function componentWillMount() {
             this.props.dispatch(Object(__WEBPACK_IMPORTED_MODULE_5_states_main_actions_js__["e" /* setInitialize */])(false));
+            this.props.dispatch(Object(__WEBPACK_IMPORTED_MODULE_5_states_main_actions_js__["f" /* setOsVersion */])());
             this.readRecord();
+
+            var ele = document.getElementsByClassName('reader-bg');
+            for (var i = 0; i < ele.length; i = i + 1) {
+                ele[i].setAttribute("style", "background-image: url('src/image/welcome_bg.jpeg');");
+            }
         }
     }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
 
-            var imageSource = "/Users/Ricky/Pictures/3100493.png";
-            var mainStyle = {
-                'backgroundImage': 'url(' + imageSource + ')',
-                'backgroundPosition': 'center',
-                'backgroundRepeat': 'no-repeat',
-                'backgroundAttachment': 'fixed',
-                'backgroundSize': 'cover'
-            };
-
             if (this.props.initialized === false) {
                 this.props.dispatch(Object(__WEBPACK_IMPORTED_MODULE_5_states_main_actions_js__["e" /* setInitialize */])(true));
                 return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["a" /* BrowserRouter */],
                     null,
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Redirect */], { to: '/reading' })
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Redirect */], { to: '/library' })
                 );
             }
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'main', style: mainStyle },
+                __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["a" /* BrowserRouter */],
+                null,
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["a" /* BrowserRouter */],
-                    null,
+                    'div',
+                    { className: 'main' },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'div',
-                        { style: { "height": "100vh" } },
+                        { className: 'bg-faded' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
-                            { className: 'bg-faded' },
+                            { className: 'container' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                'div',
-                                { className: 'container' },
+                                __WEBPACK_IMPORTED_MODULE_3_reactstrap__["g" /* Navbar */],
+                                { color: 'faded', light: true, toggleable: true },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_reactstrap__["i" /* NavbarToggler */], { right: true, onClick: this.handleNavbarToggle }),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    __WEBPACK_IMPORTED_MODULE_3_reactstrap__["g" /* Navbar */],
-                                    { color: 'faded', light: true, toggleable: true },
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_reactstrap__["i" /* NavbarToggler */], { right: true, onClick: this.handleNavbarToggle }),
+                                    __WEBPACK_IMPORTED_MODULE_3_reactstrap__["h" /* NavbarBrand */],
+                                    { className: 'text-info', tag: __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */], to: '/' },
+                                    'BTreader'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    __WEBPACK_IMPORTED_MODULE_3_reactstrap__["b" /* Collapse */],
+                                    { isOpen: this.props.navbarToggle, navbar: true },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_3_reactstrap__["h" /* NavbarBrand */],
-                                        { className: 'text-info', tag: __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */], to: '/' },
-                                        'BTreader'
-                                    ),
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        __WEBPACK_IMPORTED_MODULE_3_reactstrap__["b" /* Collapse */],
-                                        { isOpen: this.props.navbarToggle, navbar: true },
+                                        __WEBPACK_IMPORTED_MODULE_3_reactstrap__["d" /* Nav */],
+                                        { navbar: true },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            __WEBPACK_IMPORTED_MODULE_3_reactstrap__["d" /* Nav */],
-                                            { navbar: true },
+                                            __WEBPACK_IMPORTED_MODULE_3_reactstrap__["e" /* NavItem */],
+                                            null,
                                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                __WEBPACK_IMPORTED_MODULE_3_reactstrap__["e" /* NavItem */],
-                                                null,
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_reactstrap__["f" /* NavLink */],
-                                                    { tag: __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */], to: '/reading' },
-                                                    '\u6700\u8FD1\u95B1\u8B80'
-                                                )
-                                            ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                __WEBPACK_IMPORTED_MODULE_3_reactstrap__["e" /* NavItem */],
-                                                null,
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_reactstrap__["f" /* NavLink */],
-                                                    { tag: __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */], to: '/library' },
-                                                    '\u66F8\u67B6'
-                                                )
-                                            ),
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                __WEBPACK_IMPORTED_MODULE_3_reactstrap__["e" /* NavItem */],
-                                                null,
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    __WEBPACK_IMPORTED_MODULE_3_reactstrap__["f" /* NavLink */],
-                                                    { tag: __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */], to: '/setting' },
-                                                    '\u8A2D\u5B9A'
-                                                )
+                                                __WEBPACK_IMPORTED_MODULE_3_reactstrap__["f" /* NavLink */],
+                                                { tag: __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */], to: '/reading' },
+                                                '\u6700\u8FD1\u95B1\u8B80'
                                             )
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            'div',
-                                            { className: 'search ml-auto' },
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_reactstrap__["c" /* Input */], { className: 'ml-auto', type: 'text', placeholder: '\u641C\u5C0B\u66F8\u67B6', onKeyPress: this.handleSearchKeyPress, getRef: function getRef(e) {
-                                                    return _this2.searchEl = e;
-                                                } }),
-                                            this.props.searchText && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'navbar-text fa fa-times', onClick: this.handleClearSearch })
+                                            __WEBPACK_IMPORTED_MODULE_3_reactstrap__["e" /* NavItem */],
+                                            null,
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                __WEBPACK_IMPORTED_MODULE_3_reactstrap__["f" /* NavLink */],
+                                                { tag: __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */], to: '/library' },
+                                                '\u66F8\u67B6'
+                                            )
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            __WEBPACK_IMPORTED_MODULE_3_reactstrap__["e" /* NavItem */],
+                                            null,
+                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                                __WEBPACK_IMPORTED_MODULE_3_reactstrap__["f" /* NavLink */],
+                                                { tag: __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["b" /* Link */], to: '/setting' },
+                                                '\u8A2D\u5B9A'
+                                            )
                                         )
+                                    ),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'search ml-auto' },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_reactstrap__["c" /* Input */], { className: 'ml-auto', type: 'text', placeholder: '\u641C\u5C0B\u66F8\u67B6', onKeyPress: this.handleSearchKeyPress, getRef: function getRef(e) {
+                                                return _this2.searchEl = e;
+                                            } }),
+                                        this.props.searchText && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'navbar-text fa fa-times', onClick: this.handleClearSearch })
                                     )
                                 )
                             )
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Route */], { exact: true, path: '/', render: function render() {
-                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_components_Welcome_jsx__["a" /* default */], null);
-                            } }),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Route */], { exact: true, path: '/library', render: function render() {
-                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_components_Library_jsx__["a" /* default */], { books: _this2.props.books });
-                            } }),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Route */], { exact: true, path: '/reading', render: function render() {
-                                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_components_Reading_jsx__["a" /* default */], { bookTitle: _this2.props.reading.bookTitle, bookPath: _this2.props.reading.bookPath, bookProgress: _this2.props.reading.bookProgress,
-                                    bookSize: _this2.props.reading.bookSize, bookContent: _this2.props.reading.content });
-                            } }),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'div',
-                            { className: 'footer' },
-                            'BTreader By Hsu Keng Jui'
                         )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Route */], { exact: true, path: '/', render: function render() {
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_components_Welcome_jsx__["a" /* default */], null);
+                        } }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Route */], { exact: true, path: '/library', render: function render() {
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_components_Library_jsx__["a" /* default */], { books: _this2.props.books });
+                        } }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* Route */], { exact: true, path: '/reading', render: function render() {
+                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_components_Reading_jsx__["a" /* default */], { bookTitle: _this2.props.reading.bookTitle, bookPath: _this2.props.reading.bookPath, bookProgress: _this2.props.reading.bookProgress,
+                                bookSize: _this2.props.reading.bookSize, bookContent: _this2.props.reading.content });
+                        } }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'footer' },
+                        'BTreader By Hsu Keng Jui'
                     )
                 )
             );
@@ -9055,7 +9079,7 @@ var Main = function (_React$Component) {
     }, {
         key: 'handleNavbarToggle',
         value: function handleNavbarToggle() {
-            this.props.dispatch(Object(__WEBPACK_IMPORTED_MODULE_5_states_main_actions_js__["f" /* toggleNavbar */])());
+            this.props.dispatch(Object(__WEBPACK_IMPORTED_MODULE_5_states_main_actions_js__["g" /* toggleNavbar */])());
         }
     }, {
         key: 'readRecord',
@@ -9066,38 +9090,76 @@ var Main = function (_React$Component) {
 
             // dispatch setting to action
             // this is default imformation
-            var books = {
-                '愛麗絲夢遊仙境': {
-                    bookSize: 22,
-                    bookProgress: 0,
-                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test1.txt'
-                },
-                '西遊記': {
-                    bookSize: 34,
-                    bookProgress: 0,
-                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test2.txt'
-                },
-                '紅樓夢': {
-                    bookSize: 18,
-                    bookProgress: 0,
-                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test3.txt'
-                },
-                '地心歷險記': {
-                    bookSize: 18,
-                    bookProgress: 0,
-                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test.txt'
-                },
-                '厚黑學': {
-                    bookSize: 3696,
-                    bookProgress: 456,
-                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test5.txt'
-                },
-                '賣香屁': {
-                    bookSize: 4509,
-                    bookProgress: 22,
-                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test test.txt'
-                }
-            };
+            var books = void 0;
+            console.log(this.props.osVersion);
+            if (navigator.appVersion.indexOf("Win") !== -1) {
+                console.log("HERE!!!");
+                books = {
+                    '愛麗絲夢遊仙境': {
+                        bookSize: 22,
+                        bookProgress: 0,
+                        bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test1.txt'
+                    },
+                    '西遊記': {
+                        bookSize: 34,
+                        bookProgress: 0,
+                        bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test2.txt'
+                    },
+                    '紅樓夢': {
+                        bookSize: 18,
+                        bookProgress: 0,
+                        bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test3.txt'
+                    },
+                    '地心歷險記': {
+                        bookSize: 18,
+                        bookProgress: 0,
+                        bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test.txt'
+                    },
+                    '厚黑學': {
+                        bookSize: 3696,
+                        bookProgress: 456,
+                        bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test5.txt'
+                    },
+                    '賣香屁': {
+                        bookSize: 4509,
+                        bookProgress: 22,
+                        bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test test.txt'
+                    }
+                };
+            } else {
+                books = {
+                    '愛麗絲夢遊仙境': {
+                        bookSize: 22,
+                        bookProgress: 0,
+                        bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test1.txt'
+                    },
+                    '西遊記': {
+                        bookSize: 34,
+                        bookProgress: 0,
+                        bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test2.txt'
+                    },
+                    '紅樓夢': {
+                        bookSize: 18,
+                        bookProgress: 0,
+                        bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test3.txt'
+                    },
+                    '地心歷險記': {
+                        bookSize: 18,
+                        bookProgress: 0,
+                        bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test.txt'
+                    },
+                    '厚黑學': {
+                        bookSize: 3696,
+                        bookProgress: 456,
+                        bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test5.txt'
+                    },
+                    '賣香屁': {
+                        bookSize: 4509,
+                        bookProgress: 22,
+                        bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test test.txt'
+                    }
+                };
+            }
 
             // add imformation to memory
             for (var p in books) {
@@ -9123,7 +9185,8 @@ Main.propTypes = {
     navbarToggle: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool,
     books: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
     reading: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
-    dispatch: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func
+    dispatch: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
+    osVersion: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string
 };
 
 
@@ -15102,7 +15165,7 @@ exports = module.exports = __webpack_require__(24)(undefined);
 
 
 // module
-exports.push([module.i, ".welcome-main {\n    min-height: 200px;  \n    max-width: 800px !important;\n    /* background: rgba(255, 255, 255, 0.3); */\n\n    color: white;\n    text-align: center;\n}\n\n.welcome-jumbotron {\n    background: rgba(255, 255, 255, 0.4);\n    margin: 2rem 1rem 2rem 1rem;\n    padding: 1rem 2rem 1rem 2rem;\n    border-radius: 10px;\n}\n\n.welcome-jumbotron-title {\n    font-size: 48px;\n}\n\n.welcome-jumbotron-content {\n    font-size: 20px;\n}\n\n.welcome-buttons {\n     margin: 0.5rem; \n}", ""]);
+exports.push([module.i, ".welcome-main {\r\n    min-height: 200px;  \r\n    max-width: 800px !important;\r\n    /* background: rgba(255, 255, 255, 0.3); */\r\n\r\n    color: white;\r\n    text-align: center;\r\n}\r\n\r\n.welcome-jumbotron {\r\n    background: rgba(255, 255, 255, 0.4);\r\n    margin: 2rem 1rem 2rem 1rem;\r\n    padding: 1rem 2rem 1rem 2rem;\r\n    border-radius: 10px;\r\n}\r\n\r\n.welcome-jumbotron-title {\r\n    font-size: 48px;\r\n}\r\n\r\n.welcome-jumbotron-content {\r\n    font-size: 20px;\r\n}\r\n\r\n.welcome-buttons {\r\n     margin: 0.5rem; \r\n}", ""]);
 
 // exports
 
@@ -15353,7 +15416,7 @@ var Library = function (_React$Component) {
                 for (var p in paths) {
                     var bookPath = paths[p];
                     var bookSize = fs.statSync(bookPath).size;
-                    var bookTitle = bookPath.split('/').pop().split('.')[0];
+                    var bookTitle = bookPath.split('/').pop().split('\\').pop().split('.')[0];
                     this.props.dispatch(Object(__WEBPACK_IMPORTED_MODULE_8__states_main_actions_js__["a" /* addBook */])(bookTitle, bookSize, 0, bookPath));
                 }
             }
@@ -15588,7 +15651,7 @@ exports = module.exports = __webpack_require__(24)(undefined);
 
 
 // module
-exports.push([module.i, ".libraryItem {\n    text-align: center;\n    display: inline-block; \n}\n\n.bookCover:hover {\n    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.5);\n}\n\n.bookTitle {\n    font-size: 20px;\n    margin: 10px 0px;\n}\n\n.bookPage {\n    margin: 0px 0px 10px 0px;\n    color: rgb(54.2%, 54.2%, 54.2%);\n}\n\n.bookButton {\n    width: 100%;\n    width: 200px !important;\n    margin: 0px 0px 10px 0px;\n}\n\n.bookCover {\n    background: rgba(255, 255, 255, 1.0);\n    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.4);\n    transition: 0.3s;\n    width: 200px;\n    height: 120px; \n    border-radius: 4px;\n    margin: 10px;\n    padding: 10px 0px; \n}\n\n.libraryItem a {\n    color: royalblue;\n}\n\n.libraryItem a:hover {\n    color: darkblue;\n    text-decoration: none;\n}\n\n.libraryItem .libraryItemEdit {\n    color: royalblue;\n}\n\n.libraryItem .libraryItemEdit:hover {\n    color: darkblue;\n    text-decoration: none;\n}\n\n.libraryItem .select {\n    color: red !important;\n}\n\n.progress-text {\n    font-size: 10px;\n    color: gray !important;\n}\n\n.restBar {\n    background: rgb(211, 211, 211) !important;\n}", ""]);
+exports.push([module.i, ".libraryItem {\r\n    text-align: center;\r\n    display: inline-block; \r\n}\r\n\r\n.bookCover:hover {\r\n    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n.bookTitle {\r\n    font-size: 20px;\r\n    margin: 10px 0px;\r\n}\r\n\r\n.bookPage {\r\n    margin: 0px 0px 10px 0px;\r\n    color: rgb(54.2%, 54.2%, 54.2%);\r\n}\r\n\r\n.bookButton {\r\n    width: 100%;\r\n    width: 200px !important;\r\n    margin: 0px 0px 10px 0px;\r\n}\r\n\r\n.bookCover {\r\n    background: rgba(255, 255, 255, 1.0);\r\n    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.4);\r\n    transition: 0.3s;\r\n    width: 200px;\r\n    height: 120px; \r\n    border-radius: 4px;\r\n    margin: 10px;\r\n    padding: 10px 0px; \r\n}\r\n\r\n.libraryItem a {\r\n    color: royalblue;\r\n}\r\n\r\n.libraryItem a:hover {\r\n    color: darkblue;\r\n    text-decoration: none;\r\n}\r\n\r\n.libraryItem .libraryItemEdit {\r\n    color: royalblue;\r\n}\r\n\r\n.libraryItem .libraryItemEdit:hover {\r\n    color: darkblue;\r\n    text-decoration: none;\r\n}\r\n\r\n.libraryItem .select {\r\n    color: red !important;\r\n}\r\n\r\n.progress-text {\r\n    font-size: 10px;\r\n    color: gray !important;\r\n}\r\n\r\n.restBar {\r\n    background: rgb(211, 211, 211) !important;\r\n}", ""]);
 
 // exports
 
@@ -15633,7 +15696,7 @@ exports = module.exports = __webpack_require__(24)(undefined);
 
 
 // module
-exports.push([module.i, ".library-main {\n    margin: 2rem 0rem 2rem 0rem;\n    box-sizing: border-box; \n    text-align: center;\n    justify-content: center; \n    display: flex; \n    flex-wrap: wrap; \n\n    max-width: 800px !important;\n}\n\n.library-edit-button {\n    align-items: center;\n    justify-content: center; \n    display: inline-block; \n    margin: 0px 10px 20px 10px;\n    width: 200px !important;\n}\n\n.library-button-panel {\n    width: 100%;\n}", ""]);
+exports.push([module.i, ".library-main {\r\n    margin: 2rem 0rem 2rem 0rem;\r\n    box-sizing: border-box; \r\n    text-align: center;\r\n    justify-content: center;\r\n    display: flex;\r\n    flex-wrap: wrap; \r\n\r\n    max-width: 800px !important;\r\n}\r\n\r\n.library-edit-button {\r\n    align-items: center;\r\n    justify-content: center; \r\n    display: inline-block; \r\n    margin: 0px 10px 20px 10px;\r\n    width: 200px !important;\r\n}\r\n\r\n.library-button-panel {\r\n    width: 100%;\r\n}", ""]);
 
 // exports
 
@@ -15833,7 +15896,7 @@ exports = module.exports = __webpack_require__(24)(undefined);
 
 
 // module
-exports.push([module.i, ".noRecord-outter {\n    min-height: 200px;  \n    max-width: 800px !important;\n    color: white;\n    text-align: center;\n}\n\n.noRecord-outter .noRecord-inner {\n    background: rgba(255, 255, 255, 0.4);\n    margin: 2rem 1rem 2rem 1rem;\n    padding: 90px 3rem 90px 3rem;\n    border-radius: 10px;\n    font-size: 20px;\n}\n", ""]);
+exports.push([module.i, ".noRecord-outter {\r\n    min-height: 200px;  \r\n    max-width: 800px !important;\r\n    color: white;\r\n    text-align: center;\r\n}\r\n\r\n.noRecord-outter .noRecord-inner {\r\n    background: rgba(255, 255, 255, 0.4);\r\n    margin: 2rem 1rem 2rem 1rem;\r\n    padding: 90px 3rem 90px 3rem;\r\n    border-radius: 10px;\r\n    font-size: 20px;\r\n}\r\n", ""]);
 
 // exports
 
@@ -15878,7 +15941,7 @@ exports = module.exports = __webpack_require__(24)(undefined);
 
 
 // module
-exports.push([module.i, ".reader-bg {\n    /* background-image: url('src/image/welcome_bg.jpeg');  */\n    min-height: 100vh;\n    min-height: 300px;\n    min-width: 270px;\n    /* background-position: center;\n    background-repeat: no-repeat; \n    background-attachment: fixed;\n    background-size: cover; */\n}\n\n#root {\n    min-height: 100vh;\n}\n\n.main {\n    height: 100vh;\n}\n\n.main .footer {\n    /* position: fixed; */\n    width: 100%;\n    /* background: rgba(255, 255, 255, 0.3); */\n    text-align: center;\n    color: rgba(255, 255, 255, 1.0);\n    padding: 1rem 2rem 1rem 2rem;\n}\n\n.main .search {\n    position: relative;\n    width: 100%;\n}\n\n.main .search input {\n    padding-right: 1.5rem;\n}\n\n.main .search i {\n    position: absolute;\n    top: 0.25rem;\n    right: 0.5rem;\n}\n\n.main .search i:hover {\n    color: #5bc0de;\n}\n\n@media (min-width: 576px) {\n    .main .search {\n        width: 10rem;\n    }\n}\n", ""]);
+exports.push([module.i, ".reader-bg {\r\n    /* background-image: url('src/image/welcome_bg.jpeg');  */\r\n    min-height: 100vh;\r\n    min-height: 300px;\r\n    min-width: 270px;\r\n    background-position: center;\r\n    background-repeat: no-repeat; \r\n    background-attachment: fixed;\r\n    background-size: cover;\r\n}\r\n\r\n#root {\r\n    min-height: 100vh;\r\n}\r\n\r\n.main .footer {\r\n    /* position: fixed; */\r\n    width: 100%;\r\n    /* background: rgba(255, 255, 255, 0.3); */\r\n    text-align: center;\r\n    color: rgba(255, 255, 255, 1.0);\r\n    padding: 1rem 2rem 1rem 2rem;\r\n}\r\n\r\n.main .search {\r\n    position: relative;\r\n    width: 100%;\r\n}\r\n\r\n.main .search input {\r\n    padding-right: 1.5rem;\r\n}\r\n\r\n.main .search i {\r\n    position: absolute;\r\n    top: 0.25rem;\r\n    right: 0.5rem;\r\n}\r\n\r\n.main .search i:hover {\r\n    color: #5bc0de;\r\n}\r\n\r\n@media (min-width: 576px) {\r\n    .main .search {\r\n        width: 10rem;\r\n    }\r\n}\r\n", ""]);
 
 // exports
 
@@ -15907,7 +15970,8 @@ var initMainState = {
         bookProgress: 0,
         bookPath: '',
         content: ''
-    }
+    },
+    osVersion: 'Unknown'
 };
 
 function main() {
@@ -15917,6 +15981,11 @@ function main() {
     var B = void 0;
     var R = void 0;
     switch (action.type) {
+        case '@MAIN/SET_OS_VERSION':
+            return _extends({}, state, {
+                osVersion: action.osVersion
+            });
+            break;
         case '@MAIN/TOGGLE_NAVBAR':
             return _extends({}, state, {
                 navbarToggle: !state.navbarToggle

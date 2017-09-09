@@ -3,18 +3,14 @@
     min-height: 100vh;
     min-height: 300px;
     min-width: 270px;
-    /* background-position: center;
+    background-position: center;
     background-repeat: no-repeat; 
     background-attachment: fixed;
-    background-size: cover; */
+    background-size: cover;
 }
 
 #root {
     min-height: 100vh;
-}
-
-.main {
-    height: 100vh;
 }
 
 .main .footer {

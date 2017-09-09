@@ -114,7 +114,7 @@ class Library extends React.Component {
             for (let p in paths) {
                 let bookPath = paths[p];
                 let bookSize = fs.statSync(bookPath).size;
-                let bookTitle = bookPath.split('/').pop().split('.')[0];
+                let bookTitle = bookPath.split('/').pop().split('\\').pop().split('.')[0];
                 this.props.dispatch(addBook(bookTitle, bookSize, 0, bookPath));
             }
         }

@@ -14,13 +14,20 @@ const initMainState = {
         bookProgress: 0,
         bookPath: '',
         content: '',
-    }
+    },
+    osVersion: 'Unknown'
 };
 
 export function main(state = initMainState, action) {
     let B;
     let R;
     switch (action.type) {
+        case '@MAIN/SET_OS_VERSION':
+            return {
+                ...state, 
+                osVersion: action.osVersion
+            };
+            break;
         case '@MAIN/TOGGLE_NAVBAR':
             return {
                 ...state,
