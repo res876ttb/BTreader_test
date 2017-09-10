@@ -9,6 +9,7 @@ import {
     deleteSelect,
     changeReadingContent,
 } from '../states/main-actions.js';
+import {Traditionalized} from '../api/traditionalization.js';
 
 class Reading extends React.Component {
     static props = {
@@ -99,7 +100,7 @@ class Reading extends React.Component {
     
                     const jcd = require('jschardet');
                     const iconv = require('iconv-lite');
-                    this.props.dispatch(changeReadingContent(iconv.decode(readResult, jcd.detect(readResult).encoding.toLowerCase()), byteRead));
+                    this.props.dispatch(changeReadingContent(Traditionalized(iconv.decode(readResult, jcd.detect(readResult).encoding.toLowerCase()), byteRead)));
                 });
             });
         }

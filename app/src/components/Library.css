@@ -10,6 +10,7 @@
 }
 
 .library-edit-button {
+    font-family:Microsoft JhengHei;
     align-items: center;
     justify-content: center; 
     display: inline-block; 

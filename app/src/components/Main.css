@@ -1,5 +1,6 @@
 .reader-bg {
     /* background-image: url('src/image/welcome_bg.jpeg');  */
+    font-family:Microsoft JhengHei;
     min-height: 100vh;
     min-height: 300px;
     min-width: 270px;
