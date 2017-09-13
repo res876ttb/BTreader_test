@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 
 import './Reading.css';
 
+import {Progress} from 'reactstrap';
 import {
     changeReadingBook, 
     deleteSelect,
@@ -35,16 +36,22 @@ class Reading extends React.Component {
         let readingMainStyle = {
             'minHeight': '200px',
             'maxWidth': '800px !important',
-            'color': 'white',
+            'color': 'black',
             'textAlign': 'center'
         };
         let readingInnerStyle = {
             'background': 'rgba(255, 255, 255, 0.4)',
-            'margin': '2rem 1rem 2rem 1rem',
-            'padding': '90px 3rem 90px 3rem',
+            'margin': '30px 15px 20px 15px',
+            'padding': '30px',
             'borderRadius': '10px',
-            'fontSize': '20px'
+            'fontSize': '20px',
+            'textAlign': 'left'
         };
+        let _content = String(this.props.bookContent).split('\n');
+        let content = [];
+        for (let i in _content) {
+            content.push(_content[i], (<br />));
+        }
 
         if (this.props.bookPath === '') {
             display = (
@@ -57,11 +64,13 @@ class Reading extends React.Component {
         } else {
             display = (
                 <div className="container" style={readingMainStyle}>
-                    <div style={readingInnerStyle}>
-                        {this.props.bookContent} <br/>
+                    <div style={readingInnerStyle} id='reading-content'>
+                        {content} <br/>
                     </div>
-                    {this.props.bookProgress} <br/>
-                    {this.props.bookSize} <br/>
+                    <Progress multi style={{margin: '16px'}} id='reading-progress'>
+                        <Progress bar value={this.props.bookProgress} max={this.props.bookSize} color='success' />
+                        <Progress className='restBar' bar value={this.props.bookSize - this.props.bookProgress} max={this.props.bookSize} />
+                    </Progress>
                 </div>
             );
         }
@@ -96,14 +105,21 @@ class Reading extends React.Component {
                     if (err2 !== null) {
                         console.error(err2);
                     }
-                    // this.props.dispatch(changeReadingContent(readResult.toString(), byteRead));
     
                     const jcd = require('jschardet');
                     const iconv = require('iconv-lite');
-                    this.props.dispatch(changeReadingContent(Traditionalized(iconv.decode(readResult, jcd.detect(readResult).encoding.toLowerCase()), byteRead)));
+                        this.props.dispatch(changeReadingContent(Traditionalized(iconv.decode(readResult, jcd.detect(readResult).encoding.toLowerCase()), byteRead)));
                 });
             });
         }
+    }
+
+    getTexSize(txt, font) {
+        this.element = document.createElement('canvas');
+        this.context = this.element.getContext("2d");
+        this.context.font = font;
+        var tsize = {'width':this.context.measureText(txt).width, 'height':parseInt(this.context.font)};
+        return tsize;
     }
 }
 

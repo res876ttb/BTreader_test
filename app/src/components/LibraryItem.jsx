@@ -32,6 +32,12 @@ class LibraryItem extends React.Component {
 
     render() {
         let display;
+        let titleLineHeight;
+        if (this.props.bookTitle.length <= 8) {
+            titleLineHeight = 60;
+        } else {
+            titleLineHeight = 30;
+        }
 
         if (this.props.edit) {
             let itemSelect = (this.props.select) ? 'libraryItemEdit select' : 'libraryItemEdit';
@@ -40,7 +46,7 @@ class LibraryItem extends React.Component {
                     <div className={itemSelect} onClick={this.handleSelect}>
                         <div className="bookCover">
                             <div className="container">
-                                <div className="bookTitle">{this.props.bookTitle}</div>
+                                <div className="bookTitle" style={{lineHeight: `${titleLineHeight}px`}}>{this.props.bookTitle.slice(0, 16)}</div>
                                 <div className="bookPage">{(this.props.bookProgress === 0 ? '尚未閱讀' : '閱讀到: ' + (this.props.bookProgress / this.props.bookSize * 100).toFixed(3) + '%')}</div>
                                 <Progress multi>
                                     <Progress bar value={this.props.bookProgress} max={this.props.bookSize} color='success' />
@@ -57,7 +63,7 @@ class LibraryItem extends React.Component {
                     <Link to='/reading' onClick={this.jumpToReading}>
                         <div className="bookCover">
                             <div className="container">
-                                <div className="bookTitle">{this.props.bookTitle}</div>
+                                <div className="bookTitle" style={{lineHeight: `${titleLineHeight}px`}}>{this.props.bookTitle.slice(0, 16)}</div>
                                 <div className="bookPage">{(this.props.bookProgress === 0 ? '尚未閱讀' : '閱讀到: ' + (this.props.bookProgress / this.props.bookSize * 100).toFixed(3) + '%')}</div>
                                 <Progress multi>
                                     <Progress bar value={this.props.bookProgress} max={this.props.bookSize} color='success' />

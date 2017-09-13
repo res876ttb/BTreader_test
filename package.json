@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "startm": "webpack && electron .",
+    "startm": "webpack && ./node_modules/.bin/electron .",
     "startw": "webpack && .\\node_modules\\.bin\\electron .",
     "comp": "webpack"
   },

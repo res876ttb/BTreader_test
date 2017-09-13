@@ -32,6 +32,9 @@ class Welcome extends React.Component {
                     <Button color='primary' className="welcome-buttons" tag={Link} to='/reading'>閱讀上次進度</Button>
                     <Button color='secondary' className="welcome-buttons" tag={Link} to='/library'>立刻前往書架</Button> 
                 </div>
+                <div className='footer'>
+                    BTreader By Hsu Keng Jui
+                </div>
             </div>
         );
     }

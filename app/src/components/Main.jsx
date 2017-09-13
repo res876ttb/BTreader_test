@@ -68,7 +68,7 @@ class Main extends React.Component {
             this.props.dispatch(setInitialize(true));
             return (
                 <Router>
-                    <Redirect to='/library'/>
+                    <Redirect to='/reading'/>
                 </Router>
             );
         }
@@ -117,10 +117,6 @@ class Main extends React.Component {
                     {/* <Route exact path="/setting" render={() => (
                         <Setting />
                     )}/>  */}
-
-                    <div className='footer'>
-                        BTreader By Hsu Keng Jui
-                    </div>
                 </div>
             </Router>
         );
@@ -193,14 +189,14 @@ class Main extends React.Component {
                 '地心歷險記': {
                     bookSize: 18,
                     bookProgress: 0,
-                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test.txt',
+                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test4.txt',
                 },
                 '厚黑學': {
                     bookSize: 3696,
                     bookProgress: 456,
                     bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test5.txt',
                 },
-                '賣香屁': {
+                '我的名字應該有超過十個字吧': {
                     bookSize: 4509,
                     bookProgress: 22,
                     bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test test.txt',
@@ -214,7 +210,7 @@ class Main extends React.Component {
         };
 
         // set default recent reading book
-        this.props.dispatch(changeReadingBook('', 0, 0, ''));
+        this.props.dispatch(changeReadingBook('厚黑學', 3696, 456, '/Users/Ricky/Documents/Git/BTreader/test/test5.txt'));
     }
 
     debug() {

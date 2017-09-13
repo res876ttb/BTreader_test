@@ -85,6 +85,9 @@ class Library extends React.Component {
                     {controlButton}
                 </div>
                 {children}
+                <div className='footer'>
+                    BTreader By Hsu Keng Jui
+                </div>
             </div>
         );
     }
