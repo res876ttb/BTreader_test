@@ -21,6 +21,7 @@ class LibraryItem extends React.Component {
         bookPath: PropTypes.string,
         bookSize: PropTypes.number,
         bookProgress: PropTypes.number,
+        encoding: PropTypes.string
     };
 
     constructor(props) {
@@ -84,7 +85,7 @@ class LibraryItem extends React.Component {
     }
 
     jumpToReading() {
-        this.props.dispatch(changeReadingBook(this.props.bookTitle, this.props.bookSize, this.props.bookProgress, this.props.bookPath));
+        this.props.dispatch(changeReadingBook(this.props.bookTitle, this.props.bookSize, this.props.bookProgress, this.props.bookPath, this.props.encoding));
     }
 
     handleSelect() {

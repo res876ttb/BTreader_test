@@ -41,23 +41,25 @@ export function resetBooks(books) {
     };
 }
 
-export function addBook(bookTitle, bookSize, bookProgress, bookPath) {
+export function addBook(bookTitle, bookSize, bookProgress, bookPath, encoding) {
     return {
         type: '@MAIN/ADD_BOOK',
         bookTitle: bookTitle,
         bookSize: bookSize,
         bookProgress: bookProgress,
         bookPath: bookPath,
+        encoding: encoding
     };
 }
 
-export function changeReadingBook(bookTitle, bookSize, bookProgress, bookPath) {
+export function changeReadingBook(bookTitle, bookSize, bookProgress, bookPath, encoding) {
     return {
         type: '@MAIN/CHANGE_READING_BOOK',
         bookTitle: bookTitle,
         bookSize: bookSize,
         bookProgress: bookProgress,
         bookPath: bookPath,
+        encoding: encoding
     }
 }
 
@@ -80,5 +82,26 @@ export function changeReadingContent (content, byteRead) {
         type: '@MAIN/CHANGE_READING_CONTENT',
         content: content,
         byteRead: byteRead
+    };
+}
+
+function getDivWidth(divWidth) {
+    if (divWidth < 768) {
+        return 420;
+    } else if (divWidth < 992) {
+        return 600;
+    } else if (divWidth < 1200) {
+        return 840;
+    } else {
+        return 1020;
+    }
+}
+
+export function changeWindowSize(width, height) {
+    let _width = getDivWidth(width);
+    return {
+        type: '@MAIN/CHANGE_WINDOW_SIZE',
+        divWidth: _width,
+        divHeight: height
     };
 }

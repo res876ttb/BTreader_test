@@ -51,9 +51,16 @@ class Library extends React.Component {
         let bk = this.props.books;
         for (let p in this.props.books) {
             children.push((
-                <LibraryItem key={p} edit={this.props.edit} bookTitle={bk[p].bookTitle} 
-                bookSize={bk[p].bookSize} bookProgress={bk[p].bookProgress} 
-                bookPath={p} select={this.props.select.indexOf(p) > -1}/>
+                <LibraryItem 
+                    key={p} 
+                    edit={this.props.edit} 
+                    bookTitle={bk[p].bookTitle} 
+                    bookSize={bk[p].bookSize}
+                    bookProgress={bk[p].bookProgress} 
+                    bookPath={p} 
+                    encoding={bk[p].encoding}
+                    select={this.props.select.indexOf(p) > -1}
+                />
             ));
         }
 
@@ -118,11 +125,41 @@ class Library extends React.Component {
                 let bookPath = paths[p];
                 let bookSize = fs.statSync(bookPath).size;
                 let bookTitle = bookPath.split('/').pop().split('\\').pop().split('.')[0];
-                this.props.dispatch(addBook(bookTitle, bookSize, 0, bookPath));
+                this.getEncoding(bookPath).then(encoding => {
+                    this.props.dispatch(addBook(bookTitle, bookSize, 0, bookPath, encoding));
+                });
             }
         }
 
         this.props.dispatch(setEdit(false));
+    }
+    
+    getEncoding(bookPath) {
+        const fs = require('fs');
+        return new Promise((resolve, reject) => {
+            if (bookPath === '') reject('empty path');
+            var buffer = new Buffer(100);
+            fs.open(bookPath, 'r', (err1, fd) => {
+                if (err1 !== null) {
+                    console.error(err1);
+                }
+                fs.read(fd, buffer, 0, buffer.length, 0, (err2, byteRead, readResult) => {
+                    if (err2 !== null) {
+                        reject(err2);
+                    } else if (readResult === null) {
+                        reject('Empty content!');
+                    }
+                    return resolve(readResult);
+                });
+            });
+        }).then(rr => {
+            const jcd = require('jschardet');
+            let encoding = jcd.detect(rr).encoding.toLowerCase();
+            console.log('Encoding is', encoding);
+            return encoding;
+        }).catch(e => {
+            console.error(e);
+        });
     }
 
     deleteSelect() {

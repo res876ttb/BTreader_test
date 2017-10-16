@@ -26,6 +26,7 @@ import {
     changeReadingBook,
     setInitialize,
     setOsVersion,
+    changeWindowSize
 } from 'states/main-actions.js';
 import Welcome from 'components/Welcome.jsx';
 import Library from 'components/Library.jsx';
@@ -41,6 +42,8 @@ class Main extends React.Component {
         reading: PropTypes.object,
         dispatch: PropTypes.func,
         osVersion: PropTypes.string,
+        divWidth: PropTypes.number,
+        divHeight: PropTypes.number
     };
 
     constructor(props) {
@@ -50,9 +53,12 @@ class Main extends React.Component {
 
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
         this.debug = this.debug.bind(this);
+        this.updateWindowSize = this.updateWindowSize.bind(this);
     }
 
     componentWillMount() {
+        window.addEventListener('resize', this.updateWindowSize);
+        
         this.props.dispatch(setInitialize(false));
         this.props.dispatch(setOsVersion());
         this.readRecord();
@@ -61,6 +67,10 @@ class Main extends React.Component {
         for (let i = 0; i < ele.length; i = i + 1) {
             ele[i].setAttribute("style", "background-image: url('src/image/welcome_bg.jpeg');");
         }
+    }
+    
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowSize);
     }
 
     render() {
@@ -111,8 +121,16 @@ class Main extends React.Component {
                         <Library books={this.props.books} />
                     )}/>
                     <Route exact path="/reading" render={() => (
-                        <Reading bookTitle={this.props.reading.bookTitle} bookPath={this.props.reading.bookPath} bookProgress={this.props.reading.bookProgress}
-                            bookSize={this.props.reading.bookSize} bookContent={this.props.reading.content} />
+                        <Reading 
+                            bookTitle={this.props.reading.bookTitle} 
+                            bookPath={this.props.reading.bookPath} 
+                            bookProgress={this.props.reading.bookProgress}
+                            bookSize={this.props.reading.bookSize} 
+                            bookContent={this.props.reading.content}
+                            encoding={this.props.reading.encoding}  
+                            divWidth={this.props.divWidth}
+                            divHeight={this.props.divHeight}
+                        />
                     )}/>
                     {/* <Route exact path="/setting" render={() => (
                         <Setting />
@@ -124,6 +142,11 @@ class Main extends React.Component {
 
     handleNavbarToggle() {
         this.props.dispatch(toggleNavbar());
+    }
+    
+    updateWindowSize() {
+        console.log('resize width:', window.innerWidth, 'height:', window.innerHeight);
+        this.props.dispatch(changeWindowSize(window.innerWidth, window.innerHeight));
     }
 
     readRecord() {
@@ -206,11 +229,11 @@ class Main extends React.Component {
 
         // add imformation to memory
         for (let p in books) {
-            this.props.dispatch(addBook(p, books[p].bookSize, books[p].bookProgress, books[p].bookPath));
+            this.props.dispatch(addBook(p, books[p].bookSize, books[p].bookProgress, books[p].bookPath, 'utf-8'));
         };
 
         // set default recent reading book
-        this.props.dispatch(changeReadingBook('厚黑學', 3696, 456, '/Users/Ricky/Documents/Git/BTreader/test/test5.txt'));
+        this.props.dispatch(changeReadingBook('厚黑學', 3696, 0, '/Users/Ricky/Documents/Git/BTreader/test/test5.txt', 'utf-8'));
     }
 
     debug() {

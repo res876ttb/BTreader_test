@@ -5,7 +5,8 @@ const initMainState = {
         // 'empty': {
         //     bookSize: 0,
         //     bookProgress: 0, // this is offset of the book
-        //     bookPath: '',
+        //     bookPath: '', // string
+        //     encoding: ''  // string
         // }
     },
     reading: {
@@ -14,8 +15,11 @@ const initMainState = {
         bookProgress: 0,
         bookPath: '',
         content: '',
+        encoding: ''
     },
-    osVersion: 'Unknown'
+    osVersion: 'Unknown',
+    divWidth: 600,
+    divHeight: 400,
 };
 
 export function main(state = initMainState, action) {
@@ -46,6 +50,7 @@ export function main(state = initMainState, action) {
                 bookSize: action.bookSize,
                 bookProgress: action.bookProgress,
                 bookTitle: action.bookTitle,
+                encoding: action.encoding,
             };
 
             return {
@@ -64,7 +69,8 @@ export function main(state = initMainState, action) {
                     bookSize: 0,
                     bookProgress: 0,
                     bookPath: '',
-                    content: ''
+                    content: '',
+                    encoding: ''
                 };
             } else {
                 R = state.reading;
@@ -83,6 +89,7 @@ export function main(state = initMainState, action) {
                     bookProgress: action.bookProgress,
                     bookSize: action.bookSize,
                     bookPath: action.bookPath,
+                    encoding: action.encoding
                 }
             }
         case '@MAIN/SET_INITIALIZE':
@@ -113,6 +120,12 @@ export function main(state = initMainState, action) {
                 reading: R,
             };
             break;
+        case '@MAIN/CHANGE_WINDOW_SIZE':
+            return {
+                ...state,
+                divWidth: action.divWidth,
+                divHeight: action.divHeight
+            };
         default:
             return state;
     }
