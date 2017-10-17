@@ -24273,7 +24273,6 @@ var Reading = function (_React$Component) {
     }, {
         key: 'nextPage',
         value: function nextPage() {
-            console.log('current progress', this.props.bookProgress);
             console.log('Next Page');
             var text = this.props.bookContent;
             var numOfWords = this.numOfWords;
