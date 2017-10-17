@@ -10,8 +10,12 @@ import {
     changeReadingBook, 
     deleteSelect,
     changeReadingContent,
+    setProgress,
 } from '../states/main-actions.js';
-import {Traditionalized} from '../api/traditionalization.js';
+import {
+    Traditionalized,
+    Simplized,
+} from '../api/traditionalization.js';
 
 class Reading extends React.Component {
     static props = {
@@ -28,6 +32,8 @@ class Reading extends React.Component {
 
     constructor(props) {
         super(props);
+        
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     componentWillMount() {
@@ -42,32 +48,25 @@ class Reading extends React.Component {
 
     render() {
         let display;
-        let fontSize = 18;
-        let readingMainStyle = {
+        this.fontSize = 18;
+        this.readingMainStyle = {
             minHeight: '200px',
             maxWidth: '800px !important',
             color: 'black',
             textAlign: 'center'
         };
-        let readingInnerStyle = {
+        this.readingInnerStyle = {
             height: this.props.divHeight - 145,
             background: 'rgba(255, 255, 255, 0.4)',
             margin: '30px 15px 20px 15px',
             padding: '30px',
             borderRadius: '10px',
-            fontSize: fontSize,
+            fontSize: this.fontSize,
             textAlign: 'left',
             whiteSpace: 'pre-wrap'
         };
+        let content = this.formatContent(this.fontSize);
         
-        // let fcontent = this.formatContent(fontSize);
-        // let _content = fcontent.split('\n');
-        // let content = [];
-        // for (let i in _content) {
-        //     content.push(_content[i], (<br />));
-        // }
-        let content = this.formatContent(fontSize);
-
         if (this.props.bookPath === '') {
             display = (
                 <div className="noRecord-outter container">
@@ -78,13 +77,26 @@ class Reading extends React.Component {
             );
         } else {
             display = (
-                <div className="container" style={readingMainStyle}>
-                    <div style={readingInnerStyle} id='reading-content'>
+                <div className="container" style={this.readingMainStyle}>
+                    <div 
+                        style={this.readingInnerStyle} 
+                        id='reading-content'
+                    >
                         {content}
                     </div>
-                    <Progress multi style={{margin: '16px'}} id='reading-progress'>
-                        <Progress bar value={this.props.bookProgress} max={this.props.bookSize} color='success' />
-                        <Progress className='restBar' bar value={this.props.bookSize - this.props.bookProgress} max={this.props.bookSize} />
+                    <Progress multi 
+                        style={{margin: '16px'}} 
+                        id='reading-progress'
+                    >
+                        <Progress bar 
+                            value={this.props.bookProgress} 
+                            max={this.props.bookSize} 
+                            color='success' 
+                        />
+                        <Progress className='restBar' bar 
+                            value={this.props.bookSize - this.props.bookProgress} 
+                            max={this.props.bookSize} 
+                        />
                     </Progress>
                 </div>
             );
@@ -98,7 +110,6 @@ class Reading extends React.Component {
     }
     
     formatContent(fontSize) {
-        // let _content = String(this.props.bookContent).split('\n');
         let _content = String(this.props.bookContent);
         let height = this.props.divHeight - 205; 
         let lineheight = 1.5;
@@ -109,10 +120,9 @@ class Reading extends React.Component {
         let numOfSpecial = 0;
         let line = '';
         let len = 0;
+        let i = 0;
         
-        console.log(this.props.divWidth);
-        
-        for (let i = 0; i < _content.length; i += 1) {
+        for (i = 0; i < _content.length; i += 1) {
             let c = _content[i];
             if (c === '“' || c === '”') {
                 numOfSpecial += 1;
@@ -142,14 +152,14 @@ class Reading extends React.Component {
                 numOfSpecial = 0;
             }
         }
-        
+        this.numOfWords = numOfWords;
         return content;
     }
     
     getLineLength(txt, fontSize) {
         this.element = document.createElement('canvas');
         this.context = this.element.getContext("2d");
-        this.context.font = 'PingFang TC';
+        this.context.font = 'Microsoft JhengHei';
         return this.context.measureText(txt).width * fontSize / 10;
     }
 
@@ -167,43 +177,71 @@ class Reading extends React.Component {
     readFileContent() {
         const fs = require('fs');
         let buffer = new Buffer(4000);
+        let buffer_t = new Buffer(5000);
         if (this.props.bookPath !== '') {
             fs.open(this.props.bookPath, 'r', (err1, fd) => {
                 if (err1 !== null) {
                     console.error(err1);
                 }
-                console.log(this.props.bookProgress);
-                fs.read(fd, buffer, 0, buffer.length, this.bookProgress, (err2, byteRead, readResult) => {
+                fs.read(fd, buffer, 0, buffer.length, this.props.bookProgress, (err2, byteRead, readResult) => {
+                    if (byteRead === 0) {
+                        this.props.dispatch(setProgress(0 - this.bufferLength));
+                        return;
+                    }
+                    
                     if (err2 !== null) {
                         console.error(err2);
                     } else if (readResult === null) {
                         console.error('Empty content!');
-                    } else {
-                        console.log(readResult);
                     }
     
-                    const jcd = require('jschardet');
                     const iconv = require('iconv-lite');
                     
-                    let encoding = this.props.encoding;
-                    
                     // if encoding is null, set default encoding to utf-8
-                    if (encoding === null) {
-                        console.log('encoding is null! use default: utf-8');
-                        encoding = 'utf-8'; 
-                    } 
-                    let text = Traditionalized(iconv.decode(readResult, encoding), byteRead);
-                    this.props.dispatch(changeReadingContent(text));
+                    let encoding = this.props.encoding;
+                    if (encoding === null || encoding === 'utf-8') {
+                        console.log('use encoding utf-8');
+                        encoding = 'utf-8';
+                    } else {
+                        console.log('use encoding', encoding);
+                    }
+                    // copy readResult to a new array
+                    let result = readResult.slice(0, byteRead);
+                    // decode text by utf-8
+                    let translated = Traditionalized(iconv.decode(result, encoding));
+                    this.props.dispatch(changeReadingContent(translated));
+                    fs.close(fd);
                 });
             });
         }
     }
+    
+    nextPage() {
+        console.log('Next Page');
+        let text = this.props.bookContent;
+        let numOfWords = this.numOfWords;
+        const iconv = require('iconv-lite');
+        let oriTxt = '';
+        for (let i = 0; i < numOfWords; i += 1) {
+            oriTxt += text[i];
+        }
+        let simTxt = Simplized(oriTxt);
+        let buffer = iconv.encode(simTxt, this.props.encoding);
+        console.log('buffer size:', buffer.length);
+        this.bufferLength = buffer.length;
+        this.props.dispatch(setProgress(buffer.length));
+        this.readFileContent();
+    }
+    
+    previousPage() {
+        console.log('Previous Page');
+    }
 
     handleKeyPress(e) {
         if ((e.keyCode === 32 && e.shiftKey === false) || e.keyCode === 39) {
-            console.log('Next Page');
+            this.nextPage();
         } else if ((e.keyCode === 32 && e.shiftKey === true) || e.keyCode === 37) {
-            console.log('Previous Page');
+            this.previousPage();
         }
     }
 }

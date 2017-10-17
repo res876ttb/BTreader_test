@@ -105,3 +105,10 @@ export function changeWindowSize(width, height) {
         divHeight: height
     };
 }
+
+export function setProgress(offset) {
+    return {
+        type: '@MAIN/CHANGE_BOOK_PROGRESS',
+        curOffset: offset
+    };
+}

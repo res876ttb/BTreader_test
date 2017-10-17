@@ -15,7 +15,8 @@ const initMainState = {
         bookProgress: 0,
         bookPath: '',
         content: '',
-        encoding: ''
+        encoding: '',
+        curOffset: 0,
     },
     osVersion: 'Unknown',
     divWidth: 600,
@@ -125,6 +126,15 @@ export function main(state = initMainState, action) {
                 ...state,
                 divWidth: action.divWidth,
                 divHeight: action.divHeight
+            };
+        case '@MAIN/CHANGE_BOOK_PROGRESS':
+            R = {
+                ...state.reading,
+                bookProgress: state.reading.bookProgress + action.curOffset
+            };
+            return {
+                ...state,
+                reading: R,
             };
         default:
             return state;
