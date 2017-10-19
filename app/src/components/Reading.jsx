@@ -39,16 +39,17 @@ class Reading extends React.Component {
     componentWillMount() {
         this.checkFile();
         this.readFileContent();
-        window.addEventListener('keydown', this.handleKeyPress);
+        window.addEventListener('keyup', this.handleKeyPress);
     }
 
     componentWillUnmount() {
-        window.removeEventListener('keydown', this.handleKeyPress);
+        window.removeEventListener('keyup', this.handleKeyPress); 
     }
 
     render() {
         let display;
         this.fontSize = 18;
+        this.lineHeight = 1.5;
         this.readingMainStyle = {
             minHeight: '200px',
             maxWidth: '800px !important',
@@ -65,7 +66,7 @@ class Reading extends React.Component {
             textAlign: 'left',
             whiteSpace: 'pre-wrap'
         };
-        let content = this.formatContent(this.fontSize);
+        let content = this.formatContent(this.fontSize, 1.5);
         
         if (this.props.bookPath === '') {
             display = (
@@ -109,10 +110,36 @@ class Reading extends React.Component {
         );
     }
     
-    formatContent(fontSize) {
-        let _content = String(this.props.bookContent);
+    formatContent(fontSize, lineHeight) {
+        let result = '';
+        let _content = this.props.bookContent;
+        let content = this.formatWidth(fontSize, String(this.props.bookContent));
         let height = this.props.divHeight - 205; 
-        let lineheight = 1.5;
+        let numOfLines = 0;
+        let numOfLineError = 0;
+        let i = 0;
+        let j = 0;
+        
+        while (i < content.length) {
+            if (content[i] === '\n') {
+                numOfLines += 1;
+                if (_content[j] !== '\n') {
+                    j -= 1;
+                    numOfLineError += 1;
+                }
+                if (lineHeight * numOfLines * fontSize > height) {
+                    break;
+                }
+            }
+            result += content[i];
+            i += 1;
+            j += 1;
+        }
+        this.numOfWords = i + 1 - numOfLineError;
+        return result;
+    }
+    
+    formatWidth(fontSize, _content) {
         let content = '';
         let offset = 0;
         let numOfLines = 1;
@@ -120,19 +147,19 @@ class Reading extends React.Component {
         let numOfSpecial = 0;
         let line = '';
         let len = 0;
-        let i = 0;
         
-        for (i = 0; i < _content.length; i += 1) {
+        for (let i = 0; i < _content.length; i += 1) {
             let c = _content[i];
-            if (c === '“' || c === '”') {
+            if ((c.match(/[\x00-\xff]/g) && c !== '\n' && c !== ' ') || 
+                 c === '“' || c === '”' || c === '‘' || c === '’') {
                 numOfSpecial += 1;
-            } 
-            len = this.getLineLength(line + c, fontSize) + numOfSpecial * fontSize * 0.1;
+                // special width
+            } else if (c == '-') {
+                numOfSpecial += 1.3;
+            }
+            len = this.getLineLength(line + c, fontSize) + numOfSpecial * fontSize * 0.15;
             if (c === '\n') {
                 numOfWords += 1;
-                if (lineheight * numOfLines * fontSize > height) {
-                    break;
-                }
                 content += '\n';
                 line = '';
                 numOfLines += 1;
@@ -142,9 +169,6 @@ class Reading extends React.Component {
                 content += c;
                 line += c;
             } else {
-                if (lineheight * numOfLines * fontSize > height) {
-                    break;
-                }
                 i -= 1;
                 content += '\n';
                 line = '';
@@ -152,7 +176,6 @@ class Reading extends React.Component {
                 numOfSpecial = 0;
             }
         }
-        this.numOfWords = numOfWords;
         return content;
     }
     
@@ -166,7 +189,7 @@ class Reading extends React.Component {
     checkFile() {
         const fs = require('fs');
         const {ipcRenderer} = require('electron');
-        console.log(this.props.bookPath);
+        console.log('Reading: Check if book exists:', this.props.bookPath);
         if (this.props.bookPath !== '' && fs.existsSync(this.props.bookPath) === false) {
             ipcRenderer.sendSync('synchronous-message', 'fileNotExists');
             this.props.dispatch(changeReadingBook('', 0, 0, ''));
@@ -177,7 +200,6 @@ class Reading extends React.Component {
     readFileContent() {
         const fs = require('fs');
         let buffer = new Buffer(4000);
-        let buffer_t = new Buffer(5000);
         if (this.props.bookPath !== '') {
             fs.open(this.props.bookPath, 'r', (err1, fd) => {
                 if (err1 !== null) {
@@ -186,13 +208,14 @@ class Reading extends React.Component {
                 fs.read(fd, buffer, 0, buffer.length, this.props.bookProgress, (err2, byteRead, readResult) => {
                     if (byteRead === 0) {
                         this.props.dispatch(setProgress(0 - this.bufferLength));
+                        console.log('ReadFile: Cannot read this page!');
                         return;
                     }
                     
                     if (err2 !== null) {
                         console.error(err2);
                     } else if (readResult === null) {
-                        console.error('Empty content!');
+                        console.error('ReadFile: Empty content!');
                     }
     
                     const iconv = require('iconv-lite');
@@ -200,10 +223,10 @@ class Reading extends React.Component {
                     // if encoding is null, set default encoding to utf-8
                     let encoding = this.props.encoding;
                     if (encoding === null || encoding === 'utf-8') {
-                        console.log('use encoding utf-8');
+                        console.log('ReadFile: Use encoding: utf-8');
                         encoding = 'utf-8';
                     } else {
-                        console.log('use encoding', encoding);
+                        console.log('ReadFile: Use encoding:', encoding);
                     }
                     // copy readResult to a new array
                     let result = readResult.slice(0, byteRead);
@@ -217,7 +240,7 @@ class Reading extends React.Component {
     }
     
     nextPage() {
-        console.log('Next Page');
+        console.log('Next Page: Key press detected!');
         let text = this.props.bookContent;
         let numOfWords = this.numOfWords;
         const iconv = require('iconv-lite');
@@ -227,14 +250,116 @@ class Reading extends React.Component {
         }
         let simTxt = Simplized(oriTxt);
         let buffer = iconv.encode(simTxt, this.props.encoding);
-        console.log('buffer size:', buffer.length);
+        console.log('Next Page: Buffer size:', buffer.length);
         this.bufferLength = buffer.length;
         this.props.dispatch(setProgress(buffer.length));
         this.readFileContent();
     }
     
     previousPage() {
-        console.log('Previous Page');
+        console.log('Previous Page: Key press detect.');
+        if (this.props.bookProgress === 0) {
+            console.log('Pregious Page: This is the first page.');
+            return;
+        }
+        let p = new Promise((res, rej) => {
+            console.log('Previous Page: Read previous content');
+            const fs = require('fs');
+            let buffer = new Buffer(4000);
+            fs.open(this.props.bookPath, 'r', (err1, fd) => {
+                if (err1 !== null) {
+                    console.error(err1);
+                }
+                console.log(this.props.bookProgress - 4000);
+                fs.read(fd, buffer, 0, buffer.length, this.props.bookProgress - 4000, (err2, byteRead, readResult) => {
+                    if (byteRead === 0) {
+                        this.props.dispatch(setProgress(0 - this.bufferLength));
+                        console.log('Previous Page: Cannot read previous page!');
+                        return;
+                    }
+                    
+                    if (err2 !== null) {
+                        console.error(err2);
+                    } else if (readResult === null) {
+                        console.error('Previous Page: Empty content!');
+                    }
+        
+                    const iconv = require('iconv-lite');
+                    
+                    // if encoding is null, set default encoding to utf-8
+                    let encoding = this.props.encoding;
+                    if (encoding === null || encoding === 'utf-8') {
+                        console.log('Previous Page: Use encoding: utf-8');
+                        encoding = 'utf-8';
+                    } else {
+                        console.log('Previous Page: Use encoding:', encoding);
+                    }
+                    // copy readResult to a new array
+                    let result;
+                    if (this.props.bookProgress - 4000 < 0) {
+                        result = readResult.slice(0, this.props.bookProgress);
+                    } else {
+                        result = readResult.slice(0, byteRead);
+                    }
+                    // decode text by utf-8
+                    let translated = Traditionalized(iconv.decode(result, encoding));
+                    fs.close(fd);
+                    res(translated);
+                });
+            });
+        }).then(txt => {
+            console.log('Previous Page: Format content in background.');
+            this.tmp = txt;
+            return this.formatWidth(this.fontSize, String(txt));
+        }).then(txt => {
+            console.log('Previous Page: Select line.');
+            let result = '';
+            let _content = this.tmp;
+            let content = txt;
+            let height = this.props.divHeight - 205; 
+            let lineHeight = this.lineHeight;
+            let fontSize = this.fontSize;
+            let numOfLines = 0;
+            let numOfLineError = 0;
+            let i = content.length - 1;
+            let j = this.tmp.length - 1;
+            
+            while (i >= 0) {
+                if (content[i] === '\n') {
+                    numOfLines += 1;
+                    if (_content[j] !== '\n') {
+                        j += 1;
+                        numOfLineError += 1;
+                    }
+                    if (lineHeight * numOfLines * fontSize > height) {
+                        break;
+                    }
+                }
+                result = content[i] + result;
+                i -= 1;
+                j -= 1;
+            }
+            this.numOfWords = content.length - i + numOfLineError;
+            return {result, numOfLineError};
+        }).then(v => {
+            console.log('Previous Page: Set offset.');
+            const iconv = require('iconv-lite');
+            let correction = '';
+            for (let i = 0; i < v.numOfLineError; i++) {correction += '\n';}
+            let simTxt = Simplized(v.result);
+            let buffer1 = iconv.encode(simTxt, this.props.encoding);
+            let buffer2 = iconv.encode(correction, this.props.encoding);
+            let bufferLength = buffer1.length - buffer2.length + 1;
+            console.log('Previous Page: Buffer size of previous page is', bufferLength);
+            if (this.props.bookProgress - bufferLength <= 0) {
+                this.props.dispatch(setProgress(0 - this.props.bookProgress));
+            } else {
+                this.props.dispatch(setProgress(0 - bufferLength));
+            }
+            this.readFileContent();
+        }).catch(e => {
+            console.error('Something go wrong:', e);
+        });
     }
 
     handleKeyPress(e) {

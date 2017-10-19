@@ -216,12 +216,12 @@ class Main extends React.Component {
                 },
                 '厚黑學': {
                     bookSize: 3696,
-                    bookProgress: 456,
+                    bookProgress: 0,
                     bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test5.txt',
                 },
                 '我的名字應該有超過十個字吧': {
                     bookSize: 4509,
-                    bookProgress: 22,
+                    bookProgress: 0,
                     bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test test.txt',
                 },
             };
@@ -233,7 +233,7 @@ class Main extends React.Component {
         };
 
         // set default recent reading book
-        this.props.dispatch(changeReadingBook('厚黑學', 3696, 0, '/Users/Ricky/Documents/Git/BTreader/test/test5.txt', 'utf-8'));
+        this.props.dispatch(changeReadingBook('紅樓夢', 10000, 2077, '/Users/Ricky/Documents/Git/BTreader/test/test3.txt', 'utf-8'));
     }
 
     debug() {

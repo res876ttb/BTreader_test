@@ -16,7 +16,6 @@ const initMainState = {
         bookPath: '',
         content: '',
         encoding: '',
-        curOffset: 0,
     },
     osVersion: 'Unknown',
     divWidth: 600,
@@ -90,7 +89,8 @@ export function main(state = initMainState, action) {
                     bookProgress: action.bookProgress,
                     bookSize: action.bookSize,
                     bookPath: action.bookPath,
-                    encoding: action.encoding
+                    encoding: action.encoding,
+                    content: ''
                 }
             }
         case '@MAIN/SET_INITIALIZE':
@@ -128,6 +128,7 @@ export function main(state = initMainState, action) {
                 divHeight: action.divHeight
             };
         case '@MAIN/CHANGE_BOOK_PROGRESS':
+            console.log('Current progress:', state.reading.bookProgress);
             R = {
                 ...state.reading,
                 bookProgress: state.reading.bookProgress + action.curOffset
