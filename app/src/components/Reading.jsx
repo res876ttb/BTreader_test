@@ -86,7 +86,7 @@ class Reading extends React.Component {
                         {content}
                     </div>
                     <Progress multi 
-                        style={{margin: '16px'}} 
+                        style={{margin: '16px 16px 0px 16px'}} 
                         id='reading-progress'
                     >
                         <Progress bar 

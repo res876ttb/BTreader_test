@@ -102,13 +102,27 @@ export function main(state = initMainState, action) {
             B = {
                 ...state.books,
             };
+            R = {
+                ...state.reading,
+            }
             for (let p in action.bookPaths) {
                 delete B[action.bookPaths[p]];
+                if (state.reading.bookPath === action.bookPaths[p]) {
+                    R = {
+                        bookTitle: '',
+                        bookSize: 0,
+                        bookProgress: 0,
+                        bookPath: '',
+                        content: '',
+                        encoding: ''
+                    };
+                }
             }
             
             return {
                 ...state,
-                books: B
+                books: B,
+                reading: R,
             };
         case '@MAIN/CHANGE_READING_CONTENT':
             R = {
