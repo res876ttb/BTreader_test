@@ -7,11 +7,14 @@ import './Reading.css';
 import {Progress} from 'reactstrap';
 
 import {
-    changeReadingBook, 
     deleteSelect,
-    changeReadingContent,
+    SetProgress
+} from '../states/library-actions.js';
+import {
     setProgress,
-} from '../states/main-actions.js';
+    changeReadingContent,
+    changeReadingBook,
+} from '../states/reading-actions.js';
 import {
     Traditionalized,
     Simplized,
@@ -70,8 +73,8 @@ class Reading extends React.Component {
         
         if (this.props.bookPath === '') {
             display = (
-                <div className="noRecord-outter container">
-                    <div className="noRecord-inner">
+                <div className="reading-noRecord-outter container">
+                    <div className="reading-noRecord-inner">
                         沒有最近的閱讀紀錄，從書架選一本書來閱讀吧！
                     </div>
                 </div>
@@ -191,8 +194,9 @@ class Reading extends React.Component {
         const {ipcRenderer} = require('electron');
         console.log('Reading: Check if book exists:', this.props.bookPath);
         if (this.props.bookPath !== '' && fs.existsSync(this.props.bookPath) === false) {
+            console.log('Reading: Book does not exist!');
             ipcRenderer.sendSync('synchronous-message', 'fileNotExists');
-            this.props.dispatch(changeReadingBook('', 0, 0, ''));
+            this.props.dispatch(changeReadingBook('', 0, 0, '', ''));
             this.props.dispatch(deleteSelect([this.props.bookPath]));
         }
     }
@@ -208,6 +212,7 @@ class Reading extends React.Component {
                 fs.read(fd, buffer, 0, buffer.length, this.props.bookProgress, (err2, byteRead, readResult) => {
                     if (byteRead === 0) {
                         this.props.dispatch(setProgress(0 - this.bufferLength));
+                        this.props.dispatch(SetProgress(this.props.bookPath, 0 - this.bufferLength));
                         console.log('ReadFile: Cannot read this page!');
                         return;
                     }
@@ -253,6 +258,7 @@ class Reading extends React.Component {
         console.log('Next Page: Buffer size:', buffer.length);
         this.bufferLength = buffer.length;
         this.props.dispatch(setProgress(buffer.length));
+        this.props.dispatch(SetProgress(this.props.bookPath, buffer.length));
         this.readFileContent();
     }
     
@@ -270,10 +276,10 @@ class Reading extends React.Component {
                 if (err1 !== null) {
                     console.error(err1);
                 }
-                console.log(this.props.bookProgress - 4000);
                 fs.read(fd, buffer, 0, buffer.length, this.props.bookProgress - 4000, (err2, byteRead, readResult) => {
                     if (byteRead === 0) {
                         this.props.dispatch(setProgress(0 - this.bufferLength));
+                        this.props.dispatch(SetProgress(this.props.bookPath, 0 - this.bufferLength));
                         console.log('Previous Page: Cannot read previous page!');
                         return;
                     }
@@ -353,8 +359,10 @@ class Reading extends React.Component {
             console.log('Previous Page: Buffer size of previous page is', bufferLength);
             if (this.props.bookProgress - bufferLength <= 0) {
                 this.props.dispatch(setProgress(0 - this.props.bookProgress));
+                this.props.dispatch(SetProgress(this.props.bookPath, 0 - this.props.bookProgress));
             } else {
                 this.props.dispatch(setProgress(0 - bufferLength));
+                this.props.dispatch(SetProgress(this.props.bookPath, 0 - bufferLength));
             }
             this.readFileContent();
         }).catch(e => {
@@ -372,5 +380,12 @@ class Reading extends React.Component {
 }
 
 export default connect(state => ({
-    ...state.reading,
+    bookPath:       state.reading.bookPath,
+    bookTitle:      state.reading.bookTitle,
+    bookProgress:   state.reading.bookProgress,
+    bookSize:       state.reading.bookSize,
+    bookContent:    state.reading.content,
+    encoding:       state.reading.encoding,
+    divWidth:       state.main.divWidth,
+    divHeight:      state.main.divHeight,
 }))(Reading);

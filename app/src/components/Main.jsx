@@ -21,18 +21,26 @@ import {connect} from 'react-redux';
 
 import {
     toggleNavbar, 
-    resetBooks,
-    addBook,
-    changeReadingBook,
     setInitialize,
     setOsVersion,
-    changeWindowSize
+    changeWindowSize,
+    dataMainLoad
 } from 'states/main-actions.js';
+import {
+    addBook,
+    dataLibraryLoad
+} from 'states/library-actions.js';
+import {
+    dataReadingLoad,
+    changeReadingBook
+} from 'states/reading-actions.js';
 import Welcome from 'components/Welcome.jsx';
 import Library from 'components/Library.jsx';
 import Reading from 'components/Reading.jsx';
 
 import 'components/Main.css';
+
+import {writeJson, readJson} from '../api/jsonrw.js';
 
 class Main extends React.Component {
     static propTypes = {
@@ -49,10 +57,7 @@ class Main extends React.Component {
     constructor(props) {
         super(props);
 
-        console.log("Main is loaded");
-
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
-        this.debug = this.debug.bind(this);
         this.updateWindowSize = this.updateWindowSize.bind(this);
     }
 
@@ -118,19 +123,10 @@ class Main extends React.Component {
                         <Welcome />
                     )}/>
                     <Route exact path="/library" render={() => (
-                        <Library books={this.props.books} />
+                        <Library />
                     )}/>
                     <Route exact path="/reading" render={() => (
-                        <Reading 
-                            bookTitle={this.props.reading.bookTitle} 
-                            bookPath={this.props.reading.bookPath} 
-                            bookProgress={this.props.reading.bookProgress}
-                            bookSize={this.props.reading.bookSize} 
-                            bookContent={this.props.reading.content}
-                            encoding={this.props.reading.encoding}  
-                            divWidth={this.props.divWidth}
-                            divHeight={this.props.divHeight}
-                        />
+                        <Reading />
                     )}/>
                     {/* <Route exact path="/setting" render={() => (
                         <Setting />
@@ -145,100 +141,20 @@ class Main extends React.Component {
     }
     
     updateWindowSize() {
-        console.log('resize width:', window.innerWidth, 'height:', window.innerHeight);
+        console.log('Main: resize width:', window.innerWidth, 'height:', window.innerHeight);
         this.props.dispatch(changeWindowSize(window.innerWidth, window.innerHeight));
     }
 
     readRecord() {
-        console.log("reading record");
-        // read file here
-        // codes...
-
-        // dispatch setting to action
-        // this is default imformation
-        let books;
-        console.log(this.props.osVersion);
-        if (navigator.appVersion.indexOf("Win") !== -1) {
-            console.log("HERE!!!");
-            books = {
-                '愛麗絲夢遊仙境': {
-                    bookSize: 22,
-                    bookProgress: 0,
-                    bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test1.txt',
-                },
-                '西遊記': {
-                    bookSize: 34,
-                    bookProgress: 0,
-                    bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test2.txt',
-                },
-                '紅樓夢': {
-                    bookSize: 18,
-                    bookProgress: 0,
-                    bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test3.txt',
-                },
-                '地心歷險記': {
-                    bookSize: 18,
-                    bookProgress: 0,
-                    bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test.txt',
-                },
-                '厚黑學': {
-                    bookSize: 3696,
-                    bookProgress: 456,
-                    bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test5.txt',
-                },
-                '賣香屁': {
-                    bookSize: 4509,
-                    bookProgress: 22,
-                    bookPath: 'D:\\Documents\\Git\\TextReader\\test\\test test.txt',
-                },
-            };
-        } else {
-            books = {
-                '愛麗絲夢遊仙境': {
-                    bookSize: 22,
-                    bookProgress: 0,
-                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test1.txt',
-                },
-                '西遊記': {
-                    bookSize: 34,
-                    bookProgress: 0,
-                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test2.txt',
-                },
-                '紅樓夢': {
-                    bookSize: 18,
-                    bookProgress: 0,
-                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test3.txt',
-                },
-                '地心歷險記': {
-                    bookSize: 18,
-                    bookProgress: 0,
-                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test4.txt',
-                },
-                '厚黑學': {
-                    bookSize: 3696,
-                    bookProgress: 0,
-                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test5.txt',
-                },
-                '我的名字應該有超過十個字吧': {
-                    bookSize: 4509,
-                    bookProgress: 0,
-                    bookPath: '/Users/Ricky/Documents/Git/BTreader/test/test test.txt',
-                },
-            };
-        }
-
-        // add imformation to memory
-        for (let p in books) {
-            this.props.dispatch(addBook(p, books[p].bookSize, books[p].bookProgress, books[p].bookPath, 'utf-8'));
-        };
-
-        // set default recent reading book
-        this.props.dispatch(changeReadingBook('紅樓夢', 10000, 2077, '/Users/Ricky/Documents/Git/BTreader/test/test3.txt', 'utf-8'));
-    }
-
-    debug() {
-        // this.readRecord();
-        console.log(this.props.books);
+        readJson('./app/data/data-main.json').then(data => {
+            this.props.dispatch(dataMainLoad(data));
+        });
+        readJson('./app/data/data-library.json').then(data => {
+            this.props.dispatch(dataLibraryLoad(data));
+        });
+        readJson('./app/data/data-reading.json').then(data => {
+            this.props.dispatch(dataReadingLoad(data));
+        });
     }
 }
 

@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom';
 
 import './Welcome.css';
 
-class Welcome extends React.Component {
+export default class Welcome extends React.Component {
     static propTypes = {
         dispatch: PropTypes.func
     };
@@ -17,7 +17,6 @@ class Welcome extends React.Component {
 
     render() {
         return (
-
             <div className="welcome-main container">
                 <div className="welcome-jumbotron">
                     <div className="welcome-jumbotron-title">
@@ -39,7 +38,3 @@ class Welcome extends React.Component {
         );
     }
 }
-
-export default connect(state => ({
-    ...state.welcome
-}))(Welcome);

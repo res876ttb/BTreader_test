@@ -8,6 +8,7 @@ import thunkMiddleware from 'redux-thunk';
 import Main from 'components/Main.jsx';
 import {main} from 'states/main-reducers.js';
 import {library} from 'states/library-reducers.js';
+import {reading} from 'states/reading-reducers.js';
 
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 
@@ -16,6 +17,7 @@ window.onload = function() {
     const store = createStore(combineReducers({
         main,
         library,
+        reading,
     }), composeEnhancers(applyMiddleware(thunkMiddleware)));
 
     ReactDOM.render(

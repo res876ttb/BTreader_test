@@ -1,26 +1,30 @@
 export function setOsVersion() {
     if (navigator.appVersion.indexOf("Win") !== -1) {
-        console.log('Here');
+        console.log("Set OS version: Windows");
         return {
             type: '@MAIN/SET_OS_VERSION',
             osVersion: 'Windows'
         };
     } else if (navigator.appVersion.indexOf("Mac") !== -1) {
+        console.log("Set OS version: Macintosh");
         return {
             type: '@MAIN/SET_OS_VERSION',
             osVersion: 'macOS'
         };
     } else if (navigator.appVersion.indexOf("X11") !== -1) {
+        console.log("Set OS version: X11");
         return {
             type: '@MAIN/SET_OS_VERSION',
             osVersion: 'UNIX'
         };
     } else if (navigator.appVersion.indexOf("Linux") !== -1) {
+        console.log("Set OS version: Linux");
         return {
             type: '@MAIN/SET_OS_VERSION',
             osVersion: 'Linux'
         };
     } else {
+        console.log("Set OS version: Unknown");
         return {
             type: '@MAIN/SET_OS_VERSION',
             osVersion: 'Unknown'
@@ -34,55 +38,11 @@ export function toggleNavbar() {
     };
 }
 
-export function resetBooks(books) {
-    return {
-        type: '@MAIN/RESET_BOOKS',
-        books: books
-    };
-}
-
-export function addBook(bookTitle, bookSize, bookProgress, bookPath, encoding) {
-    return {
-        type: '@MAIN/ADD_BOOK',
-        bookTitle: bookTitle,
-        bookSize: bookSize,
-        bookProgress: bookProgress,
-        bookPath: bookPath,
-        encoding: encoding
-    };
-}
-
-export function changeReadingBook(bookTitle, bookSize, bookProgress, bookPath, encoding) {
-    return {
-        type: '@MAIN/CHANGE_READING_BOOK',
-        bookTitle: bookTitle,
-        bookSize: bookSize,
-        bookProgress: bookProgress,
-        bookPath: bookPath,
-        encoding: encoding
-    }
-}
-
 export function setInitialize(status) {
     return {
         type: '@MAIN/SET_INITIALIZE',
         status: status,
     }
-}
-
-export function deleteSelect(bookPaths) {
-    return {
-        type: '@MAIN/DELETE_SELECT',
-        bookPaths: bookPaths
-    };
-}
-
-export function changeReadingContent (content, byteRead) {
-    return {
-        type: '@MAIN/CHANGE_READING_CONTENT',
-        content: content,
-        byteRead: byteRead
-    };
 }
 
 function getDivWidth(divWidth) {
@@ -106,9 +66,9 @@ export function changeWindowSize(width, height) {
     };
 }
 
-export function setProgress(offset) {
+export function dataMainLoad(data) {
     return {
-        type: '@MAIN/CHANGE_BOOK_PROGRESS',
-        curOffset: offset
+        type: '@MAIN/LOAD_DATA',
+        data: data
     };
 }

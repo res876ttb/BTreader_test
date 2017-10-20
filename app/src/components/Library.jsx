@@ -21,11 +21,9 @@ import './Library.css';
 import {
     setEdit,
     cancelAllSelect,
-} from '../states/library-actions.js';
-import {
     deleteSelect,
-    addBook
-} from '../states/main-actions.js';
+    addBook,
+} from '../states/library-actions.js';
 
 class Library extends React.Component {
     static propTypes = {
@@ -53,7 +51,6 @@ class Library extends React.Component {
             children.push((
                 <LibraryItem 
                     key={p} 
-                    edit={this.props.edit} 
                     bookTitle={bk[p].bookTitle} 
                     bookSize={bk[p].bookSize}
                     bookProgress={bk[p].bookProgress} 
@@ -62,6 +59,19 @@ class Library extends React.Component {
                     select={this.props.select.indexOf(p) > -1}
                 />
             ));
+        }
+        
+        console.log("Library: There are", children.length, "books.");
+        if (children.length === 0) {
+            children = (
+                <div className="library-noRecord-outter container">
+                    <div style={{height: "10px"}}></div>
+                    <div className="library-noRecord-inner">
+                        書架裡沒有書！<br />
+                        快加入幾本來滋潤你的大腦！
+                    </div>
+                </div>
+            );
         }
 
         if (this.props.edit) {
@@ -116,10 +126,10 @@ class Library extends React.Component {
         const {ipcRenderer} = require('electron');
         const fs = require('fs');
         let paths = ipcRenderer.sendSync('synchronous-message', 'openTXT');
-        console.log(paths);
+        console.log("Library: Open book path:", paths);
 
         // read info of files
-        // api: addBook(bookTitle, bookSize, bookProgress, bookPath)
+        // api: addBook(bookTitle, bookSize, bookProgress, bookPath, encoding)
         if (paths !== null) {
             for (let p in paths) {
                 let bookPath = paths[p];
@@ -155,7 +165,7 @@ class Library extends React.Component {
         }).then(rr => {
             const jcd = require('jschardet');
             let encoding = jcd.detect(rr).encoding.toLowerCase();
-            console.log('Encoding is', encoding);
+            console.log('Library: Encoding is', encoding);
             return encoding;
         }).catch(e => {
             console.error(e);
@@ -170,5 +180,7 @@ class Library extends React.Component {
 }
 
 export default connect(state => ({
-    ...state.library,
+    books:  state.library.books,
+    edit:   state.library.edit,
+    select: state.library.select,
 }))(Library);

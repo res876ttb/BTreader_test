@@ -7,8 +7,13 @@ import {
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 
-import {changeReadingBook} from '../states/main-actions.js';
-import {addSelect, cancelSelect} from '../states/library-actions.js';
+import {
+    changeReadingBook
+} from '../states/reading-actions.js';
+import {
+    addSelect, 
+    cancelSelect,
+} from '../states/library-actions.js';
 
 import './LibraryItem.css';
 
@@ -39,6 +44,8 @@ class LibraryItem extends React.Component {
         } else {
             titleLineHeight = 30;
         }
+        
+        console.log('library item: debug:', this.props.bookProgress, this.props.bookSize);
 
         if (this.props.edit) {
             let itemSelect = (this.props.select) ? 'libraryItemEdit select' : 'libraryItemEdit';
@@ -98,5 +105,5 @@ class LibraryItem extends React.Component {
 }
 
 export default connect(state => ({
-    ...state.libraryItem,
+    edit: state.library.edit,
 }))(LibraryItem);

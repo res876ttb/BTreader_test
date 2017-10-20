@@ -5,16 +5,16 @@ export function setEdit(editStatus) {
     };
 }
 
-export function cancelSelect(bookPath) {
+export function addSelect(bookPath) {
     return {
-        type: '@LIBRARY/CANCEL_SELECT',
+        type: '@LIBRARY/ADD_SELECT',
         bookPath: bookPath
     };
 }
 
-export function addSelect(bookPath) {
+export function cancelSelect(bookPath) {
     return {
-        type: '@LIBRARY/ADD_SELECT',
+        type: '@LIBRARY/CANCEL_SELECT',
         bookPath: bookPath
     };
 }
@@ -23,4 +23,37 @@ export function cancelAllSelect() {
     return {
         type: '@LIBRARY/CANCEL_ALL_SELECT'
     };
+}
+
+export function addBook(bookTitle, bookSize, bookProgress, bookPath, encoding) {
+    return {
+        type: '@LIBRARY/ADD_BOOK',
+        bookTitle: bookTitle,
+        bookSize: bookSize,
+        bookProgress: bookProgress,
+        bookPath: bookPath,
+        encoding: encoding
+    };
+}
+
+export function deleteSelect(bookPaths) {
+    return {
+        type: '@LIBRARY/DELETE_SELECT',
+        bookPaths: bookPaths
+    };
+}
+
+export function SetProgress(bookPath, progress) {
+    return {
+        type: '@LIBRARY/SET_PROGRESS',
+        bookPath: bookPath,
+        bookProgress: progress,
+    };
+}
+
+export function dataLibraryLoad(data) {
+    return {
+        type: '@LIBRARY/DATA_LOAD',
+        data: data,
+    }
 }
