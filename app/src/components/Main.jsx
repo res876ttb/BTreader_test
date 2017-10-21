@@ -5,6 +5,7 @@ import {
     Route, 
     Link,
     Redirect,
+    Switch,
 } from 'react-router-dom';
 import {
     Collapse,
@@ -24,7 +25,8 @@ import {
     setInitialize,
     setOsVersion,
     changeWindowSize,
-    dataMainLoad
+    dataMainLoad,
+    rerenderTrigger
 } from 'states/main-actions.js';
 import {
     addBook,
@@ -34,9 +36,13 @@ import {
     dataReadingLoad,
     changeReadingBook
 } from 'states/reading-actions.js';
+import {
+    dataSettingLoad,
+} from 'states/setting-actions.js';
 import Welcome from 'components/Welcome.jsx';
 import Library from 'components/Library.jsx';
 import Reading from 'components/Reading.jsx';
+import Setting from 'components/Setting.jsx';
 
 import 'components/Main.css';
 
@@ -46,17 +52,17 @@ class Main extends React.Component {
     static propTypes = {
         initialized: PropTypes.bool,
         navbarToggle: PropTypes.bool,
-        books: PropTypes.object,
-        reading: PropTypes.object,
         dispatch: PropTypes.func,
         osVersion: PropTypes.string,
         divWidth: PropTypes.number,
-        divHeight: PropTypes.number
+        divHeight: PropTypes.number,
+        autoReading: PropTypes.bool,
+        rerender: PropTypes.bool,
     };
 
     constructor(props) {
         super(props);
-
+        this.debug = false;
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
         this.updateWindowSize = this.updateWindowSize.bind(this);
     }
@@ -67,6 +73,14 @@ class Main extends React.Component {
         this.props.dispatch(setInitialize(false));
         this.props.dispatch(setOsVersion());
         this.readRecord();
+
+        setTimeout(() => {
+            if (this.props.autoReading) {
+                this.redirectReading = true;
+                this.props.dispatch(rerenderTrigger(true));
+                this.props.dispatch(rerenderTrigger(false));
+            }
+        }, 600);
 
         let ele = document.getElementsByClassName('reader-bg');
         for (let i = 0; i < ele.length; i = i + 1) {
@@ -81,9 +95,29 @@ class Main extends React.Component {
     render() {
         if (this.props.initialized === false) {
             this.props.dispatch(setInitialize(true));
+            if (this.debug === true) {
+                return (
+                    <Router>
+                        <Redirect to='/setting'/>
+                    </Router>
+                );
+            } else {
+                return (
+                    <Router>
+                        <Redirect to='/'/>
+                    </Router>
+                );
+            }
+        }
+        if (this.props.rerender === true) {
             return (
                 <Router>
-                    <Redirect to='/reading'/>
+                    <Switch>
+                        <Route exact path="/reading" render={() => (
+                            <div>Redirecting...</div>
+                        )}/>
+                        <Redirect to='/reading'/>
+                    </Switch>
                 </Router>
             );
         }
@@ -128,9 +162,9 @@ class Main extends React.Component {
                     <Route exact path="/reading" render={() => (
                         <Reading />
                     )}/>
-                    {/* <Route exact path="/setting" render={() => (
+                    <Route exact path="/setting" render={() => (
                         <Setting />
-                    )}/>  */}
+                    )}/>
                 </div>
             </Router>
         );
@@ -155,9 +189,13 @@ class Main extends React.Component {
         readJson('./app/data/data-reading.json').then(data => {
             this.props.dispatch(dataReadingLoad(data));
         });
+        readJson('./app/data/data-setting.json').then(data => {
+            this.props.dispatch(dataSettingLoad(data));
+        });
     }
 }
 
 export default connect (state => ({
     ...state.main,
+    autoReading: state.setting.autoReading,
 }))(Main);

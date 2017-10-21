@@ -66,6 +66,13 @@ export function changeWindowSize(width, height) {
     };
 }
 
+export function rerenderTrigger(bool) {
+    return {
+        type: '@MAIN/RERENDER_TRIGGER',
+        bool: bool
+    };
+}
+
 export function dataMainLoad(data) {
     return {
         type: '@MAIN/LOAD_DATA',

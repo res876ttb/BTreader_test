@@ -1,0 +1,95 @@
+.setting-outter {
+    min-height: 200px;  
+    max-width: 800px !important;
+}
+
+.setting-outter .setting-inner {
+    background: rgba(255, 255, 255, 0.4);
+    margin: 2rem 1rem 0rem 1rem;
+    padding: 1rem 3rem 1rem 3rem;
+    border-radius: 10px;
+}
+
+/************** check list style **************/
+.checklist-check {
+	color: rgb(105, 75, 0) !important;
+	background: #FCF6E1;
+}
+
+.checklist-check:hover {
+	color: rgb(105, 75, 0) !important;
+	background: #E9E3D2;
+}
+
+.checklist-uncheck {
+	color: #DFDEDE;
+	background: #8A8A8A;
+}
+
+.checklist-uncheck:hover {
+	color: #DFDEDE;
+	background: #747373;
+}
+
+.checklist-style {
+	border-radius: 3px;
+	padding: 0.5rem 2rem 0.5rem 2rem;
+	font-size: 18px;
+	transition-duration: 0.3s;
+}
+
+.ns {
+	-webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
+}
+
+/************** setting block style **************/
+.sb {
+	padding: 0.5rem 0rem 0.5rem 0rem;
+	font-size: 18px;
+	transition-duration: 0.3s;
+	color: rgb(105, 75, 0);
+	background: #FCF6E1;
+	text-align: center;
+}
+
+.sbp {
+	padding: 1rem;
+	border-radius: 3px;
+	background: rgba(252, 246, 225, 0.85);
+}
+
+.sbnh {
+	padding: 0.5rem 0rem 0.5rem 0rem;
+	font-size: 18px;
+	transition-duration: 0.3s;
+	color: rgb(105, 75, 0);
+	background: #FCF6E1;
+	text-align: center;
+}
+
+.sb:hover {
+	color: rgb(105, 75, 0);
+	background: #E9E3D2;
+}
+
+.sbtl {
+	border-top-left-radius: 3px;
+}
+
+.sbtr {
+	border-top-right-radius: 3px;
+}
+
+.sbbl {
+	border-bottom-left-radius: 3px;
+}
+
+.sbbr {
+	border-bottom-right-radius: 3px;
+}

@@ -30,12 +30,15 @@ class Reading extends React.Component {
         bookContent: PropTypes.string,
         encoding: PropTypes.string,
         divWidth: PropTypes.number,
-        divHeight: PropTypes.number
+        divHeight: PropTypes.number,
+        fontSize: PropTypes.number,
+        lineHeight: PropTypes.number,
     };
 
     constructor(props) {
         super(props);
-        
+        this.fontSize = this.props.fontSize;
+        this.lineHeight = this.props.lineHeight;
         this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
@@ -51,8 +54,6 @@ class Reading extends React.Component {
 
     render() {
         let display;
-        this.fontSize = 18;
-        this.lineHeight = 1.5;
         this.readingMainStyle = {
             minHeight: '200px',
             maxWidth: '800px !important',
@@ -66,10 +67,11 @@ class Reading extends React.Component {
             padding: '30px',
             borderRadius: '10px',
             fontSize: this.fontSize,
+            lineHeight: this.lineHeight,
             textAlign: 'left',
             whiteSpace: 'pre-wrap'
         };
-        let content = this.formatContent(this.fontSize, 1.5);
+        let content = this.formatContent(this.fontSize, this.lineHeight);
         
         if (this.props.bookPath === '') {
             display = (
@@ -153,13 +155,12 @@ class Reading extends React.Component {
         
         for (let i = 0; i < _content.length; i += 1) {
             let c = _content[i];
-            if ((c.match(/[\x00-\xff]/g) && c !== '\n' && c !== ' ') || 
+            if (c === '-') {
+                numOfSpecial += 1.5;
+            } else if ((c.match(/[\x00-\xff]/g) && c !== '\n' && c !== ' ') || 
                  c === '“' || c === '”' || c === '‘' || c === '’') {
                 numOfSpecial += 1;
-                // special width
-            } else if (c == '-') {
-                numOfSpecial += 1.3;
-            }
+            } 
             len = this.getLineLength(line + c, fontSize) + numOfSpecial * fontSize * 0.15;
             if (c === '\n') {
                 numOfWords += 1;
@@ -185,7 +186,7 @@ class Reading extends React.Component {
     getLineLength(txt, fontSize) {
         this.element = document.createElement('canvas');
         this.context = this.element.getContext("2d");
-        this.context.font = 'Microsoft JhengHei';
+        this.context.font = 'PingFang TC';
         return this.context.measureText(txt).width * fontSize / 10;
     }
 
@@ -388,4 +389,6 @@ export default connect(state => ({
     encoding:       state.reading.encoding,
     divWidth:       state.main.divWidth,
     divHeight:      state.main.divHeight,
+    fontSize:       state.setting.fontSize,
+    lineHeight:     state.setting.lineHeight,
 }))(Reading);

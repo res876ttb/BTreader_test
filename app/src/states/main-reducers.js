@@ -7,6 +7,7 @@ const initMainState = {
     osVersion: 'Unknown',
     divWidth: 600,
     divHeight: 400,
+    rerender: false,
 };
 
 export function main(state = initMainState, action) {
@@ -33,6 +34,11 @@ export function main(state = initMainState, action) {
                 divWidth: action.divWidth,
                 divHeight: action.divHeight
             });
+        case '@MAIN/RERENDER_TRIGGER':
+            return {
+                ...state,
+                rerender: action.bool,
+            }
         case '@MAIN/LOAD_DATA':
             return state;
         default:

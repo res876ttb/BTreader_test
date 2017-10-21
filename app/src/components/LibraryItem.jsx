@@ -44,8 +44,6 @@ class LibraryItem extends React.Component {
         } else {
             titleLineHeight = 30;
         }
-        
-        console.log('library item: debug:', this.props.bookProgress, this.props.bookSize);
 
         if (this.props.edit) {
             let itemSelect = (this.props.select) ? 'libraryItemEdit select' : 'libraryItemEdit';

@@ -3,5 +3,6 @@
     "initialized": true,
     "osVersion": "macOS",
     "divWidth": 1020,
-    "divHeight": 678
+    "divHeight": 678,
+    "rerender": false
 }
