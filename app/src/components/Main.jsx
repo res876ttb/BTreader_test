@@ -22,11 +22,12 @@ import {connect} from 'react-redux';
 
 import {
     toggleNavbar, 
-    setInitialize,
+    setDebug,
+    setLoad,
     setOsVersion,
     changeWindowSize,
     dataMainLoad,
-    rerenderTrigger
+    rerenderTrigger,
 } from 'states/main-actions.js';
 import {
     addBook,
@@ -43,6 +44,7 @@ import Welcome from 'components/Welcome.jsx';
 import Library from 'components/Library.jsx';
 import Reading from 'components/Reading.jsx';
 import Setting from 'components/Setting.jsx';
+// import Loading from 'components/Loading.jsx';
 
 import 'components/Main.css';
 
@@ -50,7 +52,7 @@ import {writeJson, readJson} from '../api/jsonrw.js';
 
 class Main extends React.Component {
     static propTypes = {
-        initialized: PropTypes.bool,
+        debug: PropTypes.bool,
         navbarToggle: PropTypes.bool,
         dispatch: PropTypes.func,
         osVersion: PropTypes.string,
@@ -65,27 +67,61 @@ class Main extends React.Component {
         this.debug = false;
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
         this.updateWindowSize = this.updateWindowSize.bind(this);
+
+        this.state = {
+            content: 'Better Text Reader',
+            class: 'main-loading ns normal',
+            style: {
+
+            }
+        };
     }
 
     componentWillMount() {
         window.addEventListener('resize', this.updateWindowSize);
         
-        this.props.dispatch(setInitialize(false));
+        this.props.dispatch(setDebug(false));
         this.props.dispatch(setOsVersion());
         this.readRecord();
 
-        setTimeout(() => {
-            if (this.props.autoReading) {
-                this.redirectReading = true;
-                this.props.dispatch(rerenderTrigger(true));
-                this.props.dispatch(rerenderTrigger(false));
-            }
-        }, 600);
+        if (this.debug) {
+            this.props.dispatch(setDebug(true));
+            setTimeout(() => {
+                this.props.dispatch(setDebug(false));
+            }, 600);
+        } else {
+            this.props.dispatch(setDebug(false));
+            setTimeout(() => {
+                if (this.props.autoReading) {
+                    this.props.dispatch(rerenderTrigger(true));
+                    this.props.dispatch(rerenderTrigger(false));
+                }
+            }, 600);
+        }
 
         let ele = document.getElementsByClassName('reader-bg');
         for (let i = 0; i < ele.length; i = i + 1) {
             ele[i].setAttribute("style", "background-image: url('src/image/welcome_bg.jpeg');");
         }
+    }
+
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState(() => {
+                return {
+                    class: 'main-loading ns disappear',
+                };
+            });
+        }, 1500);
+        setTimeout(() => {
+            this.setState(() => {
+                return {
+                    style: {
+                        display: 'none'
+                    }
+                };
+            });
+        }, 3000);
     }
     
     componentWillUnmount() {
@@ -93,22 +129,17 @@ class Main extends React.Component {
     }
 
     render() {
-        if (this.props.initialized === false) {
-            this.props.dispatch(setInitialize(true));
-            if (this.debug === true) {
-                return (
-                    <Router>
+        if (this.props.debug === true) {
+            return (
+                <Router>
+                    <Switch>
+                        <Route exact path="/setting" render={() => (<div>Redirecting...</div>)}/>
                         <Redirect to='/setting'/>
-                    </Router>
-                );
-            } else {
-                return (
-                    <Router>
-                        <Redirect to='/'/>
-                    </Router>
-                );
-            }
+                    </Switch>
+                </Router>
+            );
         }
+
         if (this.props.rerender === true) {
             return (
                 <Router>
@@ -125,6 +156,9 @@ class Main extends React.Component {
         return (
             <Router>
                 <div className='main'>
+                    <div className={this.state.class} style={this.state.style}>
+                        {this.state.content}
+                    </div>
                     <div className='bg-faded'>
                         <div className='container'>
                             <Navbar color='faded' light expand>
@@ -143,7 +177,7 @@ class Main extends React.Component {
                                         </NavItem>
                                     </Nav>
                                         <div className='search ml-auto'>
-                                        <Input className='ml-auto' type='text' placeholder='搜尋書架' onKeyPress={this.handleSearchKeyPress} getRef={e => this.searchEl = e}></Input>{
+                                        <Input className='ml-auto' type='text' placeholder='搜尋書架' onKeyPress={this.handleSearchKeyPress}></Input>{
                                             this.props.searchText &&
                                             <i className='navbar-text fa fa-times' onClick={this.handleClearSearch}></i>
                                         }

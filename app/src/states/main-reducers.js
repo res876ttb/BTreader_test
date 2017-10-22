@@ -3,7 +3,8 @@ import {writeJson, readJson} from '../api/jsonrw.js';
 
 const initMainState = {
     navbarToggle: false,
-    initialized: false,
+    debug: false,
+    mainLoading: true,
     osVersion: 'Unknown',
     divWidth: 600,
     divHeight: 400,
@@ -23,10 +24,15 @@ export function main(state = initMainState, action) {
                 ...state,
                 navbarToggle: !state.navbarToggle
             };
-        case '@MAIN/SET_INITIALIZE':
+        case '@MAIN/SET_DEBUG':
             return {
                 ...state,
-                initialized: action.status,
+                debug: action.status,
+            };
+        case '@MAIN/SET_LOADING':
+            return {
+                ...state,
+                mainLoading: action.status,
             };
         case '@MAIN/CHANGE_WINDOW_SIZE':
             return save({
@@ -40,7 +46,10 @@ export function main(state = initMainState, action) {
                 rerender: action.bool,
             }
         case '@MAIN/LOAD_DATA':
-            return state;
+            return {
+                ...state,
+                debug: false
+            };
         default:
             return state;
     }

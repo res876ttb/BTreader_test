@@ -1,6 +1,7 @@
 {
     "navbarToggle": false,
-    "initialized": true,
+    "debug": false,
+    "mainLoading": true,
     "osVersion": "macOS",
     "divWidth": 600,
     "divHeight": 678,

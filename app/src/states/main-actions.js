@@ -38,10 +38,17 @@ export function toggleNavbar() {
     };
 }
 
-export function setInitialize(status) {
+export function setDebug(status) {
     return {
-        type: '@MAIN/SET_INITIALIZE',
+        type: '@MAIN/SET_DEBUG',
         status: status,
+    }
+}
+
+export function setLoad(status) {
+    return {
+        type: '@MAIN/SET_LOADING',
+        status: status
     }
 }
 
