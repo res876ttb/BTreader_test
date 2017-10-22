@@ -127,9 +127,9 @@ class Main extends React.Component {
                 <div className='main'>
                     <div className='bg-faded'>
                         <div className='container'>
-                            <Navbar color='faded' light toggleable>
-                                <NavbarToggler right onClick={this.handleNavbarToggle} />
-                                <NavbarBrand className='text-info' tag={Link} to="/">BTreader</NavbarBrand>
+                            <Navbar color='faded' light expand>
+                                <NavbarBrand className='text-info mr-auto' tag={Link} to="/">BTreader</NavbarBrand>
+                                <NavbarToggler className='mr-2' onClick={this.handleNavbarToggle}/>
                                 <Collapse isOpen={this.props.navbarToggle} navbar>
                                     <Nav navbar>
                                         <NavItem>

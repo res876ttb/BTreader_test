@@ -1,6 +1,5 @@
 .welcome-main {
     min-height: 200px;  
-    max-width: 800px !important;
     /* background: rgba(255, 255, 255, 0.3); */
 
     color: white;
@@ -24,4 +23,10 @@
 
 .welcome-buttons {
      margin: 0.5rem; 
+}
+
+@media (min-width: 990px) {
+    .welcome-main {
+        max-width: 720px !important;
+    }
 }
