@@ -12,3 +12,21 @@
     border-radius: 10px;
     font-size: 20px;
 }
+
+#readingLeftButton {
+    background: rgba(0, 255, 255, 0);
+    height: 100%;
+    width: 50%;
+    position: absolute;
+    top: 56px;
+    left: 0px;
+}
+
+#readingRightButton {
+    background: rgba(255, 255, 255, 0);
+    height: 100%;
+    width: 50%;
+    position: absolute;
+    top: 56px;
+    right: 0px;
+}

@@ -40,6 +40,8 @@ class Reading extends React.Component {
         this.fontSize = this.props.fontSize;
         this.lineHeight = this.props.lineHeight;
         this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleNextClick = this.handleNextClick.bind(this);
+        this.handlePreviousClick = this.handlePreviousClick.bind(this);
     }
 
     componentWillMount() {
@@ -111,6 +113,8 @@ class Reading extends React.Component {
         return (
             <div id='readingFrame'>
                 {display}
+                <div id='readingLeftButton' onClick={this.handlePreviousClick}></div>
+                <div id='readingRightButton'  onClick={this.handleNextClick}></div>
             </div>
         );
     }
@@ -377,6 +381,14 @@ class Reading extends React.Component {
         } else if ((e.keyCode === 32 && e.shiftKey === true) || e.keyCode === 37) {
             this.previousPage();
         }
+    }
+
+    handleNextClick() {
+        this.nextPage();
+    }
+
+    handlePreviousClick() {
+        this.previousPage();
     }
 }
 
