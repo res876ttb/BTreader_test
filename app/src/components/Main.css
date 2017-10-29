@@ -10,6 +10,23 @@
     background-size: cover;
 }
 
+.bg-light {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+}
+
+.main .search i {
+    position: absolute;
+    top: 0.2rem;
+    right: 0.5rem;
+}
+
+.main .search i:hover {
+    color: #5bc0de;
+}
+
 #root {
     min-height: 100vh;
 }

@@ -31,7 +31,8 @@ import {
 } from 'states/main-actions.js';
 import {
     addBook,
-    dataLibraryLoad
+    dataLibraryLoad,
+    setSearchLibraryText,
 } from 'states/library-actions.js';
 import {
     dataReadingLoad,
@@ -60,13 +61,17 @@ class Main extends React.Component {
         divHeight: PropTypes.number,
         autoReading: PropTypes.bool,
         rerender: PropTypes.bool,
+        searchText: PropTypes.string,
     };
 
     constructor(props) {
         super(props);
-        this.debug = false;
+        this.debug = true;
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
         this.updateWindowSize = this.updateWindowSize.bind(this);
+        this.handleSearchKeyPress = this.handleSearchKeyPress.bind(this);
+        this.handleClearSearch = this.handleClearSearch.bind(this);
+        this.handleClearSearchEsc = this.handleClearSearchEsc.bind(this);
 
         this.state = {
             content: 'Better Text Reader',
@@ -133,8 +138,8 @@ class Main extends React.Component {
             return (
                 <Router>
                     <Switch>
-                        <Route exact path="/setting" render={() => (<div>Redirecting...</div>)}/>
-                        <Redirect to='/setting'/>
+                        <Route exact path="/library" render={() => (<div>Redirecting...</div>)}/>
+                        <Redirect to='/library'/>
                     </Switch>
                 </Router>
             );
@@ -144,9 +149,7 @@ class Main extends React.Component {
             return (
                 <Router>
                     <Switch>
-                        <Route exact path="/reading" render={() => (
-                            <div>Redirecting...</div>
-                        )}/>
+                        <Route exact path="/reading" render={() => (<div>Redirecting...</div>)}/>
                         <Redirect to='/reading'/>
                     </Switch>
                 </Router>
@@ -159,9 +162,9 @@ class Main extends React.Component {
                     <div className={this.state.class} style={this.state.style}>
                         {this.state.content}
                     </div>
-                    <div className='bg-faded'>
+                    <div className='bg-light'>
                         <div className='container'>
-                            <Navbar color='faded' light expand>
+                            <Navbar color='light' light expand>
                                 <NavbarBrand className='text-info mr-auto' tag={Link} to="/">BTreader</NavbarBrand>
                                 <NavbarToggler className='mr-2' onClick={this.handleNavbarToggle}/>
                                 <Collapse isOpen={this.props.navbarToggle} navbar>
@@ -176,16 +179,17 @@ class Main extends React.Component {
                                             <NavLink tag={Link} to='/setting'>設定</NavLink>
                                         </NavItem>
                                     </Nav>
-                                        <div className='search ml-auto'>
-                                        <Input className='ml-auto' type='text' placeholder='搜尋書架' onKeyPress={this.handleSearchKeyPress}></Input>{
-                                            this.props.searchText &&
-                                            <i className='navbar-text fa fa-times' onClick={this.handleClearSearch}></i>
+                                    <div className='search ml-auto'>
+                                        <Input id='search-library' className='ml-auto' type='text' placeholder='搜尋書架' onKeyPress={this.handleSearchKeyPress} onKeyDown={this.handleClearSearchEsc}></Input>{
+                                            this.props.searchText && <i className='navbar-text fa fa-times' onClick={this.handleClearSearch}></i>
                                         }
                                     </div>  
                                 </Collapse>
                             </Navbar>
                         </div>
                     </div>
+
+                    <div style={{height: '56px'}}></div>
                     
                     <Route exact path="/" render={() => (
                         <Welcome />
@@ -202,6 +206,26 @@ class Main extends React.Component {
                 </div>
             </Router>
         );
+    }
+
+    handleSearchKeyPress(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13){
+            this.props.dispatch(setSearchLibraryText(e.target.value));
+            console.log('Main: Search Library: Enter is pressed');
+        }
+    }
+
+    handleClearSearchEsc(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 27) {
+            this.handleClearSearch();
+        }
+    }
+
+    handleClearSearch() {
+        this.props.dispatch(setSearchLibraryText(''));
+        document.getElementById('search-library').value = '';
     }
 
     handleNavbarToggle() {
@@ -232,4 +256,5 @@ class Main extends React.Component {
 export default connect (state => ({
     ...state.main,
     autoReading: state.setting.autoReading,
+    searchText: state.library.searchText,
 }))(Main);

@@ -57,3 +57,10 @@ export function dataLibraryLoad(data) {
         data: data,
     }
 }
+
+export function setSearchLibraryText(text) {
+    return {
+        type: '@LIBRARY/SET_SEARCH_TEXT',
+        text: text,
+    }
+}

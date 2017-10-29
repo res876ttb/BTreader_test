@@ -4,9 +4,22 @@
     "books": {
         "/Users/Ricky/Downloads/武逆.txt": {
             "bookSize": 13362881,
-            "bookProgress": 29150,
+            "bookProgress": 4540218,
             "bookTitle": "武逆",
             "encoding": "gb2312"
+        },
+        "/Users/Ricky/Downloads/农家子的古代科举生活.txt": {
+            "bookSize": 2802214,
+            "bookProgress": 8273,
+            "bookTitle": "农家子的古代科举生活",
+            "encoding": "gb2312"
+        },
+        "/Users/Ricky/Documents/Cang-Jie_Training_Machine/newcj.txt": {
+            "bookSize": 215627,
+            "bookProgress": 3250,
+            "bookTitle": "newcj",
+            "encoding": "utf-8"
         }
-    }
+    },
+    "searchText": ""
 }

@@ -11,6 +11,7 @@ const initLibraryState = {
         // bookPath: '',
         // encoding: '',
     },
+    searchText: '',
 };
 
 export function library(state = initLibraryState, action) {
@@ -96,8 +97,17 @@ export function library(state = initLibraryState, action) {
                 ...state,
                 books: B
             });
+        case '@LIBRARY/SET_SEARCH_TEXT':
+            return {
+                ...state,
+                searchText: action.text,
+            };
         case '@LIBRARY/DATA_LOAD':
-            return action.data;
+            S = {
+                ...action.data,
+                searchText: '',
+            }
+            return S;
         default: 
             return state;
     }

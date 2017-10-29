@@ -31,6 +31,7 @@ class Library extends React.Component {
         books: PropTypes.object,
         edit: PropTypes.bool,
         select: PropTypes.array,
+        searchText: PropTypes.string,
     };
 
     constructor(props) {
@@ -47,31 +48,63 @@ class Library extends React.Component {
         let controlButton;
         let children = [];
         let bk = this.props.books;
-        for (let p in this.props.books) {
-            children.push((
-                <LibraryItem 
-                    key={p} 
-                    bookTitle={bk[p].bookTitle} 
-                    bookSize={bk[p].bookSize}
-                    bookProgress={bk[p].bookProgress} 
-                    bookPath={p} 
-                    encoding={bk[p].encoding}
-                    select={this.props.select.indexOf(p) > -1}
-                />
-            ));
+        if (this.props.searchText !== '') {
+            for (let p in this.props.books) {
+                if (bk[p].bookTitle.indexOf(this.props.searchText) > -1) {
+                    children.push((
+                        <LibraryItem 
+                            key={p} 
+                            bookTitle={bk[p].bookTitle} 
+                            bookSize={bk[p].bookSize}
+                            bookProgress={bk[p].bookProgress} 
+                            bookPath={p} 
+                            encoding={bk[p].encoding}
+                            select={this.props.select.indexOf(p) > -1}
+                        />
+                    ));
+                }
+            }
+        } else {
+            for (let p in this.props.books) {
+                children.push((
+                    <LibraryItem 
+                        key={p} 
+                        bookTitle={bk[p].bookTitle} 
+                        bookSize={bk[p].bookSize}
+                        bookProgress={bk[p].bookProgress} 
+                        bookPath={p} 
+                        encoding={bk[p].encoding}
+                        select={this.props.select.indexOf(p) > -1}
+                    />
+                ));
+            }
         }
         
-        console.log("Library: There are", children.length, "books.");
         if (children.length === 0) {
-            children = (
-                <div className="library-noRecord-outter container">
-                    <div style={{height: "10px"}}></div>
-                    <div className="library-noRecord-inner">
-                        書架裡沒有書！<br />
-                        快加入幾本來滋潤你的大腦！
+            if (this.props.searchText !== '') {
+                console.log("Library: There are no matching books.");
+                children = (
+                    <div className="library-noRecord-outter container">
+                        <div style={{height: "10px"}}></div>
+                        <div className="library-noRecord-inner">
+                            書架裡沒有符合搜尋結果的書！<br />
+                        </div>
                     </div>
-                </div>
-            );
+                );
+            } else {
+                console.log("Library: There are no books.");
+                children = (
+                    <div className="library-noRecord-outter container">
+                        <div style={{height: "10px"}}></div>
+                        <div className="library-noRecord-inner">
+                            書架裡沒有書！<br />
+                            快加入幾本來滋潤你的大腦！
+                        </div>
+                    </div>
+                );
+            }
+        } else {
+            console.log("Library: There are", children.length, "books.");
         }
 
         if (this.props.edit) {
@@ -183,4 +216,5 @@ export default connect(state => ({
     books:  state.library.books,
     edit:   state.library.edit,
     select: state.library.select,
+    searchText: state.library.searchText,
 }))(Library);

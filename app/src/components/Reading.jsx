@@ -113,8 +113,8 @@ class Reading extends React.Component {
         return (
             <div id='readingFrame'>
                 {display}
-                <div id='readingLeftButton' onClick={this.handlePreviousClick}></div>
-                <div id='readingRightButton'  onClick={this.handleNextClick}></div>
+                <div id='readingLeftButton' onClick={this.handlePreviousClick} onContextMenu={this.handleNextClick}></div>
+                <div id='readingRightButton'  onClick={this.handleNextClick} onContextMenu={this.handlePreviousClick}></div>
             </div>
         );
     }
@@ -384,11 +384,15 @@ class Reading extends React.Component {
     }
 
     handleNextClick() {
-        this.nextPage();
+        if (this.props.bookPath !== '') {
+            this.nextPage();
+        }
     }
 
     handlePreviousClick() {
-        this.previousPage();
+        if (this.props.bookPath !== '') {
+            this.previousPage();
+        }
     }
 }
 
