@@ -5,8 +5,9 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "startm": "webpack && ./node_modules/.bin/electron .",
-    "startw": "webpack && .\\node_modules\\.bin\\electron .",
+    "start-mac": "webpack && ./node_modules/.bin/electron .",
+    "start-win": "webpack && .\\node_modules\\.bin\\electron .",
+    "package-mac": "electron-packager ./ BTreader --out ../BTreader.build --platform=darwin --overwrite",
     "comp": "webpack"
   },
   "author": "res876ttb",

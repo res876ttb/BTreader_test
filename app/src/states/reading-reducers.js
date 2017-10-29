@@ -42,6 +42,6 @@ export function reading(state = initReadingState, action) {
 };
 
 function save(obj) {
-	writeJson('./app/data/data-reading.json', obj);
+	writeJson(window.appPath + 'data/data-reading.json', obj);
 	return obj;
 }

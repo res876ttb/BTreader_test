@@ -66,7 +66,7 @@ class Main extends React.Component {
 
     constructor(props) {
         super(props);
-        this.debug = true;
+        this.debug = false;
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
         this.updateWindowSize = this.updateWindowSize.bind(this);
         this.handleSearchKeyPress = this.handleSearchKeyPress.bind(this);
@@ -83,6 +83,7 @@ class Main extends React.Component {
     }
 
     componentWillMount() {
+        this.getCurPath();
         window.addEventListener('resize', this.updateWindowSize);
         
         this.props.dispatch(setDebug(false));
@@ -131,6 +132,7 @@ class Main extends React.Component {
     
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowSize);
+        console.log(window.location.pathname);
     }
 
     render() {
@@ -210,6 +212,18 @@ class Main extends React.Component {
         );
     }
 
+    getCurPath() {
+        let a = window.location.pathname;
+        let b = a.split('/');
+        let c = '';
+        b.pop();
+        for (let i in b) {
+            c += b[i] + '/';
+        }
+        window.appPath = c;
+        console.log('Main: current Path is', window.appPath);
+    }
+
     handleSearchKeyPress(e) {
         var keyCode = e.keyCode || e.which;
         if (keyCode === 13){
@@ -240,16 +254,16 @@ class Main extends React.Component {
     }
 
     readRecord() {
-        readJson('./app/data/data-main.json').then(data => {
+        readJson(window.appPath + 'data/data-main.json').then(data => {
             this.props.dispatch(dataMainLoad(data));
         });
-        readJson('./app/data/data-library.json').then(data => {
+        readJson(window.appPath + 'data/data-library.json').then(data => {
             this.props.dispatch(dataLibraryLoad(data));
         });
-        readJson('./app/data/data-reading.json').then(data => {
+        readJson(window.appPath + 'data/data-reading.json').then(data => {
             this.props.dispatch(dataReadingLoad(data));
         });
-        readJson('./app/data/data-setting.json').then(data => {
+        readJson(window.appPath + 'data/data-setting.json').then(data => {
             this.props.dispatch(dataSettingLoad(data));
         });
     }

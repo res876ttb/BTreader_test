@@ -63,6 +63,6 @@ export function setting(state = initSettingState, action) {
 }
 
 function save(obj) {
-	writeJson('./app/data/data-setting.json', obj);
+	writeJson(window.appPath + 'data/data-setting.json', obj);
 	return obj;
 }
