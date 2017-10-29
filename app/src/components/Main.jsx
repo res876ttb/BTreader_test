@@ -157,54 +157,56 @@ class Main extends React.Component {
         }
 
         return (
-            <Router>
-                <div className='main'>
-                    <div className={this.state.class} style={this.state.style}>
-                        {this.state.content}
-                    </div>
-                    <div className='bg-light'>
-                        <div className='container'>
-                            <Navbar color='light' light expand>
-                                <NavbarBrand className='text-info mr-auto' tag={Link} to="/">BTreader</NavbarBrand>
-                                <NavbarToggler className='mr-2' onClick={this.handleNavbarToggle}/>
-                                <Collapse isOpen={this.props.navbarToggle} navbar>
-                                    <Nav navbar>
-                                        <NavItem>
-                                            <NavLink tag={Link} to='/reading'>最近閱讀</NavLink>
-                                        </NavItem>
-                                        <NavItem>
-                                            <NavLink tag={Link} to='/library'>書架</NavLink>
-                                        </NavItem>
-                                        <NavItem>
-                                            <NavLink tag={Link} to='/setting'>設定</NavLink>
-                                        </NavItem>
-                                    </Nav>
-                                    <div className='search ml-auto'>
-                                        <Input id='search-library' className='ml-auto' type='text' placeholder='搜尋書架' onKeyPress={this.handleSearchKeyPress} onKeyDown={this.handleClearSearchEsc}></Input>{
-                                            this.props.searchText && <i className='navbar-text fa fa-times' onClick={this.handleClearSearch}></i>
-                                        }
-                                    </div>  
-                                </Collapse>
-                            </Navbar>
-                        </div>
-                    </div>
-
-                    <div style={{height: '56px'}}></div>
-                    
-                    <Route exact path="/" render={() => (
-                        <Welcome />
-                    )}/>
-                    <Route exact path="/library" render={() => (
-                        <Library />
-                    )}/>
-                    <Route exact path="/reading" render={() => (
-                        <Reading />
-                    )}/>
-                    <Route exact path="/setting" render={() => (
-                        <Setting />
-                    )}/>
+            <Router><Switch><div className='main'>
+                <div className={this.state.class} style={this.state.style}>
+                    {this.state.content}
                 </div>
-            </Router>
+                <div className='bg-light'>
+                    <div className='container'>
+                        <Navbar color='light' light expand>
+                            <NavbarBrand className='text-info mr-auto' tag={Link} to="/">BTreader</NavbarBrand>
+                            <NavbarToggler className='mr-2' onClick={this.handleNavbarToggle}/>
+                            <Collapse isOpen={this.props.navbarToggle} navbar>
+                                <Nav navbar>
+                                    <NavItem>
+                                        <NavLink tag={Link} to='/reading'>最近閱讀</NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink tag={Link} to='/library'>書架</NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink tag={Link} to='/setting'>設定</NavLink>
+                                    </NavItem>
+                                </Nav>
+                                <div className='search ml-auto'>
+                                    <Input tag={Link} to='/library' id='search-library' className='ml-auto' type='text' placeholder='搜尋書架' onKeyPress={this.handleSearchKeyPress} onKeyDown={this.handleClearSearchEsc}></Input>{
+                                        this.props.searchText && <i className='navbar-text fa fa-times' onClick={this.handleClearSearch}></i>
+                                    }
+                                </div>  
+                            </Collapse>
+                        </Navbar>
+                    </div>
+                </div>
+
+                <div style={{height: '56px'}}></div>
+                
+                <Route exact path="/" render={() => (
+                    <Welcome />
+                )}/>
+                <Route exact path="/library" render={() => (
+                    <Library />
+                )}/>
+                <Route exact path="/reading" render={() => (
+                    <Reading />
+                )}/>
+                <Route exact path="/setting" render={() => (
+                    <Setting />
+                )}/>
+                {
+                    this.props.searchText && 
+                    <Redirect to='/library' />
+                }
+            </div></Switch></Router>
         );
     }
 
