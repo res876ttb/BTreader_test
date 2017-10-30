@@ -3,7 +3,7 @@
     "debug": false,
     "mainLoading": true,
     "osVersion": "macOS",
-    "divWidth": 600,
+    "divWidth": 1020,
     "divHeight": 678,
-    "rerender": false
+    "rerender": 0
 }

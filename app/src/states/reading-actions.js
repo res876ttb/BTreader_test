@@ -30,3 +30,10 @@ export function dataReadingLoad(data) {
         data: data,
     };
 }
+
+export function checkDeleteBook(bookPath) {
+    return {
+        type: '@READING/CHECK_DELETE_BOOK',
+        bookPath: bookPath,
+    };
+}

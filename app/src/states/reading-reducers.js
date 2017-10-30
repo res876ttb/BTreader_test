@@ -34,6 +34,16 @@ export function reading(state = initReadingState, action) {
 				...state,
 				bookProgress: bookProgress,
 			});
+		case '@READING/CHECK_DELETE_BOOK':
+			if (action.bookPath === state.bookPath) {
+				return save({
+					...initReadingState
+				});
+			} else {
+				return save({
+					...state
+				});
+			}
 		case '@READING/DATA_LOAD':
 			return action.data;
 		default:

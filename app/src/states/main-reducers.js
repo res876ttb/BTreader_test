@@ -8,7 +8,7 @@ const initMainState = {
     osVersion: 'Unknown',
     divWidth: 600,
     divHeight: 400,
-    rerender: false,
+    rerender: 0,
 };
 
 export function main(state = initMainState, action) {
@@ -43,7 +43,7 @@ export function main(state = initMainState, action) {
         case '@MAIN/RERENDER_TRIGGER':
             return {
                 ...state,
-                rerender: action.bool,
+                rerender: action.state,
             }
         case '@MAIN/LOAD_DATA':
             return {

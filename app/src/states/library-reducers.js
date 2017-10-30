@@ -51,12 +51,15 @@ export function library(state = initLibraryState, action) {
             B = {
                 ...state.books
             };
-            B[action.bookPath] = {
-                bookSize: action.bookSize,
-                bookProgress: action.bookProgress,
-                bookTitle: action.bookTitle,
-                encoding: action.encoding,
-            };
+            
+            if (!B.hasOwnProperty(action.bookPath)) {
+                B[action.bookPath] = {
+                    bookSize: action.bookSize,
+                    bookProgress: action.bookProgress,
+                    bookTitle: action.bookTitle,
+                    encoding: action.encoding,
+                };
+            }
 
             return save({
                 ...state,
@@ -66,27 +69,13 @@ export function library(state = initLibraryState, action) {
             B = {
                 ...state.books,
             };
-            // R = {
-            //     ...state.reading,
-            // }
             for (let p in action.bookPaths) {
                 delete B[action.bookPaths[p]];
-                // if (state.reading.bookPath === action.bookPaths[p]) {
-                //     R = {
-                //         bookTitle: '',
-                //         bookSize: 0,
-                //         bookProgress: 0,
-                //         bookPath: '',
-                //         content: '',
-                //         encoding: ''
-                //     };
-                // }
             }
             
             return save({
                 ...state,
                 books: B,
-                // reading: R,
             });
         case '@LIBRARY/SET_PROGRESS':
             B = {

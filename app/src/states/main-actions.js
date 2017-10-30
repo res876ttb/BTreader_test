@@ -73,10 +73,10 @@ export function changeWindowSize(width, height) {
     };
 }
 
-export function rerenderTrigger(bool) {
+export function rerenderTrigger(state) {
     return {
         type: '@MAIN/RERENDER_TRIGGER',
-        bool: bool
+        state: state
     };
 }
 

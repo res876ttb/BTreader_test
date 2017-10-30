@@ -60,7 +60,7 @@ class Main extends React.Component {
         divWidth: PropTypes.number,
         divHeight: PropTypes.number,
         autoReading: PropTypes.bool,
-        rerender: PropTypes.bool,
+        rerender: PropTypes.number,
         searchText: PropTypes.string,
     };
 
@@ -99,8 +99,11 @@ class Main extends React.Component {
             this.props.dispatch(setDebug(false));
             setTimeout(() => {
                 if (this.props.autoReading) {
-                    this.props.dispatch(rerenderTrigger(true));
-                    this.props.dispatch(rerenderTrigger(false));
+                    this.props.dispatch(rerenderTrigger(2));
+                    this.props.dispatch(rerenderTrigger(0));
+                } else {
+                    this.props.dispatch(rerenderTrigger(1));
+                    this.props.dispatch(rerenderTrigger(0));
                 }
             }, 600);
         }
@@ -147,7 +150,16 @@ class Main extends React.Component {
             );
         }
 
-        if (this.props.rerender === true) {
+        if (this.props.rerender === 1) {
+            return (
+                <Router>
+                    <Switch>
+                        <Route exact path="/" render={() => (<div>Redirecting...</div>)}/>
+                        <Redirect to='/'/>
+                    </Switch>
+                </Router>
+            );
+        } else if (this.props.rerender === 2) {
             return (
                 <Router>
                     <Switch>
