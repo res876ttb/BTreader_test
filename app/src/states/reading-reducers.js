@@ -9,6 +9,8 @@ const initReadingState = {
 	bookPath: '',
 	content: '',
 	encoding: '',
+	coverState: 0,
+	coverFadeOut: 0,
 };
 
 export function reading(state = initReadingState, action) {
@@ -44,8 +46,22 @@ export function reading(state = initReadingState, action) {
 					...state
 				});
 			}
+		case '@READING/SET_READING_COVER_STATE':
+			return {
+				...state,
+				coverState: action.state,
+			};
+		case '@READING/SET_READING_COVER_FADEOUT':
+			return {
+				...state,
+				coverFadeOut: action.state,
+			}
 		case '@READING/DATA_LOAD':
-			return action.data;
+			return {
+				...action.data,
+				coverState: 1,
+				coverFadeOut: 0,
+			}
 		default:
 			return state;
 	}

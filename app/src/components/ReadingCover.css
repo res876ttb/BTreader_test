@@ -1,0 +1,91 @@
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes fadeout {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+@keyframes jumpFadein {
+    from { 
+        top: 56px;  
+        opacity: 0;
+    }
+    to { 
+        top: 106px; 
+        opacity: 1;
+    }
+}
+
+@keyframes jumpFadeout {
+    from { 
+        top: 106px; 
+        opacity: 1;
+    }
+    to { 
+        top: 56px;  
+        opacity: 0;
+    }
+}
+
+.reading-cover-background {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 20;
+    background: rgba(0, 0, 0, 0.3);
+    transition-duration: 0.4s;
+
+    animation: fadein 0.5s;
+}
+
+.reading-cover-background-fadeout {
+    animation: fadeout 0.5s;
+}
+
+.reading-cover-jump {
+    height: 210px;
+    width: 400px;
+    overflow: scroll;
+    background:rgba(255, 255, 255, 0.87);
+    border-radius: 5px;
+    position: fixed;
+    top: 106px;
+    left: 0px;
+    right: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 30;
+    transition-duration: 0.4s;
+    padding: 20px 40px 20px 40px;
+
+    animation: jumpFadein 0.5s;
+}
+
+.reading-cover-jump-fadout {
+    animation: jumpFadeout 0.5s;
+}
+
+.reading-cover-title {
+    font-size: 30px;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.reading-cover-button-go {
+    margin-top: 20px;
+    margin-right: 5%;
+    margin-left: 5%;
+    width: 40%;
+}
+
+.reading-cover-button-cancel {
+    margin-top: 20px;
+    margin-right: 5%;
+    margin-left: 5%;
+    width: 40%;
+}

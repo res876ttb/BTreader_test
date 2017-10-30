@@ -14,11 +14,15 @@ import {
     setProgress,
     changeReadingContent,
     changeReadingBook,
+    setReadingCoverState,
+    setReadingCoverFadeoutState,
 } from '../states/reading-actions.js';
 import {
     Traditionalized,
     Simplized,
 } from '../api/traditionalization.js';
+
+import ReadingCover from 'components/ReadingCover.jsx';
 
 class Reading extends React.Component {
     static props = {
@@ -33,6 +37,7 @@ class Reading extends React.Component {
         divHeight: PropTypes.number,
         fontSize: PropTypes.number,
         lineHeight: PropTypes.number,
+        coverState: PropTypes.number,
     };
 
     constructor(props) {
@@ -41,7 +46,10 @@ class Reading extends React.Component {
         this.lineHeight = this.props.lineHeight;
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.handleNextClick = this.handleNextClick.bind(this);
+        this.handleJumpClick = this.handleJumpClick.bind(this);
+        this.handleChapterClick = this.handleChapterClick.bind(this);
         this.handlePreviousClick = this.handlePreviousClick.bind(this);
+        this.handleBookmarkClick = this.handleBookmarkClick.bind(this);
     }
 
     componentWillMount() {
@@ -91,6 +99,9 @@ class Reading extends React.Component {
                         id='reading-content'
                     >
                         {content}
+                        <i className="fa fa-bookmark reading-icon reading-icon-bookmark" onClick={this.handleBookmarkClick}></i>
+                        <i className="fa fa-share reading-icon reading-icon-jump" onClick={this.handleJumpClick}></i>
+                        <i className="fa fa-list-ul reading-icon reading-icon-chapter" onClick={this.handleChapterClick}></i>
                     </div>
                     <Progress multi 
                         style={{margin: '16px 16px 0px 16px'}} 
@@ -115,8 +126,31 @@ class Reading extends React.Component {
                 {display}
                 <div id='readingLeftButton' onClick={this.handlePreviousClick} onContextMenu={this.handleNextClick}></div>
                 <div id='readingRightButton'  onClick={this.handleNextClick} onContextMenu={this.handlePreviousClick}></div>
+                <ReadingCover />
             </div>
         );
+    }
+
+    handleChapterClick() {
+        console.log('Reading: Chapter is clicked!');
+    }
+
+    handleBookmarkClick() {
+        console.log("Reading: Bookmark is clicked!");
+    }
+
+    handleJumpClick() {
+        console.log("Reading: Jump is clicked!");
+        if (this.props.coverState === 1) {
+            this.props.dispatch(setReadingCoverFadeoutState(1));
+            setTimeout(() => {
+                this.props.dispatch(setReadingCoverState(0));
+            }, 400);
+        } else {
+            this.props.dispatch(setReadingCoverState(1));
+            this.props.dispatch(setReadingCoverFadeoutState(0));
+        }
+        
     }
     
     formatContent(fontSize, lineHeight) {
@@ -376,10 +410,19 @@ class Reading extends React.Component {
     }
 
     handleKeyPress(e) {
-        if ((e.keyCode === 32 && e.shiftKey === false) || e.keyCode === 39) {
-            this.nextPage();
-        } else if ((e.keyCode === 32 && e.shiftKey === true) || e.keyCode === 37) {
-            this.previousPage();
+        if (this.props.coverState === 0 && document.getElementById("search-library") !== document.activeElement) {
+            if ((e.keyCode === 32 && e.shiftKey === false) || e.keyCode === 39) {
+                this.nextPage();
+            } else if ((e.keyCode === 32 && e.shiftKey === true) || e.keyCode === 37) {
+                this.previousPage();
+            }
+        }
+        
+        if (e.keyCode === 27 && this.props.coverState !== 0) {
+            this.props.dispatch(setReadingCoverFadeoutState(1));
+            setTimeout(() => {
+                this.props.dispatch(setReadingCoverState(0));
+            }, 400);
         }
     }
 
@@ -403,6 +446,7 @@ export default connect(state => ({
     bookSize:       state.reading.bookSize,
     bookContent:    state.reading.content,
     encoding:       state.reading.encoding,
+    coverState:     state.reading.coverState,
     divWidth:       state.main.divWidth,
     divHeight:      state.main.divHeight,
     fontSize:       state.setting.fontSize,

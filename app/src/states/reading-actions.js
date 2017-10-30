@@ -37,3 +37,17 @@ export function checkDeleteBook(bookPath) {
         bookPath: bookPath,
     };
 }
+
+export function setReadingCoverState(state) {
+    return {
+        type: '@READING/SET_READING_COVER_STATE',
+        state: state,
+    };
+}
+
+export function setReadingCoverFadeoutState(state) {
+    return {
+        type: '@READING/SET_READING_COVER_FADEOUT',
+        state: state,
+    }
+}

@@ -32,3 +32,51 @@
     bottom: 0px;
     right: 0px;
 }
+
+#reading-content {
+    position: relative;
+}
+
+.reading-icon {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background: rgb(255, 255, 255);
+    position: absolute;
+    right: -55px;
+    text-align: center;
+    line-height: 40px;
+    z-index: 100;
+    font-size: 20px;
+    transition-duration: 0.4s;
+    transition-timing-function: ease;
+}
+
+.reading-icon-chapter {
+    bottom: 65px;
+    color: rgb(124, 72, 38);
+}
+
+.reading-icon-chapter:hover {
+    color: white;
+    background: rgb(124, 72, 38);;
+}
+
+.reading-icon-jump {
+    bottom: 115px;
+}
+
+.reading-icon-jump:hover {
+    color: white;
+    background: black;
+}
+
+.reading-icon-bookmark {
+    bottom: 15px;
+    color: rgb(177, 0, 0);
+}
+
+.reading-icon-bookmark:hover {
+    color: white;
+    background: rgb(177, 0, 0);
+}

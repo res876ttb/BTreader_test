@@ -5,11 +5,13 @@ const initLibraryState = {
     edit: false,
     select: [],
     books: {
-        // bookTitle: '',
-        // bookProgress: 0,
-        // bookSize: 0,
-        // bookPath: '',
-        // encoding: '',
+        // {
+        //     bookTitle: '',
+        //     bookProgress: 0,
+        //     bookSize: 0,
+        //     bookPath: '',
+        //     encoding: '',
+        // },
     },
     searchText: '',
 };
