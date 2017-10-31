@@ -70,9 +70,9 @@ export function reading(state = initReadingState, action) {
 		case '@READING/DATA_LOAD':
 			return {
 				...action.data,
-				coverState: 1,
+				coverState: 0,
 				coverFadeOut: 0,
-				jumpProgress: 0,
+				jumpProgress: -1,
 			}
 		default:
 			return state;

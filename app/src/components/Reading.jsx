@@ -68,9 +68,9 @@ class Reading extends React.Component {
     }
 
     componentDidUpdate() {
-        if (this.props.jumpProgress !== 0) {
+        if (this.props.jumpProgress !== -1) {
             this.findProgress(this.props.jumpProgress);
-            this.props.dispatch(setJumpProgress(0));
+            this.props.dispatch(setJumpProgress(-1));
         }
     }
 
@@ -150,7 +150,7 @@ class Reading extends React.Component {
         let guessP = Math.floor(this.props.bookSize * prog / 100);
         let find = new Promise((res, rej) => {
             for (let ofs = 0; ofs < 5; ofs += 1) {
-                let buffer = new Buffer(20);
+                let buffer = new Buffer(100);
                 if (this.props.bookPath !== '') {
                     fs.open(this.props.bookPath, 'r', (err1, fd) => {
                         if (err1 !== null) {
@@ -252,7 +252,7 @@ class Reading extends React.Component {
         for (let i = 0; i < _content.length; i += 1) {
             let c = _content[i];
             if (c === '-') {
-                numOfSpecial += 1.5;
+                numOfSpecial += 1.65;
             } else if ((c.match(/[\x00-\xff]/g) && c !== '\n' && c !== ' ') || 
                  c === '“' || c === '”' || c === '‘' || c === '’') {
                 numOfSpecial += 1;

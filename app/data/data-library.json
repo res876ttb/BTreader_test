@@ -4,7 +4,7 @@
     "books": {
         "/Users/Ricky/Downloads/武逆.txt": {
             "bookSize": 13362881,
-            "bookProgress": 4681807,
+            "bookProgress": 14599,
             "bookTitle": "武逆",
             "encoding": "gb2312"
         },
@@ -19,7 +19,7 @@
     "B": {
         "/Users/Ricky/Downloads/武逆.txt": {
             "bookSize": 13362881,
-            "bookProgress": 4681807,
+            "bookProgress": 0,
             "bookTitle": "武逆",
             "encoding": "gb2312"
         },
