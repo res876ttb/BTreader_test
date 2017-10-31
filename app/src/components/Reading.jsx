@@ -84,7 +84,6 @@ class Reading extends React.Component {
         };
         this.readingInnerStyle = {
             height: this.props.divHeight - 145,
-            background: 'rgba(255, 255, 255, 0.4)',
             margin: '30px 15px 20px 15px',
             padding: '30px',
             borderRadius: '10px',
@@ -108,12 +107,14 @@ class Reading extends React.Component {
                 <div className="container" style={this.readingMainStyle}>
                     <div 
                         style={this.readingInnerStyle} 
-                        id='reading-content'
+                        className='reading-content'
                     >
                         {content}
+                    </div>
+                    <div className='reading-content-enpty-div'>
                         <i className="fa fa-bookmark reading-icon reading-icon-bookmark" onClick={this.handleBookmarkClick} data-tip="書籤"></i>
                         <i className="fa fa-share reading-icon reading-icon-jump" onClick={this.handleJumpClick} data-tip="跳轉"></i>
-                        <i className="fa fa-list-ul reading-icon reading-icon-chapter" onClick={this.handleChapterClick} data-tip="章節"></i>
+                        {/* <i className="fa fa-list-ul reading-icon reading-icon-chapter" onClick={this.handleChapterClick} data-tip="章節"></i> */}
                         <ReactTooltip place="left" effect="solid" />
                     </div>
                     <Progress multi 

@@ -21,6 +21,7 @@
     top: 56px;
     bottom: 0px;
     left: 0px;
+    z-index: 3;
 }
 
 #readingRightButton {
@@ -31,9 +32,35 @@
     top: 56px;
     bottom: 0px;
     right: 0px;
+    z-index: 3;
 }
 
-#reading-content {
+.reading-content {
+    position: relative;
+    background: rgba(255,255,255,0.2);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow: hidden;
+    /* z-index: 2; */
+}
+
+.reading-content:after {
+    z-index: -1;
+    content: '';
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    background-image: url('src/image/welcome_bg.jpeg');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-size: cover;
+    margin: -30px;
+    filter: blur(12px);
+}
+
+.reading-content-enpty-div {
     position: relative;
 }
 
@@ -43,7 +70,7 @@
     border-radius: 50%;
     background: rgb(255, 255, 255);
     position: absolute;
-    right: -55px;
+    right: -40px;
     text-align: center;
     line-height: 40px;
     z-index: 100;
@@ -53,7 +80,7 @@
 }
 
 .reading-icon-chapter {
-    bottom: 65px;
+    bottom: 135px;
     color: rgb(124, 72, 38);
 }
 
@@ -63,7 +90,7 @@
 }
 
 .reading-icon-jump {
-    bottom: 115px;
+    bottom: 85px;
 }
 
 .reading-icon-jump:hover {
@@ -72,7 +99,7 @@
 }
 
 .reading-icon-bookmark {
-    bottom: 15px;
+    bottom: 35px;
     color: rgb(177, 0, 0);
 }
 
