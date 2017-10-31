@@ -5,15 +5,19 @@ import {connect} from 'react-redux';
 import './Reading.css';
 
 import {Progress} from 'reactstrap';
+import ReactTooltip from 'react-tooltip';
 
 import {
+    SetProgress,
     deleteSelect,
-    SetProgress
+    SetAbsoluteProgress,
 } from '../states/library-actions.js';
 import {
     setProgress,
-    changeReadingContent,
+    setJumpProgress,
     changeReadingBook,
+    setAbsoluteProgress,
+    changeReadingContent,
     setReadingCoverState,
     setReadingCoverFadeoutState,
 } from '../states/reading-actions.js';
@@ -38,6 +42,7 @@ class Reading extends React.Component {
         fontSize: PropTypes.number,
         lineHeight: PropTypes.number,
         coverState: PropTypes.number,
+        jumpProgress: PropTypes.number,
     };
 
     constructor(props) {
@@ -60,6 +65,13 @@ class Reading extends React.Component {
 
     componentWillUnmount() {
         window.removeEventListener('keyup', this.handleKeyPress); 
+    }
+
+    componentDidUpdate() {
+        if (this.props.jumpProgress !== 0) {
+            this.findProgress(this.props.jumpProgress);
+            this.props.dispatch(setJumpProgress(0));
+        }
     }
 
     render() {
@@ -99,9 +111,10 @@ class Reading extends React.Component {
                         id='reading-content'
                     >
                         {content}
-                        <i className="fa fa-bookmark reading-icon reading-icon-bookmark" onClick={this.handleBookmarkClick}></i>
-                        <i className="fa fa-share reading-icon reading-icon-jump" onClick={this.handleJumpClick}></i>
-                        <i className="fa fa-list-ul reading-icon reading-icon-chapter" onClick={this.handleChapterClick}></i>
+                        <i className="fa fa-bookmark reading-icon reading-icon-bookmark" onClick={this.handleBookmarkClick} data-tip="書籤"></i>
+                        <i className="fa fa-share reading-icon reading-icon-jump" onClick={this.handleJumpClick} data-tip="跳轉"></i>
+                        <i className="fa fa-list-ul reading-icon reading-icon-chapter" onClick={this.handleChapterClick} data-tip="章節"></i>
+                        <ReactTooltip place="left" effect="solid" />
                     </div>
                     <Progress multi 
                         style={{margin: '16px 16px 0px 16px'}} 
@@ -129,6 +142,51 @@ class Reading extends React.Component {
                 <ReadingCover />
             </div>
         );
+    }
+
+    findProgress(prog) {
+        const fs = require('fs');
+        const jcd = require('jschardet');
+        let guessP = Math.floor(this.props.bookSize * prog / 100);
+        let find = new Promise((res, rej) => {
+            for (let ofs = 0; ofs < 5; ofs += 1) {
+                let buffer = new Buffer(20);
+                if (this.props.bookPath !== '') {
+                    fs.open(this.props.bookPath, 'r', (err1, fd) => {
+                        if (err1 !== null) {
+                            console.error(err1);
+                        }
+                        fs.read(fd, buffer, 0, buffer.length, guessP + ofs, (err2, byteRead, readResult) => {
+                            if (byteRead === 0) {
+                                console.log('findProgress: Cannot read this page!');
+                                return;
+                            }
+                            
+                            if (err2 !== null) {
+                                console.error(err2);
+                            } else if (readResult === null) {
+                                console.error('findProgress: Empty content!');
+                            }
+                            
+                            // copy readResult to a new array
+                            let result = readResult.slice(0, byteRead);
+                            // check if encoding is correct
+                            let encoding = jcd.detect(result).encoding;
+                            if (encoding !== null) {
+                                if (encoding.toLowerCase() === this.props.encoding) {
+                                    res(guessP + ofs);
+                                }
+                            }
+                            fs.close(fd);
+                        });
+                    });
+                }
+            }
+        }).then(prog => {
+            this.props.dispatch(setAbsoluteProgress(prog));
+            this.props.dispatch(SetAbsoluteProgress(this.props.bookPath, prog));
+            this.readFileContent();
+        });
     }
 
     handleChapterClick() {
@@ -447,6 +505,7 @@ export default connect(state => ({
     bookContent:    state.reading.content,
     encoding:       state.reading.encoding,
     coverState:     state.reading.coverState,
+    jumpProgress:   state.reading.jumpProgress,
     divWidth:       state.main.divWidth,
     divHeight:      state.main.divHeight,
     fontSize:       state.setting.fontSize,

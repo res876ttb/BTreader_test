@@ -11,6 +11,7 @@ const initReadingState = {
 	encoding: '',
 	coverState: 0,
 	coverFadeOut: 0,
+	jumpProgress: 0,
 };
 
 export function reading(state = initReadingState, action) {
@@ -36,6 +37,11 @@ export function reading(state = initReadingState, action) {
 				...state,
 				bookProgress: bookProgress,
 			});
+		case '@READING/SET_ABSOLUTE_PROGRESS':
+			return save({
+				...state,
+				bookProgress: action.prog,
+			});
 		case '@READING/CHECK_DELETE_BOOK':
 			if (action.bookPath === state.bookPath) {
 				return save({
@@ -51,6 +57,11 @@ export function reading(state = initReadingState, action) {
 				...state,
 				coverState: action.state,
 			};
+		case '@READING/SET_JUMP_PROGRESS':
+			return {
+				...state,
+				jumpProgress: action.prog,
+			};
 		case '@READING/SET_READING_COVER_FADEOUT':
 			return {
 				...state,
@@ -61,6 +72,7 @@ export function reading(state = initReadingState, action) {
 				...action.data,
 				coverState: 1,
 				coverFadeOut: 0,
+				jumpProgress: 0,
 			}
 		default:
 			return state;

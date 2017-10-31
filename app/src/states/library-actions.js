@@ -51,6 +51,14 @@ export function SetProgress(bookPath, progress) {
     };
 }
 
+export function SetAbsoluteProgress(bookPath, bookProgress) {
+    return {
+        type: '@LIBRARY/SET_ABSOLUTE_PROGRESS',
+        bookPath: bookPath,
+        bookProgress: bookProgress,
+    };
+}
+
 export function dataLibraryLoad(data) {
     return {
         type: '@LIBRARY/DATA_LOAD',

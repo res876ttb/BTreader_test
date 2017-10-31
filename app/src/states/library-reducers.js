@@ -88,6 +88,15 @@ export function library(state = initLibraryState, action) {
                 ...state,
                 books: B
             });
+        case '@LIBRARY/SET_ABSOLUTE_PROGRESS':
+            B = {
+                ...state.books
+            };
+            B[action.bookPath].bookProgress = action.bookProgress;
+            return save({
+                ...state,
+                B
+            });
         case '@LIBRARY/SET_SEARCH_TEXT':
             return {
                 ...state,

@@ -51,3 +51,17 @@ export function setReadingCoverFadeoutState(state) {
         state: state,
     }
 }
+
+export function setJumpProgress(prog) {
+    return {
+        type: '@READING/SET_JUMP_PROGRESS',
+        prog: prog,
+    }
+}
+
+export function setAbsoluteProgress(prog) {
+    return {
+        type: '@READING/SET_ABSOLUTE_PROGRESS',
+        prog: prog,
+    }
+}
