@@ -84,7 +84,7 @@ class Reading extends React.Component {
         };
         this.readingInnerStyle = {
             height: this.props.divHeight - 145,
-            margin: '30px 15px 20px 15px',
+            margin: '32px 1rem 20px 1rem',
             padding: '30px',
             borderRadius: '10px',
             fontSize: this.fontSize,
@@ -107,7 +107,7 @@ class Reading extends React.Component {
                 <div className="container" style={this.readingMainStyle}>
                     <div 
                         style={this.readingInnerStyle} 
-                        className='reading-content'
+                        className='reading-content blur'
                     >
                         {content}
                     </div>

@@ -20,6 +20,8 @@ class ReadingCover extends React.Component {
         dispatch: PropTypes.func,
         coverState: PropTypes.number,
         coverFadeOut: PropTypes.number,
+        bookSize: PropTypes.number,
+        bookProgress: PropTypes.number,
     };
 
     constructor(props) {
@@ -37,7 +39,7 @@ class ReadingCover extends React.Component {
                     <div className={this.props.coverFadeOut === 1 ? "reading-cover-background reading-cover-background-fadeout" : "reading-cover-background"} onClick={this.hideCover}></div>
                     <div className={this.props.coverFadeOut === 1 ? "reading-cover-jump reading-cover-jump-fadout" : "reading-cover-jump"}>
                         <div className="reading-cover-title">跳轉</div>
-                        <Input id="jump-box" placeholder="進度百分比" type="text" onKeyPress={this.handleDecimal}></Input>
+                        <Input id="jump-box" placeholder={'目前進度：' + String((this.props.bookProgress / this.props.bookSize * 100).toFixed(3)) + ' %'} type="text" onKeyPress={this.handleDecimal}></Input>
                         <Button className="btn btn-outline-secondary reading-cover-button-cancel" onClick={this.hideCover}>取消</Button>
                         <Button color="success" className="reading-cover-button-go" onClick={this.handleSetProgress}>前往</Button>
                     </div>
@@ -89,6 +91,8 @@ class ReadingCover extends React.Component {
 }
 
 export default connect(state => ({
-    coverState: state.reading.coverState,
-    coverFadeOut: state.reading.coverFadeOut,
+    coverState:     state.reading.coverState,
+    coverFadeOut:   state.reading.coverFadeOut,
+    bookSize:       state.reading.bookSize,
+    bookProgress:   state.reading.bookProgress,
 }))(ReadingCover);

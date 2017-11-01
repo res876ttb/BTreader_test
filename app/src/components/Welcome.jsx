@@ -18,7 +18,7 @@ export default class Welcome extends React.Component {
     render() {
         return (
             <div className="welcome-main container">
-                <div className="welcome-jumbotron">
+                <div className="welcome-jumbotron blur">
                     <div className="welcome-jumbotron-title">
                         閱讀新世界
                     </div>

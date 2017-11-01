@@ -1,3 +1,27 @@
+.blur {
+    position: relative;
+    background: rgba(255,255,255,0.2);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow: hidden;
+}
+
+.blur:after {
+    z-index: -1;
+    content: '';
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    background-image: url('src/image/welcome_bg.jpeg');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-size: cover;
+    margin: -30px;
+    filter: blur(12px);
+}
+
 .reader-bg {
     /* background-image: url('src/image/welcome_bg.jpeg');  */
     font-family: 'PingFang TC', 'Arial', 'LiHei Pro', 'Microsoft JhengHei';

@@ -50,7 +50,7 @@ class Setting extends React.Component {
 
 		return(
 		    <div className='container setting-outter'>
-		    	<div className='setting-inner'>
+		    	<div className='setting-inner blur'>
 					{div10}
 					<div className='ns checklist-style checklist-check' style={{textAlign: 'center',width: '47.5%',display: 'inline-block'}}>ON</div>
 					<div style={{width: '5%', display: 'inline-block'}}></div>
