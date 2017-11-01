@@ -24,6 +24,9 @@ export function reading(state = initReadingState, action) {
 				bookPath: action.bookPath,
 				content: '',
 				encoding: action.encoding,
+				jumpProgress: -1,
+				coverState: 0,
+				coverFadeOut: 0,
 			});
 		case '@READING/CHANGE_READING_CONTENT': 
 			return save({

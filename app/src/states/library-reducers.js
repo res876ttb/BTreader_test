@@ -95,7 +95,7 @@ export function library(state = initLibraryState, action) {
             B[action.bookPath].bookProgress = action.bookProgress;
             return save({
                 ...state,
-                B
+                books: B
             });
         case '@LIBRARY/SET_SEARCH_TEXT':
             return {
