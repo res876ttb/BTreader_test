@@ -82,7 +82,7 @@ class ReadingCover extends React.Component {
             } else {
                 e.preventDefault();
             }
-        } else if (keyCode === 13) {
+        } else if (keyCode === 13 && ele.value !== '') {
             this.handleSetProgress();
         } else {
             e.preventDefault();

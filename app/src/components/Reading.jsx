@@ -55,6 +55,7 @@ class Reading extends React.Component {
         this.handleChapterClick = this.handleChapterClick.bind(this);
         this.handlePreviousClick = this.handlePreviousClick.bind(this);
         this.handleBookmarkClick = this.handleBookmarkClick.bind(this);
+        this.handleAddBookmarkClick = this.handleAddBookmarkClick.bind(this);
     }
 
     componentWillMount() {
@@ -83,10 +84,10 @@ class Reading extends React.Component {
             textAlign: 'center'
         };
         this.readingInnerStyle = {
-            height: this.props.divHeight - 145,
-            margin: '32px 1rem 20px 1rem',
+            height: this.props.divHeight - 120,
+            margin: '2rem 1rem 7px 1rem',
             padding: '30px',
-            borderRadius: '10px',
+            borderRadius: '13px',
             fontSize: this.fontSize,
             lineHeight: this.lineHeight,
             textAlign: 'left',
@@ -112,13 +113,14 @@ class Reading extends React.Component {
                         {content}
                     </div>
                     <div className='reading-content-enpty-div'>
-                        <i className="fa fa-bookmark reading-icon reading-icon-bookmark" onClick={this.handleBookmarkClick} data-tip="書籤"></i>
+                        <i className="fa fa-bookmark reading-icon reading-icon-bookmark" onClick={this.handleBookmarkClick} data-tip="書籤列表"></i>
+                        <i className="fa fa-plus-square reading-icon reading-icon-addBookmark" onClick={this.handleAddBookmarkClick} data-tip="將本頁加入書籤"></i>
                         <i className="fa fa-share reading-icon reading-icon-jump" onClick={this.handleJumpClick} data-tip="跳轉"></i>
                         {/* <i className="fa fa-list-ul reading-icon reading-icon-chapter" onClick={this.handleChapterClick} data-tip="章節"></i> */}
                         <ReactTooltip place="left" effect="solid" />
                     </div>
                     <Progress multi 
-                        style={{margin: '16px 16px 0px 16px'}} 
+                        style={{margin: '16px 16px 0px 16px', height: '4px'}} 
                         id='reading-progress'
                     >
                         <Progress bar 
@@ -198,6 +200,10 @@ class Reading extends React.Component {
         console.log("Reading: Bookmark is clicked!");
     }
 
+    handleAddBookmarkClick() {
+        console.log("Reading: AddBookmark is clicked!");
+    }
+
     handleJumpClick() {
         console.log("Reading: Jump is clicked!");
         if (this.props.coverState === 1) {
@@ -216,7 +222,7 @@ class Reading extends React.Component {
         let result = '';
         let _content = this.props.bookContent;
         let content = this.formatWidth(fontSize, String(this.props.bookContent));
-        let height = this.props.divHeight - 205; 
+        let height = this.props.divHeight - 185; 
         let numOfLines = 0;
         let numOfLineError = 0;
         let i = 0;
@@ -420,7 +426,7 @@ class Reading extends React.Component {
             let result = '';
             let _content = this.tmp;
             let content = txt;
-            let height = this.props.divHeight - 205; 
+            let height = this.props.divHeight - 185; 
             let lineHeight = this.lineHeight;
             let fontSize = this.fontSize;
             let numOfLines = 0;

@@ -55,7 +55,7 @@
 }
 
 .reading-icon-chapter {
-    bottom: 135px;
+    bottom: 185px;
     color: rgb(124, 72, 38);
 }
 
@@ -65,7 +65,7 @@
 }
 
 .reading-icon-jump {
-    bottom: 85px;
+    bottom: 135px;
 }
 
 .reading-icon-jump:hover {
@@ -81,4 +81,14 @@
 .reading-icon-bookmark:hover {
     color: white;
     background: rgb(177, 0, 0);
+}
+
+.reading-icon-addBookmark {
+    bottom: 85px;
+    color: rgb(44, 133, 71);
+}
+
+.reading-icon-addBookmark:hover {
+    color: white;
+    background: rgb(44, 133, 71);
 }
