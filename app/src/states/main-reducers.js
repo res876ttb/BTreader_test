@@ -50,6 +50,10 @@ export function main(state = initMainState, action) {
                 ...state,
                 debug: false
             };
+        case '@MAIN/DATA_INITIALIZE':
+            return save({
+                ...initMainState
+            });
         default:
             return state;
     }

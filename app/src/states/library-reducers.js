@@ -108,6 +108,10 @@ export function library(state = initLibraryState, action) {
                 searchText: '',
             }
             return S;
+        case '@LIBRARY/DATA_INITIALIZE':
+            return save({
+                ...initLibraryState
+            });
         default: 
             return state;
     }

@@ -86,3 +86,9 @@ export function dataMainLoad(data) {
         data: data
     };
 }
+
+export function mainDataInitialize() {
+    return {
+        type: '@MAIN/DATA_INITIALIZE'
+    }
+}

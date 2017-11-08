@@ -77,6 +77,10 @@ export function reading(state = initReadingState, action) {
 				coverFadeOut: 0,
 				jumpProgress: -1,
 			}
+		case '@READING/DATA_INITIALIZE':
+			return save({
+				...initReadingState
+			});
 		default:
 			return state;
 	}

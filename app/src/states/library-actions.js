@@ -72,3 +72,9 @@ export function setSearchLibraryText(text) {
         text: text,
     }
 }
+
+export function libraryDataInitialize() {
+    return {
+        type: '@LIBRARY/DATA_INITIALIZE'
+    }
+}

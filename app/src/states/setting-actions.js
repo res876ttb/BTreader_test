@@ -50,3 +50,9 @@ export function originalLineHeight() {
 		type: '@SETTING/RESET_LINE_HEIGHT',
 	}
 }
+
+export function settingDataInitialize() {
+	return {
+		type: '@SETTING/DATA_INITIALIZE'
+	}
+}

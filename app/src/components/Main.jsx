@@ -28,18 +28,22 @@ import {
     changeWindowSize,
     dataMainLoad,
     rerenderTrigger,
+    mainDataInitialize,
 } from 'states/main-actions.js';
 import {
     addBook,
     dataLibraryLoad,
     setSearchLibraryText,
+    libraryDataInitialize,
 } from 'states/library-actions.js';
 import {
     dataReadingLoad,
-    changeReadingBook
+    changeReadingBook,
+    readingDataInitialize,
 } from 'states/reading-actions.js';
 import {
     dataSettingLoad,
+    settingDataInitialize,
 } from 'states/setting-actions.js';
 import Welcome from 'components/Welcome.jsx';
 import Library from 'components/Library.jsx';
@@ -225,6 +229,7 @@ class Main extends React.Component {
     }
 
     getCurPath() {
+        const fs = require('fs');
         let a = window.location.pathname;
         let b = a.split('/');
         let c = '';
@@ -233,7 +238,15 @@ class Main extends React.Component {
             c += b[i] + '/';
         }
         window.appPath = c;
+        if (navigator.appVersion.indexOf("Win") !== -1) {
+            console.log('original c:', c);
+            window.appPath = c.slice(3,c.length);
+        }
         console.log('Main: current Path is', window.appPath);
+        if (!fs.existsSync(window.appPath + '/data')) {
+            console.log('Folder ' + window.appPath + ' does NOT exist!');
+            fs.mkdirSync(window.appPath + '/data');
+        }
     }
 
     handleSearchKeyPress(e) {
@@ -266,18 +279,35 @@ class Main extends React.Component {
     }
 
     readRecord() {
-        readJson(window.appPath + 'data/data-main.json').then(data => {
-            this.props.dispatch(dataMainLoad(data));
-        });
-        readJson(window.appPath + 'data/data-library.json').then(data => {
-            this.props.dispatch(dataLibraryLoad(data));
-        });
-        readJson(window.appPath + 'data/data-reading.json').then(data => {
-            this.props.dispatch(dataReadingLoad(data));
-        });
-        readJson(window.appPath + 'data/data-setting.json').then(data => {
-            this.props.dispatch(dataSettingLoad(data));
-        });
+        const fs = require('fs');
+        if (fs.existsSync(window.appPath + 'data/data-main.json')) {
+            readJson(window.appPath + 'data/data-main.json').then(data => {
+                this.props.dispatch(dataMainLoad(data));
+            });
+        } else {
+            this.props.dispatch(mainDataInitialize());
+        }
+        if (fs.existsSync(window.appPath + 'data/data-library.json')) {
+            readJson(window.appPath + 'data/data-library.json').then(data => {
+                this.props.dispatch(dataLibraryLoad(data));
+            });
+        } else {
+            this.props.dispatch(libraryDataInitialize());
+        }
+        if (fs.existsSync(window.appPath + 'data/data-reading.json')) {
+            readJson(window.appPath + 'data/data-reading.json').then(data => {
+                this.props.dispatch(dataReadingLoad(data));
+            });
+        } else {
+            this.props.dispatch(readingDataInitialize());
+        }
+        if (fs.existsSync(window.appPath + 'data/data-setting.json')) {
+            readJson(window.appPath + 'data/data-setting.json').then(data => {
+                this.props.dispatch(dataSettingLoad(data));
+            });
+        } else {
+            this.props.dispatch(settingDataInitialize());
+        }
     }
 }
 

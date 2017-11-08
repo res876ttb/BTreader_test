@@ -65,3 +65,9 @@ export function setAbsoluteProgress(prog) {
         prog: prog,
     }
 }
+
+export function readingDataInitialize() {
+    return {
+        type: '@READING/DATA_INITIALIZE'
+    }
+}

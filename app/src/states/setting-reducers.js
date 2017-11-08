@@ -57,6 +57,10 @@ export function setting(state = initSettingState, action) {
 				...state,
 				lineHeight: 1.5,
 			});
+		case '@SETTING/DATA_INITIALIZE':
+			return save({
+				...initSettingState
+			});
 		default:
 			return state;
 	}
