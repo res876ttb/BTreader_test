@@ -6,7 +6,7 @@
     display: flex;
     flex-wrap: wrap; 
 
-    max-width: 800px !important;
+    /* max-width: 800px !important; */
 }
 
 .library-edit-button {
@@ -24,14 +24,19 @@
 
 .library-noRecord-outter {
     min-height: 200px;  
-    max-width: 800px !important;
     color: white;
     text-align: center;
+    padding: 0px 31px !important;
 }
 
 .library-noRecord-outter .library-noRecord-inner {
-    background: rgba(255, 255, 255, 0.4);
     padding: 90px 3rem 90px 3rem;
     border-radius: 10px;
     font-size: 20px;
+}
+
+@media (min-width: 990px) {
+    .library-noRecord-outter {
+        max-width: 720px !important;
+    }
 }

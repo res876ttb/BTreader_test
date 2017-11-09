@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import './Setting.css';
-
 import {
 	setAutoReading,
 	biggerFont,
@@ -13,6 +11,8 @@ import {
 	lowerLine,
 	originalLineHeight,
 } from '../states/setting-actions.js';
+
+import './Setting.css';
 
 class Setting extends React.Component {
 	static propTypes = {

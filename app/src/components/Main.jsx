@@ -20,6 +20,11 @@ import {
 } from 'reactstrap';
 import {connect} from 'react-redux';
 
+import Welcome from 'components/Welcome.jsx';
+import Library from 'components/Library.jsx';
+import Reading from 'components/Reading.jsx';
+import Setting from 'components/Setting.jsx';
+
 import {
     toggleNavbar, 
     setDebug,
@@ -45,15 +50,14 @@ import {
     dataSettingLoad,
     settingDataInitialize,
 } from 'states/setting-actions.js';
-import Welcome from 'components/Welcome.jsx';
-import Library from 'components/Library.jsx';
-import Reading from 'components/Reading.jsx';
-import Setting from 'components/Setting.jsx';
-// import Loading from 'components/Loading.jsx';
+import {
+    writeJson, 
+    readJson,
+} from '../api/jsonrw.js';
 
 import 'components/Main.css';
 
-import {writeJson, readJson} from '../api/jsonrw.js';
+const fs = require('fs');
 
 class Main extends React.Component {
     static propTypes = {
@@ -229,7 +233,6 @@ class Main extends React.Component {
     }
 
     getCurPath() {
-        const fs = require('fs');
         let a = window.location.pathname;
         let b = a.split('/');
         let c = '';
@@ -279,7 +282,6 @@ class Main extends React.Component {
     }
 
     readRecord() {
-        const fs = require('fs');
         if (fs.existsSync(window.appPath + 'data/data-main.json')) {
             readJson(window.appPath + 'data/data-main.json').then(data => {
                 this.props.dispatch(dataMainLoad(data));

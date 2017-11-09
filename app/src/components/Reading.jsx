@@ -1,11 +1,11 @@
+// react import
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-
-import './Reading.css';
-
 import {Progress} from 'reactstrap';
 import ReactTooltip from 'react-tooltip';
+
+import ReadingCover from 'components/ReadingCover.jsx';
 
 import {
     SetProgress,
@@ -26,7 +26,13 @@ import {
     Simplized,
 } from '../api/traditionalization.js';
 
-import ReadingCover from 'components/ReadingCover.jsx';
+import './Reading.css';
+
+// js import
+const fs = require('fs');
+const iconv = require('iconv-lite');
+const {ipcRenderer} = require('electron');
+const jcd = require('jschardet');
 
 class Reading extends React.Component {
     static props = {
@@ -98,7 +104,7 @@ class Reading extends React.Component {
         if (this.props.bookPath === '') {
             display = (
                 <div className="reading-noRecord-outter container">
-                    <div className="reading-noRecord-inner">
+                    <div className="reading-noRecord-inner blur">
                         沒有最近的閱讀紀錄，從書架選一本書來閱讀吧！
                     </div>
                 </div>
@@ -148,8 +154,6 @@ class Reading extends React.Component {
     }
 
     findProgress(prog) {
-        const fs = require('fs');
-        const jcd = require('jschardet');
         let guessP = Math.floor(this.props.bookSize * prog / 100);
         let find = new Promise((res, rej) => {
             for (let ofs = 0; ofs < 5; ofs += 1) {
@@ -294,8 +298,6 @@ class Reading extends React.Component {
     }
 
     checkFile() {
-        const fs = require('fs');
-        const {ipcRenderer} = require('electron');
         console.log('Reading: Check if book exists:', this.props.bookPath);
         if (this.props.bookPath !== '' && fs.existsSync(this.props.bookPath) === false) {
             console.log('Reading: Book does not exist!');
@@ -306,7 +308,6 @@ class Reading extends React.Component {
     }
 
     readFileContent() {
-        const fs = require('fs');
         let buffer = new Buffer(4000);
         if (this.props.bookPath !== '') {
             fs.open(this.props.bookPath, 'r', (err1, fd) => {
@@ -326,8 +327,6 @@ class Reading extends React.Component {
                     } else if (readResult === null) {
                         console.error('ReadFile: Empty content!');
                     }
-    
-                    const iconv = require('iconv-lite');
                     
                     // if encoding is null, set default encoding to utf-8
                     let encoding = this.props.encoding;
@@ -352,7 +351,6 @@ class Reading extends React.Component {
         console.log('Next Page: Key press detected!');
         let text = this.props.bookContent;
         let numOfWords = this.numOfWords;
-        const iconv = require('iconv-lite');
         let oriTxt = '';
         for (let i = 0; i < numOfWords; i += 1) {
             oriTxt += text[i];
@@ -374,7 +372,6 @@ class Reading extends React.Component {
         }
         let p = new Promise((res, rej) => {
             console.log('Previous Page: Read previous content');
-            const fs = require('fs');
             let buffer = new Buffer(4000);
             fs.open(this.props.bookPath, 'r', (err1, fd) => {
                 if (err1 !== null) {
@@ -393,8 +390,6 @@ class Reading extends React.Component {
                     } else if (readResult === null) {
                         console.error('Previous Page: Empty content!');
                     }
-        
-                    const iconv = require('iconv-lite');
                     
                     // if encoding is null, set default encoding to utf-8
                     let encoding = this.props.encoding;
@@ -453,7 +448,6 @@ class Reading extends React.Component {
             return {result, numOfLineError};
         }).then(v => {
             console.log('Previous Page: Set offset.');
-            const iconv = require('iconv-lite');
             let correction = '';
             for (let i = 0; i < v.numOfLineError; i++) {correction += '\n';}
             let simTxt = Simplized(v.result);

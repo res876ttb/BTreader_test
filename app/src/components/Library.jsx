@@ -16,14 +16,14 @@ import {Link} from 'react-router-dom';
 
 import LibraryItem from '../components/LibraryItem.jsx';
 
-import './Library.css';
-
 import {
     setEdit,
     cancelAllSelect,
     deleteSelect,
     addBook,
 } from '../states/library-actions.js';
+
+import './Library.css';
 
 class Library extends React.Component {
     static propTypes = {
@@ -87,7 +87,7 @@ class Library extends React.Component {
                 children = (
                     <div className="library-noRecord-outter container">
                         <div style={{height: "10px"}}></div>
-                        <div className="library-noRecord-inner">
+                        <div className="library-noRecord-inner blur">
                             書架裡沒有符合搜尋結果的書！<br />
                         </div>
                     </div>
@@ -97,7 +97,7 @@ class Library extends React.Component {
                 children = (
                     <div className="library-noRecord-outter container">
                         <div style={{height: "10px"}}></div>
-                        <div className="library-noRecord-inner">
+                        <div className="library-noRecord-inner blur">
                             書架裡沒有書！<br />
                             快加入幾本來滋潤你的大腦！
                         </div>
@@ -136,9 +136,6 @@ class Library extends React.Component {
                     {controlButton}
                 </div>
                 {children}
-                <div className='footer'>
-                    BTreader By Hsu Keng Jui
-                </div>
             </div>
         );
     }

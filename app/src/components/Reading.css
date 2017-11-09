@@ -1,21 +1,24 @@
 .reading-noRecord-outter {
     min-height: 200px;  
-    max-width: 800px !important;
     color: white;
     text-align: center;
 }
 
 .reading-noRecord-outter .reading-noRecord-inner {
-    background: rgba(255, 255, 255, 0.4);
     margin: 2rem 1rem 0rem 1rem;
     padding: 90px 3rem 90px 3rem;
     border-radius: 10px;
     font-size: 20px;
 }
 
+@media (min-width: 990px) {
+    .reading-noRecord-outter {
+        max-width: 720px !important;
+    }
+}
+
 #readingLeftButton {
     background: rgba(0, 255, 255, 0);
-    /* height: 100%; */
     width: 50%;
     position: absolute;
     top: 56px;
@@ -26,7 +29,6 @@
 
 #readingRightButton {
     background: rgba(255, 255, 255, 0);
-    /* height: 100%; */
     width: 50%;
     position: absolute;
     top: 56px;

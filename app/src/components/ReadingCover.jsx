@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-
-import './ReadingCover.css';
-
 import {
     Input,
     Button,
@@ -14,6 +11,8 @@ import {
     setReadingCoverState,
     setReadingCoverFadeoutState,
 } from '../states/reading-actions.js';
+
+import './ReadingCover.css';
 
 class ReadingCover extends React.Component {
     static propTypes = {
