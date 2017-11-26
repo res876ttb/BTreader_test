@@ -221,73 +221,103 @@ class Reading extends React.Component {
         }
         
     }
-    
+
     formatContent(fontSize, lineHeight) {
-        let result = '';
-        let _content = this.props.bookContent;
-        let content = this.formatWidth(fontSize, String(this.props.bookContent));
-        let height = this.props.divHeight - 185; 
-        let numOfLines = 0;
-        let numOfLineError = 0;
-        let i = 0;
-        let j = 0;
-        
-        while (i < content.length) {
-            if (content[i] === '\n') {
-                numOfLines += 1;
-                if (_content[j] !== '\n') {
-                    j -= 1;
-                    numOfLineError += 1;
+        let oriContent = this.props.bookContent;
+        let _content = this.formatWidth(fontSize, String(this.props.bookContent));
+        let content = '';
+        let height = this.props.divHeight - 185;
+        let fixError = 0, i = 0, j = 0, numOfLines = 0;
+        for (i = 0; i < _content.length; i += 1) {
+            if (this.checkLineEmpty(_content[i])) {
+                j += _content[i].length;
+                fixError += _content[i].length;
+            } else {
+                if (_content[i][_content[i].length - 1] !== oriContent[j + _content[i].length - 1]) {
+                    // this line is broken manually
+                    fixError -= 1;
+                    j += _content[i].length - 1;
+                } else {
+                    j += _content[i].length;
                 }
-                if (lineHeight * numOfLines * fontSize > height) {
+                content += _content[i];
+                numOfLines += 1;
+                if (numOfLines * lineHeight * fontSize > height) {
                     break;
                 }
             }
-            result += content[i];
-            i += 1;
-            j += 1;
         }
-        this.numOfWords = i + 1 - numOfLineError;
-        return result;
+        this.numOfWords = content.length + fixError;
+        return content;
     }
-    
+
     formatWidth(fontSize, _content) {
-        let content = '';
-        let offset = 0;
-        let numOfLines = 1;
-        let numOfWords = 0;
-        let numOfSpecial = 0;
+        let content = [];
         let line = '';
-        let len = 0;
-        
+        let numOfSpecial = 0, len = 0;
         for (let i = 0; i < _content.length; i += 1) {
             let c = _content[i];
-            if (c === '-') {
-                numOfSpecial += 1.65;
-            } else if ((c.match(/[\x00-\xff]/g) && c !== '\n' && c !== ' ') || 
-                 c === '“' || c === '”' || c === '‘' || c === '’') {
-                numOfSpecial += 1;
-            } 
+            numOfSpecial += this.calSpecial(c);
             len = this.getLineLength(line + c, fontSize) + numOfSpecial * fontSize * 0.15;
             if (c === '\n') {
-                numOfWords += 1;
-                content += '\n';
+                content.push(line + c);
                 line = '';
-                numOfLines += 1;
                 numOfSpecial = 0;
             } else if (len <= this.props.divWidth) {
-                numOfWords += 1;
-                content += c;
                 line += c;
             } else {
                 i -= 1;
-                content += '\n';
+                content.push(line + '\n');
                 line = '';
-                numOfLines += 1;
                 numOfSpecial = 0;
             }
         }
+        content.push(line);
         return content;
+    }
+
+    checkLineEmpty(line) {
+        for(let i = 0; i < line.length; i += 1) {
+            if (line[i] !== ' ' && line[i] !== '\r' && line[i] !== '\n') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    calSpecial(c) {
+             if (c === '-') {return 1.84;} 
+        else if (c === '.') {return -0.058;} 
+        else if (c === '"') {return 0.5;} 
+        else if (c === "'") {return 0.37;} 
+        else if (c === '‘' || c === '’') {return 0.95;} 
+        else if (c === '“' || c === '”') {return 1.42;} 
+        else if (c === ' ') {return 0.4;}
+        else if (c === '=') {return 0.15;} 
+        else if (c === '0') {return 0.3;} 
+        else if (c === '1') {return -0.5;} 
+        else if (c === '2'||c==='3'||c==='4'||c==='5'||c==='6'||c==='8'||c==='9') {return 0.35;} 
+        else if (c === '7') {return -0.05;} 
+        else if (c === '_') {return -0.35;} 
+        else if (c === ',') {return -0.08;} 
+        else if (c === '!') {return 0.4;} 
+        else if (c === '?') {return -0.1;}
+        else if (c === '(' || c === ')') {return 0.02;}
+        else if (c === '[' || c === ']') {return 0.385;}
+        else if (c === '{' || c === '}') {return 0;}
+        else if (c === '@') {return -1;}
+        else if (c === '*') {return 0.8;}
+        else if (c === '/' || c === '\\') {return 1.5;}
+        else if (c === '#') {return 0.3;}
+        else if (c === '%') {return 0.6;}
+        else if (c === '`') {return 0.02;}
+        else if (c === '^') {return 0.35;}
+        else if (c === '>' || c === '<') {return 0.2;}
+        else if (c === '|') {return -0.42;}
+        else if (c === '~') {return -0.53;}
+        else if (c === '$') {return 0.3;}
+        else if (c.match(/[\x00-\xff]/g) && c !== '\n' && c !== ' ') {return 1;} 
+        else {return 0;}
     }
     
     getLineLength(txt, fontSize) {
@@ -414,46 +444,48 @@ class Reading extends React.Component {
             });
         }).then(txt => {
             console.log('Previous Page: Format content in background.');
-            this.tmp = txt;
-            return this.formatWidth(this.fontSize, String(txt));
-        }).then(txt => {
+            let content = this.formatWidth(this.fontSize, txt);
+            return {txt, content};
+        }).then(v => {
             console.log('Previous Page: Select line.');
             let result = '';
-            let _content = this.tmp;
-            let content = txt;
-            let height = this.props.divHeight - 185; 
+            let _content = v.txt;
+            let content = v.content;
+            let height = this.props.divHeight - 185;
             let lineHeight = this.lineHeight;
             let fontSize = this.fontSize;
-            let numOfLines = 0;
-            let numOfLineError = 0;
-            let i = content.length - 1;
-            let j = this.tmp.length - 1;
-            
-            while (i >= 0) {
-                if (content[i] === '\n') {
-                    numOfLines += 1;
-                    if (_content[j] !== '\n') {
-                        j += 1;
-                        numOfLineError += 1;
+            let fixLineError = 0, fixEmptyError = '', i = 0, j = _content.length - 1, numOfLines = 0;
+            for (i = content.length - 1; i >= 0; i -= 1) {
+                if (this.checkLineEmpty(content[i])) {
+                    // empty line 
+                    j -= content[i].length;
+                    fixEmptyError += content[i];
+                } else {
+                    if (_content[j] !== content[i][content[i].length - 1]) {
+                        // this line is broken manually => fix line ending error
+                        fixLineError += 1;
+                        j -= (content[i].length - 1);
+                    } else {
+                        j -= content[i].length;
                     }
-                    if (lineHeight * numOfLines * fontSize > height) {
+                    result += content[i];
+                    numOfLines += 1;
+                    if (numOfLines * lineHeight * fontSize > height) {
                         break;
                     }
                 }
-                result = content[i] + result;
-                i -= 1;
-                j -= 1;
             }
-            this.numOfWords = content.length - i + numOfLineError;
-            return {result, numOfLineError};
+            result += fixEmptyError;
+            return {result, fixLineError};
         }).then(v => {
             console.log('Previous Page: Set offset.');
             let correction = '';
-            for (let i = 0; i < v.numOfLineError; i++) {correction += '\n';}
-            let simTxt = Simplized(v.result);
+            for (let i = 0; i < v.fixLineError; i++) {correction += '\n';}
+            // let simTxt = Simplized(v.result);
+            let simTxt = v.result;
             let buffer1 = iconv.encode(simTxt, this.props.encoding);
             let buffer2 = iconv.encode(correction, this.props.encoding);
-            let bufferLength = buffer1.length - buffer2.length + 1;
+            let bufferLength = buffer1.length - buffer2.length;
             console.log('Previous Page: Buffer size of previous page is', bufferLength);
             if (this.props.bookProgress - bufferLength <= 0) {
                 this.props.dispatch(setProgress(0 - this.props.bookProgress));

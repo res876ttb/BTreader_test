@@ -10,7 +10,9 @@ let mainWindow;
 function createWindow() {
 	mainWindow = new BrowserWindow({
 		width: 1200,
-		height: 700
+		height: 700,
+		minWidth: 580,
+		minHeight: 450,
 	});
 
 	mainWindow.loadURL('file://' + __dirname + '/app/index.html');
