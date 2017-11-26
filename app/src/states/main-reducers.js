@@ -9,6 +9,7 @@ const initMainState = {
     divWidth: 600,
     divHeight: 400,
     rerender: 0,
+    curPosition: '',
 };
 
 export function main(state = initMainState, action) {
@@ -53,6 +54,11 @@ export function main(state = initMainState, action) {
         case '@MAIN/DATA_INITIALIZE':
             return save({
                 ...initMainState
+            });
+        case '@MAIN/SET_CUR_POSITION':
+            return save({
+                ...state,
+                curPosition: action.position,
             });
         default:
             return state;

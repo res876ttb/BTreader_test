@@ -77,7 +77,6 @@ class Library extends React.Component {
                         select={this.props.select.indexOf(p) > -1}
                     />
                 ));
-                console.log(bk[p].bookProgres)
             }
         }
         

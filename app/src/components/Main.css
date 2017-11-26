@@ -109,3 +109,11 @@
 .disappear {
     opacity: 0;
 }
+
+/********** Show current book title **********/
+.main-showReadingBook {
+    text-align: right;
+    max-width: 250px;
+    margin-left: auto;
+    overflow: hidden;
+}

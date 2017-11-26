@@ -34,6 +34,7 @@ import {
     dataMainLoad,
     rerenderTrigger,
     mainDataInitialize,
+    setCurPosition,
 } from 'states/main-actions.js';
 import {
     addBook,
@@ -70,6 +71,8 @@ class Main extends React.Component {
         autoReading: PropTypes.bool,
         rerender: PropTypes.number,
         searchText: PropTypes.string,
+        bookTitle: PropTypes.string,
+        curPositon: PropTypes.string,
     };
 
     constructor(props) {
@@ -109,9 +112,11 @@ class Main extends React.Component {
                 if (this.props.autoReading) {
                     this.props.dispatch(rerenderTrigger(2));
                     this.props.dispatch(rerenderTrigger(0));
+                    this.props.dispatch(setCurPosition('reading'));
                 } else {
                     this.props.dispatch(rerenderTrigger(1));
                     this.props.dispatch(rerenderTrigger(0));
+                    this.props.dispatch(setCurPosition('welcome'));
                 }
             }, 600);
         }
@@ -178,6 +183,22 @@ class Main extends React.Component {
             );
         }
 
+        let topRight = (
+            <div className='search ml-auto'>
+                <Input tag={Link} to='/library' id='search-library' className='ml-auto' type='text' placeholder='搜尋書架' onKeyPress={this.handleSearchKeyPress} onKeyDown={this.handleClearSearchEsc}></Input>{
+                    this.props.searchText && <i className='navbar-text fa fa-times' onClick={this.handleClearSearch}></i>
+                }
+            </div>  
+        );
+
+        if (this.props.curPosition === 'reading') {
+            topRight = (
+                <div className='main-showReadingBook'>
+                    正在閱讀：{this.props.bookTitle}
+                </div>
+            );
+        }
+
         return (
             <Router><Switch><div className='main'>
                 <div className={this.state.class} style={this.state.style}>
@@ -186,25 +207,29 @@ class Main extends React.Component {
                 <div className='bg-light'>
                     <div className='container'>
                         <Navbar color='light' light expand>
-                            <NavbarBrand className='text-info mr-auto' tag={Link} to="/">BTreader</NavbarBrand>
+                            <NavbarBrand className='text-info mr-auto' tag={Link} to="/" onClick={() => {
+                                this.props.dispatch(setCurPosition('welcome'));
+                            }}>BTreader</NavbarBrand>
                             <NavbarToggler className='mr-2' onClick={this.handleNavbarToggle}/>
                             <Collapse isOpen={this.props.navbarToggle} navbar>
                                 <Nav navbar>
                                     <NavItem>
-                                        <NavLink tag={Link} to='/reading'>最近閱讀</NavLink>
+                                        <NavLink tag={Link} to='/reading' onClick={() => {
+                                            this.props.dispatch(setCurPosition('reading'));
+                                        }}>最近閱讀</NavLink>
                                     </NavItem>
                                     <NavItem>
-                                        <NavLink tag={Link} to='/library'>書架</NavLink>
+                                        <NavLink tag={Link} to='/library' onClick={() => {
+                                            this.props.dispatch(setCurPosition('library'));
+                                        }}>書架</NavLink>
                                     </NavItem>
                                     <NavItem>
-                                        <NavLink tag={Link} to='/setting'>設定</NavLink>
+                                        <NavLink tag={Link} to='/setting' onClick={() => {
+                                            this.props.dispatch(setCurPosition('setting'));
+                                        }}>設定</NavLink>
                                     </NavItem>
                                 </Nav>
-                                <div className='search ml-auto'>
-                                    <Input tag={Link} to='/library' id='search-library' className='ml-auto' type='text' placeholder='搜尋書架' onKeyPress={this.handleSearchKeyPress} onKeyDown={this.handleClearSearchEsc}></Input>{
-                                        this.props.searchText && <i className='navbar-text fa fa-times' onClick={this.handleClearSearch}></i>
-                                    }
-                                </div>  
+                                {topRight}
                             </Collapse>
                         </Navbar>
                     </div>
@@ -317,4 +342,5 @@ export default connect (state => ({
     ...state.main,
     autoReading: state.setting.autoReading,
     searchText: state.library.searchText,
+    bookTitle: state.reading.bookTitle,
 }))(Main);

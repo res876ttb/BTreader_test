@@ -92,3 +92,10 @@ export function mainDataInitialize() {
         type: '@MAIN/DATA_INITIALIZE'
     }
 }
+
+export function setCurPosition(pos) {
+    return {
+        type: '@MAIN/SET_CUR_POSITION',
+        position: pos,
+    }
+}

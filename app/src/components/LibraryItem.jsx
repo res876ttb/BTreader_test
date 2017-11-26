@@ -8,6 +8,9 @@ import {
 import {Link} from 'react-router-dom';
 
 import {
+    setCurPosition
+} from '../states/main-actions.js';
+import {
     changeReadingBook
 } from '../states/reading-actions.js';
 import {
@@ -90,6 +93,7 @@ class LibraryItem extends React.Component {
     }
 
     jumpToReading() {
+        this.props.dispatch(setCurPosition('reading'));
         this.props.dispatch(changeReadingBook(this.props.bookTitle, this.props.bookSize, this.props.bookProgress, this.props.bookPath, this.props.encoding));
     }
 
