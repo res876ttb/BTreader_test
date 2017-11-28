@@ -12,10 +12,12 @@
     from { 
         top: 56px;  
         opacity: 0;
+        left: 0px;
     }
     to { 
         top: 106px; 
         opacity: 1;
+        left: 0px;
     }
 }
 
@@ -30,6 +32,48 @@
     }
 }
 
+@keyframes bookmarkFadein {
+    from {
+        left: -330px;
+        top: 0;
+    }
+    to {
+        left: 0px;
+        top: 0;
+    }
+}
+
+@keyframes bookmarkFadeout {
+    from {
+        left: 0px;
+    }
+    to {
+        left: -330px;
+    }
+}
+
+@keyframes addBookmarkFadein {
+    from {
+        top: 156px;
+        opacity: 0;
+    }
+    to {
+        top: 106px;
+        opacity: 1;
+    }
+}
+
+@keyframes addBookmarkFadeout {
+    from {
+        top: 106px;
+        opacity: 1;
+    }
+    to {
+        top: 56px;
+        opacity: 0;
+    }
+}
+
 .reading-cover-background {
     position: fixed;
     top: 0px;
@@ -40,11 +84,11 @@
     background: rgba(0, 0, 0, 0.3);
     transition-duration: 0.4s;
 
-    animation: fadein 0.5s;
+    animation: fadein 0.4s;
 }
 
 .reading-cover-background-fadeout {
-    animation: fadeout 0.5s;
+    animation: fadeout 0.4s;
 }
 
 .reading-cover-jump {
@@ -63,11 +107,11 @@
     transition-duration: 0.4s;
     padding: 20px 40px 20px 40px;
 
-    animation: jumpFadein 0.5s;
+    animation: jumpFadein 0.4s;
 }
 
 .reading-cover-jump-fadout {
-    animation: jumpFadeout 0.5s;
+    animation: jumpFadeout 0.4s;
 }
 
 .reading-cover-title {
@@ -88,4 +132,119 @@
     margin-right: 5%;
     margin-left: 5%;
     width: 40%;
+}
+
+
+
+.reading-cover-bookmark {
+    width: 300px;
+    background:rgba(255, 255, 255, 0.87);
+    border-radius: 5px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    margin-right: auto;
+    z-index: 30;
+    transition-duration: 0.4s;
+    padding: 20px 30px 20px 30px;
+
+    animation: bookmarkFadein 0.4s;
+}
+
+.reading-cover-bookmark-fadout {
+    animation: bookmarkFadeout 0.4s;
+}
+
+.reading-cover-icon-back {
+    font-size: 24px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin: 5px 0px 5px 0px;
+    text-align: center;
+    transition-duration: 0.4s;
+    border-radius: 50%;
+}
+
+.reading-cover-icon-back:hover {
+    background: black;
+    color: white;
+}
+
+.reading-cover-icon-back:active {
+    background: black;
+    color: rgb(180, 180, 180);
+}
+
+.reading-cover-bookmark-title {
+    width: 210px;
+    font-size: 24px;
+    line-height: 40px;
+    display: inline-block;
+    text-align: center;
+}
+
+.reading-cover-icon-edit {
+    font-size: 24px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin: 5px 0px 5px 0px;
+    color: rgb(214, 129, 0);
+    text-align: center;
+    transition-duration: 0.4s;
+    border-radius: 20%;
+}
+
+.reading-cover-icon-edit:hover {
+    background: rgb(214, 129, 0);
+    color: white;
+}
+
+.reading-cover-icon-edit:active {
+    background: rgb(179, 108, 2);
+    color: rgb(180, 180, 180);
+}
+
+
+.reading-cover-bookmark-titlediv {
+    border-bottom: solid 1px rgb(146, 146, 146);
+}
+
+.reading-cover-bookmarkBoard {
+    position: absolute;
+    top: 62px;
+    bottom: 30px;
+    right: 30px;
+    left: 30px;
+    overflow: scroll;
+}
+
+.reading-cover-addBookmark {
+    text-align: center;
+    overflow-y: scroll;
+    border-radius: 5px;
+    position: fixed;
+    top: 106px;
+    left: 0px;
+    right: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 30;
+    transition-duration: 0.4s;
+    padding: 20px 40px 20px 40px;
+    font-size: 150px;
+    width: 250px;
+    height: 250px;
+    line-height: 200px;
+    color: rgb(226, 32, 32);
+    background: white;
+    border-radius: 50%;
+
+    animation: addBookmarkFadein 0.4s;
+}
+
+.reading-cover-addBookmark-fadout {
+    animation: addBookmarkFadeout 0.4s;
 }

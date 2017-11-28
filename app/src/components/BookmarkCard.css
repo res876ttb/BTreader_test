@@ -1,0 +1,45 @@
+.bookmarkCard-main {
+    width: 240px;
+    height: 80px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: solid 1px black;
+    overflow: hidden;
+    font-size: 12px;
+    transition-duration: 0.4s;
+}
+
+.bookmarkCard-main:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.bookmarkCard-content {
+    color: gray;
+    height: 48px;
+    line-height: 16px;
+    overflow: hidden;
+}
+
+.bookmarkCard-progress {
+    color: black;
+    font-weight: bold;
+}
+
+.bookmarkCard-delete {
+    border-radius: 9px;
+    color: rgb(209, 40, 40);
+    display: inline-block;
+    width: 50px;
+    text-align: center;
+    transition-duration: 0.4s;
+}
+
+.bookmarkCard-delete:hover {
+    color: white;
+    background: rgb(209, 40, 40);
+}
+
+.bookmarkCard-delete:active {
+    color: rgb(180, 180, 180);
+    background: rgb(161, 30, 30);
+}

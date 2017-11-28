@@ -74,6 +74,7 @@ class Library extends React.Component {
                         bookProgress={bk[p].bookProgress} 
                         bookPath={p} 
                         encoding={bk[p].encoding}
+                        bookmark={bk[p].bookmark}
                         select={this.props.select.indexOf(p) > -1}
                     />
                 ));

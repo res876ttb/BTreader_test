@@ -11,6 +11,7 @@ import {
     SetProgress,
     deleteSelect,
     SetAbsoluteProgress,
+    libraryAddBookmark,
 } from '../states/library-actions.js';
 import {
     setProgress,
@@ -56,6 +57,7 @@ class Reading extends React.Component {
         this.fontSize = this.props.fontSize;
         this.lineHeight = this.props.lineHeight;
         this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.readFileContent = this.readFileContent.bind(this);
         this.handleNextClick = this.handleNextClick.bind(this);
         this.handleJumpClick = this.handleJumpClick.bind(this);
         this.handleChapterClick = this.handleChapterClick.bind(this);
@@ -148,7 +150,8 @@ class Reading extends React.Component {
                 {display}
                 <div id='readingLeftButton' onClick={this.handlePreviousClick} onContextMenu={this.handleNextClick}></div>
                 <div id='readingRightButton'  onClick={this.handleNextClick} onContextMenu={this.handlePreviousClick}></div>
-                <ReadingCover />
+                <ReadingCover 
+                    readFileContent={this.readFileContent}/>
             </div>
         );
     }
@@ -202,10 +205,35 @@ class Reading extends React.Component {
 
     handleBookmarkClick() {
         console.log("Reading: Bookmark is clicked!");
+        if (this.props.coverState === 2) {
+            this.props.dispatch(setReadingCoverFadeoutState(1));
+            setTimeout(() => {
+                this.props.dispatch(setReadingCoverState(0));
+            }, 400);
+        } else {
+            this.props.dispatch(setReadingCoverState(2));
+            this.props.dispatch(setReadingCoverFadeoutState(0));
+        }
     }
 
     handleAddBookmarkClick() {
         console.log("Reading: AddBookmark is clicked!");
+        let d = new Date();
+        let t = [d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()];
+        let c = this.getContent100(this.props.bookContent);
+        let p = this.props.bookProgress;
+        let s = this.props.bookSize;
+        let b = this.props.bookPath;
+        this.props.dispatch(libraryAddBookmark(b, p, s, t, c));
+        if (this.props.coverState === 3) {
+            this.props.dispatch(setReadingCoverFadeoutState(1));
+            setTimeout(() => {
+                this.props.dispatch(setReadingCoverState(0));
+            }, 400);
+        } else {
+            this.props.dispatch(setReadingCoverState(3));
+            this.props.dispatch(setReadingCoverFadeoutState(0));
+        }
     }
 
     handleJumpClick() {
@@ -220,6 +248,16 @@ class Reading extends React.Component {
             this.props.dispatch(setReadingCoverFadeoutState(0));
         }
         
+    }
+
+    getContent100(content) {
+        let result = '';
+        for (let i = 0; i < content.length && i < 100; i++) {
+            if (content[i] !== ' ' && content[i] !== '\n' && content[i] !== '\r' && content[i] !== '\t') {
+                result += content[i];
+            }
+        }
+        return result;
     }
 
     formatContent(fontSize, lineHeight) {

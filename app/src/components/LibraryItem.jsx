@@ -29,7 +29,8 @@ class LibraryItem extends React.Component {
         bookPath: PropTypes.string,
         bookSize: PropTypes.number,
         bookProgress: PropTypes.number,
-        encoding: PropTypes.string
+        encoding: PropTypes.string,
+        bookmark: PropTypes.object,
     };
 
     constructor(props) {
@@ -94,7 +95,7 @@ class LibraryItem extends React.Component {
 
     jumpToReading() {
         this.props.dispatch(setCurPosition('reading'));
-        this.props.dispatch(changeReadingBook(this.props.bookTitle, this.props.bookSize, this.props.bookProgress, this.props.bookPath, this.props.encoding));
+        this.props.dispatch(changeReadingBook(this.props.bookTitle, this.props.bookSize, this.props.bookProgress, this.props.bookPath, this.props.encoding, this.props.bookmark));
     }
 
     handleSelect() {

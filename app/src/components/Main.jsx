@@ -193,9 +193,14 @@ class Main extends React.Component {
 
         if (this.props.curPosition === 'reading') {
             topRight = (
-                <div className='main-showReadingBook'>
-                    正在閱讀：{this.props.bookTitle}
-                </div>
+                // <div className='main-showReadingBook'>
+                //     {this.props.bookTitle}
+                // </div>
+                <div className='search ml-auto'>
+                    <Input tag={Link} to='/library' id='search-library' className='ml-auto' type='text' placeholder={this.props.bookTitle} onKeyPress={this.handleSearchKeyPress} onKeyDown={this.handleClearSearchEsc} disabled></Input>{
+                        this.props.searchText && <i className='navbar-text fa fa-times' onClick={this.handleClearSearch}></i>
+                    }
+                </div>  
             );
         }
 

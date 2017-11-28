@@ -12,9 +12,11 @@ const initReadingState = {
 	coverState: 0,
 	coverFadeOut: 0,
 	jumpProgress: 0,
+	bookmark: {},
 };
 
 export function reading(state = initReadingState, action) {
+	let BK;
 	switch(action.type) {
 		case '@READING/CHANGE_READING_BOOK':
 			return save({
@@ -27,6 +29,7 @@ export function reading(state = initReadingState, action) {
 				jumpProgress: -1,
 				coverState: 0,
 				coverFadeOut: 0,
+				bookmark: action.bookmark,
 			});
 		case '@READING/CHANGE_READING_CONTENT': 
 			return save({

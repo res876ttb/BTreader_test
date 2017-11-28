@@ -1,3 +1,14 @@
+* {
+    -webkit-user-select: none;  
+    -moz-user-select: none;    
+    -ms-user-select: none;      
+    user-select: none;
+}
+
+html {
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
 .blur {
     position: relative;
     background: rgba(255,255,255,0.2);
@@ -65,7 +76,7 @@
 
 .main .search {
     position: relative;
-    width: 100%;
+    width: 200px;
 }
 
 .main .search input {
@@ -80,12 +91,6 @@
 
 .main .search i:hover {
     color: #5bc0de;
-}
-
-@media (min-width: 576px) {
-    .main .search {
-        width: 10rem;
-    }
 }
 
 /********** Loading Animation **********/
@@ -112,8 +117,14 @@
 
 /********** Show current book title **********/
 .main-showReadingBook {
-    text-align: right;
-    max-width: 250px;
+    text-align: center;
+    width: 200px;
+    overflow: hidden;
     margin-left: auto;
     overflow: hidden;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    background: rgb(240, 240, 240);
+    color: rgb(124, 124, 124);
 }

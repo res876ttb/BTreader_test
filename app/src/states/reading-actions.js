@@ -13,7 +13,7 @@ export function changeReadingContent (content, byteRead) {
     };
 }
 
-export function changeReadingBook(bookTitle, bookSize, bookProgress, bookPath, encoding) {
+export function changeReadingBook(bookTitle, bookSize, bookProgress, bookPath, encoding, bookmark) {
     return {
         type: '@READING/CHANGE_READING_BOOK',
         bookTitle: bookTitle,
@@ -21,6 +21,7 @@ export function changeReadingBook(bookTitle, bookSize, bookProgress, bookPath, e
         bookProgress: bookProgress,
         bookPath: bookPath,
         encoding: encoding,
+        bookmark: bookmark,
     };
 }
 

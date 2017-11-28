@@ -78,3 +78,22 @@ export function libraryDataInitialize() {
         type: '@LIBRARY/DATA_INITIALIZE'
     }
 }
+
+export function libraryAddBookmark(bookPath, progress, size, time, content) {
+    return {
+        type: '@LIBARY/ADD_BOOKMARK',
+        bookPath: bookPath,
+        progress: progress,
+        size: size,
+        time: time,
+        content: content,
+    };
+}
+
+export function libraryDeleteBookmark(bookPath, progress) {
+    return {
+        type: '@LIBRARY/DELETE_BOOKMARK',
+        bookPath: bookPath,
+        progress: progress, 
+    }
+}

@@ -6,6 +6,8 @@ import {
     Button,
 } from 'reactstrap';
 
+import BookmarkCard from 'components/BookmarkCard.jsx';
+
 import {
     setJumpProgress,
     setReadingCoverState,
@@ -21,6 +23,9 @@ class ReadingCover extends React.Component {
         coverFadeOut: PropTypes.number,
         bookSize: PropTypes.number,
         bookProgress: PropTypes.number,
+        bookPath: PropTypes.string,
+        books: PropTypes.object,
+        readFileContent: PropTypes.func,
     };
 
     constructor(props) {
@@ -29,6 +34,14 @@ class ReadingCover extends React.Component {
         this.hideCover = this.hideCover.bind(this);
         this.handleDecimal = this.handleDecimal.bind(this);
         this.handleSetProgress = this.handleSetProgress.bind(this);
+    }
+
+    componentDidUpdate() {
+        if (this.props.coverState === 3) {
+            setTimeout(() => {
+                this.hideCover();
+            }, 600);
+        }
     }
 
     render() {
@@ -44,8 +57,64 @@ class ReadingCover extends React.Component {
                     </div>
                 </div>
             );
+        } else if (this.props.coverState === 2) {
+            let bookmarks = [];
+            let bks = this.props.books[this.props.bookPath].bookmark;
+            for (let b in bks) {
+                let bk = bks[b];
+                bookmarks.push((
+                    <BookmarkCard
+                        key={b}
+                        progress={bk.progress}
+                        size={bk.size}
+                        content={bk.content}
+                        date={bk.time}
+                        bookPath={this.props.bookPath}
+                        hide={this.hideCover}
+                        readFileContent={this.props.readFileContent}
+                    />
+                ));
+            }
+            if (bookmarks.length === 0) {
+                bookmarks = (
+                    <div style={{
+                        textAlign: 'center', 
+                        height: '60px', 
+                        lineHeight: '60px', 
+                        fontSize: '20px',
+                        color: 'gray'}}>
+                        目前沒有書籤喔！
+                    </div>
+                );
+            }
+            return (
+                <div>
+                    <div className={this.props.coverFadeOut === 1 ? "reading-cover-background reading-cover-background-fadeout" : "reading-cover-background"} onClick={this.hideCover}></div>
+                    <div className={this.props.coverFadeOut === 1 ? "reading-cover-bookmark reading-cover-bookmark-fadout" : "reading-cover-bookmark"}>
+                        <div className='reading-cover-bookmark-titlediv'>
+                            <div className='fa fa-arrow-circle-left reading-cover-icon-back' onClick={this.hideCover}></div> 
+                            <div className='reading-cover-bookmark-title'>書籤列表</div>
+                        </div>
+                        <div className='reading-cover-bookmarkBoard'>
+                            {bookmarks}
+                        </div>
+                    </div>
+                </div>
+            );
+        } else if (this.props.coverState === 3) {
+            console.log(this.props.books[this.props.bookPath].bookmark);
+            return (
+                <div>
+                    <div className={this.props.coverFadeOut === 1 ? "reading-cover-background reading-cover-background-fadeout" : "reading-cover-background"} onClick={this.hideCover}></div>
+                    <div className={this.props.coverFadeOut === 1 ? "fa fa-bookmark reading-cover-addBookmark reading-cover-addBookmark-fadout" : "fa fa-bookmark reading-cover-addBookmark"}></div>
+                </div>
+            );
         } else {
-            return (<div></div>);
+            return (
+                <div>
+                    Test
+                </div>
+            )
         }
     }
 
@@ -94,4 +163,6 @@ export default connect(state => ({
     coverFadeOut:   state.reading.coverFadeOut,
     bookSize:       state.reading.bookSize,
     bookProgress:   state.reading.bookProgress,
+    bookPath:       state.reading.bookPath,
+    books:          state.library.books,
 }))(ReadingCover);

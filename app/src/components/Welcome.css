@@ -4,6 +4,7 @@
 
     color: white;
     text-align: center;
+    overflow: hidden;
 }
 
 .welcome-jumbotron {

@@ -11,6 +11,12 @@ const initLibraryState = {
         //     bookSize: 0,
         //     bookPath: '',
         //     encoding: '',
+        //     bookmark: {
+        //         progress1: {
+        //             progress: 0,
+        //             content: '',...
+        //         }, progress2: {...
+        //     },
         // },
     },
     searchText: '',
@@ -60,6 +66,8 @@ export function library(state = initLibraryState, action) {
                     bookProgress: action.bookProgress,
                     bookTitle: action.bookTitle,
                     encoding: action.encoding,
+                    bookPath: action.bookPath,
+                    bookmark: {},
                 };
             }
 
@@ -108,6 +116,34 @@ export function library(state = initLibraryState, action) {
                 searchText: '',
             }
             return S;
+        case '@LIBARY/ADD_BOOKMARK':
+            B = {
+                ...state.books,
+            };
+            for (let i in B[action.bookPath].bookmark) {
+                if (i === action.progress) {
+                    return state
+                }
+            }
+            B[action.bookPath].bookmark[action.progress] = {
+                progress: action.progress,
+                size: action.size,
+                content: action.content,
+                time: action.time,
+            };
+            return save({
+                ...state,
+                books: B,
+            });
+        case '@LIBRARY/DELETE_BOOKMARK':
+            B = {
+                ...state.books,
+            };
+            delete B[action.bookPath].bookmark[action.progress];
+            return save({
+                ...state,
+                books: B,
+            });
         case '@LIBRARY/DATA_INITIALIZE':
             return save({
                 ...initLibraryState

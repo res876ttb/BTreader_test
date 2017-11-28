@@ -17,11 +17,19 @@
     }
 }
 
+#readingFrame {
+    position: fixed;
+    top: 56px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
 #readingLeftButton {
     background: rgba(0, 255, 255, 0);
     width: 50%;
     position: absolute;
-    top: 56px;
+    top: 0px;
     bottom: 0px;
     left: 0px;
     z-index: 3;
@@ -31,7 +39,7 @@
     background: rgba(255, 255, 255, 0);
     width: 50%;
     position: absolute;
-    top: 56px;
+    top: 0px;
     bottom: 0px;
     right: 0px;
     z-index: 3;
@@ -66,6 +74,10 @@
     background: rgb(124, 72, 38);;
 }
 
+.reading-icon-chapter:active {
+    color: rgb(180, 180, 180);
+}
+
 .reading-icon-jump {
     bottom: 135px;
 }
@@ -73,6 +85,10 @@
 .reading-icon-jump:hover {
     color: white;
     background: black;
+}
+
+.reading-icon-jump:active {
+    color: rgb(180, 180, 180);
 }
 
 .reading-icon-bookmark {
@@ -85,6 +101,11 @@
     background: rgb(177, 0, 0);
 }
 
+.reading-icon-bookmark:active {
+    color: rgb(180, 180, 180);
+    background: rgb(134, 0, 0);
+}
+
 .reading-icon-addBookmark {
     bottom: 85px;
     color: rgb(44, 133, 71);
@@ -93,4 +114,9 @@
 .reading-icon-addBookmark:hover {
     color: white;
     background: rgb(44, 133, 71);
+}
+
+.reading-icon-addBookmark:active {
+    color: rgb(180, 180, 180);
+    background: rgb(33, 100, 53);
 }
