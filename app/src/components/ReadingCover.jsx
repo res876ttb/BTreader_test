@@ -111,9 +111,7 @@ class ReadingCover extends React.Component {
             );
         } else {
             return (
-                <div>
-                    Test
-                </div>
+                <div></div>
             )
         }
     }

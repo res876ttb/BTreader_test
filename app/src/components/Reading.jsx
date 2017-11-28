@@ -125,22 +125,12 @@ class Reading extends React.Component {
                         <i className="fa fa-plus-square reading-icon reading-icon-addBookmark" onClick={this.handleAddBookmarkClick} data-tip="將本頁加入書籤"></i>
                         <i className="fa fa-share reading-icon reading-icon-jump" onClick={this.handleJumpClick} data-tip="跳轉"></i>
                         {/* <i className="fa fa-list-ul reading-icon reading-icon-chapter" onClick={this.handleChapterClick} data-tip="章節"></i> */}
+                        <div className='reading-progress' data-tip="目前進度">
+                            {String((this.props.bookProgress / this.props.bookSize * 100).toFixed(1))}
+                            <span style={{fontSize: '8px'}}>%</span>
+                        </div>
                         <ReactTooltip place="left" effect="solid" />
                     </div>
-                    <Progress multi 
-                        style={{margin: '16px 16px 0px 16px', height: '4px'}} 
-                        id='reading-progress'
-                    >
-                        <Progress bar 
-                            value={this.props.bookProgress} 
-                            max={this.props.bookSize} 
-                            color='success' 
-                        />
-                        <Progress className='restBar' bar 
-                            value={this.props.bookSize - this.props.bookProgress} 
-                            max={this.props.bookSize} 
-                        />
-                    </Progress>
                 </div>
             );
         }

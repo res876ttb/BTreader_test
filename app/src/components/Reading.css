@@ -79,7 +79,7 @@
 }
 
 .reading-icon-jump {
-    bottom: 135px;
+    bottom: 142px;
 }
 
 .reading-icon-jump:hover {
@@ -92,7 +92,7 @@
 }
 
 .reading-icon-bookmark {
-    bottom: 35px;
+    bottom: 42px;
     color: rgb(177, 0, 0);
 }
 
@@ -107,7 +107,7 @@
 }
 
 .reading-icon-addBookmark {
-    bottom: 85px;
+    bottom: 92px;
     color: rgb(44, 133, 71);
 }
 
@@ -119,4 +119,19 @@
 .reading-icon-addBookmark:active {
     color: rgb(180, 180, 180);
     background: rgb(33, 100, 53);
+}
+
+.reading-progress {
+    position: absolute !important;
+    width: 50px;
+    height: 25px;
+    line-height: 25px;
+    border-radius: 4px;
+    bottom: 7px;
+    font-size: 14px;
+    text-align: right;
+    padding-right: 5px;
+    right: -45px;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 100;
 }
