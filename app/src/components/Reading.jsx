@@ -94,7 +94,7 @@ class Reading extends React.Component {
         this.readingInnerStyle = {
             height: this.props.divHeight - 120,
             margin: '2rem 1rem 7px 1rem',
-            padding: '30px',
+            padding: '30px 0px 30px 30px',
             borderRadius: '13px',
             fontSize: this.fontSize,
             lineHeight: this.lineHeight,
@@ -254,7 +254,7 @@ class Reading extends React.Component {
         let oriContent = this.props.bookContent;
         let _content = this.formatWidth(fontSize, String(this.props.bookContent));
         let content = '';
-        let height = this.props.divHeight - 185;
+        let height = this.props.divHeight - 160;
         let fixError = 0, i = 0, j = 0, numOfLines = 0;
         for (i = 0; i < _content.length; i += 1) {
             if (this.checkLineEmpty(_content[i])) {
@@ -270,7 +270,7 @@ class Reading extends React.Component {
                 }
                 content += _content[i];
                 numOfLines += 1;
-                if (numOfLines * lineHeight * fontSize > height) {
+                if ((numOfLines + 1) * lineHeight * fontSize > height) {
                     break;
                 }
             }
@@ -479,7 +479,7 @@ class Reading extends React.Component {
             let result = '';
             let _content = v.txt;
             let content = v.content;
-            let height = this.props.divHeight - 185;
+            let height = this.props.divHeight - 160;
             let lineHeight = this.lineHeight;
             let fontSize = this.fontSize;
             let fixLineError = 0, fixEmptyError = '', i = 0, j = _content.length - 1, numOfLines = 0;
@@ -498,7 +498,7 @@ class Reading extends React.Component {
                     }
                     result += content[i];
                     numOfLines += 1;
-                    if (numOfLines * lineHeight * fontSize > height) {
+                    if ((numOfLines + 1) * lineHeight * fontSize > height) {
                         break;
                     }
                 }
