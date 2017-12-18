@@ -39,14 +39,25 @@ app.on('activate', function () {
 });
 
 ipcMain.on('synchronous-message', (event, arg) => {
+	let data;
 	switch(arg) {
 		case 'openTXT':
 			console.log('Main process is opening text file.');
-			let data = dialog.showOpenDialog({
+			data = dialog.showOpenDialog({
 				filters: [
 					{name: 'Text file', extensions: ['txt']}
 				],
 				properties: ['openFile', 'multiSelections']
+			});
+			event.returnValue = data === undefined ? null : data;
+			break;
+		case 'openImage':
+			console.log('Main process is opening image file.');
+			data = dialog.showOpenDialog({
+				filters: [
+					{name: 'Images', extensions: ['jpg', 'jpeg', 'png', 'bmp']}
+				],
+				properties: ['openFile']
 			});
 			event.returnValue = data === undefined ? null : data;
 			break;

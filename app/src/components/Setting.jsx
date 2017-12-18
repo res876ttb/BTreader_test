@@ -32,6 +32,8 @@ class Setting extends React.Component {
 		this.heigherLine = this.heigherLine.bind(this);
 		this.lowerLine = this.lowerLine.bind(this);
 		this.originalLineHeight = this.originalLineHeight.bind(this);
+		this.setBackbround = this.setBackbround.bind(this);
+		this.resetBackbround = this.setBackbround.bind(this);
 		this.selecttest = true;
 	}
 	
@@ -49,8 +51,8 @@ class Setting extends React.Component {
 		}
 
 		return(
-		    <div className='container setting-outter'>
-		    	<div className='setting-inner blur'>
+			<div className='container setting-outter'>
+				<div className='setting-inner blur'>
 					{div10}
 					<div className='ns checklist-style checklist-check' style={{textAlign: 'center',width: '47.5%',display: 'inline-block'}}>ON</div>
 					<div style={{width: '5%', display: 'inline-block'}}></div>
@@ -79,11 +81,47 @@ class Setting extends React.Component {
 						行距預覽
 					</div>
 
+					{div20}
+					<div 
+						onClick={this.setBackbround} 
+						className='ns checklist-style checklist-check'>
+						選擇背景（重新啟動程式後生效）
+					</div>
+					<div 
+						onClick={this.resetBackbround} 
+						className='ns checklist-style checklist-check'>
+						恢復預設背景（重新啟動程式後生效）
+					</div>
 
 					{div10}
-		    	</div>
-		    </div>
+				</div>
+				{div20}
+			</div>
 		);
+	}
+
+	setBackbround() {
+		var fs = require('fs-extra');
+		const {ipcRenderer} = require('electron');
+		let path = ipcRenderer.sendSync('synchronous-message', 'openImage');
+		fs.copy(path[0], window.appPath + 'image/background.jpeg', (err) => {
+			if (err) {
+				throw err;
+			} else {
+				console.log('Background setting done.');
+			}
+		});
+	}
+
+	resetBackbround() {
+		var fs = require('fs-extra');
+		fs.copy(window.appPath + 'image/default.jpeg', window.appPath + 'image/background.jpeg', err => {
+			if (err) {
+				throw err;
+			} else {
+				console.log('Rename successed!');
+			}
+		});
 	}
 	
 	setAutoReading() {

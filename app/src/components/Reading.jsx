@@ -366,7 +366,7 @@ class Reading extends React.Component {
     }
 
     readFileContent() {
-        let buffer = new Buffer(4000);
+        let buffer = new Buffer(8000);
         if (this.props.bookPath !== '') {
             fs.open(this.props.bookPath, 'r', (err1, fd) => {
                 if (err1 !== null) {
@@ -430,12 +430,12 @@ class Reading extends React.Component {
         }
         let p = new Promise((res, rej) => {
             console.log('Previous Page: Read previous content');
-            let buffer = new Buffer(4000);
+            let buffer = new Buffer(8000);
             fs.open(this.props.bookPath, 'r', (err1, fd) => {
                 if (err1 !== null) {
                     console.error(err1);
                 }
-                fs.read(fd, buffer, 0, buffer.length, this.props.bookProgress - 4000, (err2, byteRead, readResult) => {
+                fs.read(fd, buffer, 0, buffer.length, this.props.bookProgress - 8000, (err2, byteRead, readResult) => {
                     if (byteRead === 0) {
                         this.props.dispatch(setProgress(0 - this.bufferLength));
                         this.props.dispatch(SetProgress(this.props.bookPath, 0 - this.bufferLength));
@@ -459,7 +459,7 @@ class Reading extends React.Component {
                     }
                     // copy readResult to a new array
                     let result;
-                    if (this.props.bookProgress - 4000 < 0) {
+                    if (this.props.bookProgress - 8000 < 0) {
                         result = readResult.slice(0, this.props.bookProgress);
                     } else {
                         result = readResult.slice(0, byteRead);

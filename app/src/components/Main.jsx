@@ -123,7 +123,7 @@ class Main extends React.Component {
 
         let ele = document.getElementsByClassName('reader-bg');
         for (let i = 0; i < ele.length; i = i + 1) {
-            ele[i].setAttribute("style", "background-image: url('src/image/welcome_bg.jpeg');");
+            ele[i].setAttribute("style", "background-image: url('image/background.jpeg');");
         }
     }
 
