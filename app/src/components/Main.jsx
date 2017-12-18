@@ -96,6 +96,7 @@ class Main extends React.Component {
     componentWillMount() {
         this.getCurPath();
         window.addEventListener('resize', this.updateWindowSize);
+        this.updateWindowSize();
         
         this.props.dispatch(setDebug(false));
         this.props.dispatch(setOsVersion());
