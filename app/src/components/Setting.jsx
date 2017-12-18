@@ -33,7 +33,7 @@ class Setting extends React.Component {
 		this.lowerLine = this.lowerLine.bind(this);
 		this.originalLineHeight = this.originalLineHeight.bind(this);
 		this.setBackbround = this.setBackbround.bind(this);
-		this.resetBackbround = this.setBackbround.bind(this);
+		this.resetBackbround = this.resetBackbround.bind(this);
 		this.selecttest = true;
 	}
 	
@@ -119,7 +119,7 @@ class Setting extends React.Component {
 			if (err) {
 				throw err;
 			} else {
-				console.log('Rename successed!');
+				console.log('Restore successed!');
 			}
 		});
 	}
