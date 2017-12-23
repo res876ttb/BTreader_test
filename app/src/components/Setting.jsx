@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import Style from 'style-it';
 
 import {
 	setAutoReading,
@@ -24,6 +25,10 @@ class Setting extends React.Component {
 	
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			previewBackground: window.appPath + 'image/background.jpeg'
+		};
 		
 		this.setAutoReading = this.setAutoReading.bind(this);
 		this.originalFont = this.originalFont.bind(this);
@@ -51,52 +56,47 @@ class Setting extends React.Component {
 		}
 
 		return(
-			<div className='container setting-outter'>
-				<div className='setting-inner blur'>
-					{div10}
-					<div className='ns checklist-style checklist-check' style={{textAlign: 'center',width: '47.5%',display: 'inline-block'}}>ON</div>
-					<div style={{width: '5%', display: 'inline-block'}}></div>
-					<div className='ns checklist-style checklist-uncheck' style={{textAlign: 'center', width: '47.5%', display: 'inline-block'}}>OFF</div>
-					
-					{div20}
-					<div 
-						onClick={this.setAutoReading} 
-						className={checklist_style} 
-					>
-						啟動程式後，自動開啟最近閱讀書籍
-					</div>
+			<Style>
+				{`
+					.Blur:after {
+						background-image: url(\"` + this.state.previewBackground + `\");
+					}
+				`}
+				<div className='container setting-outter'>
+					<div className='setting-inner blur'>
+						{div10}
+						{/* <div className='ns checklist-style checklist-check' style={{textAlign: 'center',width: '47.5%',display: 'inline-block'}}>ON</div>
+						<div style={{width: '5%', display: 'inline-block'}}></div>
+						<div className='ns checklist-style checklist-uncheck' style={{textAlign: 'center', width: '47.5%', display: 'inline-block'}}>OFF</div>
+						
+						{div20} */}
+						<div className={checklist_style} onClick={this.setAutoReading}>啟動程式後，自動開啟最近閱讀書籍</div>
 
-					{div20}
-					<div className='ns sbtl sbtr sbnh'>字體大小設定</div>
-					<div className='ns sb' style={{display: 'inline-block', width: '50%'}} onClick={this.originalFont}>回復預設值</div>
-					<div className='ns sb' style={{display: 'inline-block', width: '25%'}} onClick={this.smallerFont}>更小</div>
-					<div className='ns sb' style={{display: 'inline-block', width: '25%'}} onClick={this.biggerFont}>更大</div>
-					<div className='ns sbnh' style={{borderTop: '2px solid', borderColor: '#C0BCAD'}}>行距設定</div>
-					<div className='ns sbbl sb' style={{display: 'inline-block', width: '50%'}} onClick={this.originalLineHeight}>回復預設值</div>
-					<div className='ns sbbr sb' style={{display: 'inline-block', width: '25%'}} onClick={this.lowerLine}>更窄</div>
-					<div className='ns sb' style={{display: 'inline-block', width: '25%'}} onClick={this.heigherLine}>更寬</div>
-					{div10}
-					<div className='ns sbp' style={{fontSize: this.props.fontSize, lineHeight: this.props.lineHeight}}>
-						字體大小預覽 <br />
-						行距預覽
-					</div>
+						{div20}
+						<div className='ns sbtl sbtr sbnh'>字體大小設定</div>
+						<div className='ns sb' style={{display: 'inline-block', width: '50%'}} onClick={this.originalFont}>回復預設值</div>
+						<div className='ns sb' style={{display: 'inline-block', width: '25%'}} onClick={this.smallerFont}>更小</div>
+						<div className='ns sb' style={{display: 'inline-block', width: '25%'}} onClick={this.biggerFont}>更大</div>
+						<div className='ns sbnh' style={{borderTop: '2px solid', borderColor: '#C0BCAD'}}>行距設定</div>
+						<div className='ns sb' style={{display: 'inline-block', width: '50%'}} onClick={this.originalLineHeight}>回復預設值</div>
+						<div className='ns sb' style={{display: 'inline-block', width: '25%'}} onClick={this.lowerLine}>更窄</div>
+						<div className='ns sb' style={{display: 'inline-block', width: '25%'}} onClick={this.heigherLine}>更寬</div>
+						<div className='ns sbnh' style={{borderTop: '2px solid', borderColor: '#C0BCAD'}}>背景設定（重新啟動程式來生效）</div>
+						<div className='ns sb sbbl' style={{display: 'inline-block', width: '50%'}} onClick={this.resetBackbround}>恢復預設背景</div>
+						<div className='ns sb sbbr' style={{display: 'inline-block', width: '50%'}} onClick={this.setBackbround}>選擇背景圖片</div>
 
-					{div20}
-					<div 
-						onClick={this.setBackbround} 
-						className='ns checklist-style checklist-check'>
-						選擇背景（重新啟動程式後生效）
-					</div>
-					<div 
-						onClick={this.resetBackbround} 
-						className='ns checklist-style checklist-check'>
-						恢復預設背景（重新啟動程式後生效）
-					</div>
+						{div20}
+						<div className='ns sbp' style={{fontSize: this.props.fontSize, lineHeight: this.props.lineHeight, backgroundImage: 'url("' + this.state.previewBackground + '")'}}>
+							<div className='Blur' style={{fontColor: 'black', padding: '15px', margin: '5px 15px'}}>
+								字體大小預覽 <br />行距預覽
+							</div>
+						</div>
 
-					{div10}
+						{div10}
+					</div>
+					{div20}
 				</div>
-				{div20}
-			</div>
+			</Style>
 		);
 	}
 
@@ -108,6 +108,7 @@ class Setting extends React.Component {
 			if (err) {
 				throw err;
 			} else {
+				this.setState({previewBackground: path[0]});
 				console.log('Background setting done.');
 			}
 		});
@@ -119,6 +120,7 @@ class Setting extends React.Component {
 			if (err) {
 				throw err;
 			} else {
+				this.setState({previewBackground: window.appPath + 'image/default.jpeg'});
 				console.log('Restore successed!');
 			}
 		});

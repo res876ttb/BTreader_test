@@ -20,6 +20,30 @@
 	}
 }
 
+.Blur {
+	position: relative;
+	background: rgb(255,255,255);
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	overflow: hidden;
+	z-index: 2;
+}
+
+.Blur:after {
+	z-index: -1;
+	content: '';
+	position: absolute; 
+	top: 0; 
+	left: 0; 
+	right: 0; 
+	bottom: 0; 
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat; 
+	background-size: cover;
+	margin: -30px;
+	filter: blur(12px);
+}
+
 /************** check list style **************/
 .checklist-check {
 	color: rgb(105, 75, 0) !important;
@@ -29,6 +53,11 @@
 .checklist-check:hover {
 	color: rgb(105, 75, 0) !important;
 	background: #E9E3D2;
+}
+
+.checklist-check:active {
+	color: rgb(105, 75, 0) !important;
+	background: rgb(212, 206, 187);
 }
 
 .checklist-uncheck {
@@ -41,13 +70,18 @@
 	background: #747373;
 }
 
+.checklist-uncheck:active {
+	color: #DFDEDE;
+	background: #5f5f5f;
+}
+
 .checklist-style {
 	border-radius: 3px;
 	padding: 0.5rem 2rem 0.5rem 2rem;
 	font-size: 18px;
 	transition-duration: 0.3s;
 }
-
+/* no selection */
 .ns {
 	-webkit-touch-callout: none; /* iOS Safari */
       -webkit-user-select: none; /* Safari */
@@ -59,6 +93,7 @@
 }
 
 /************** setting block style **************/
+/* setting block */
 .sb {
 	padding: 0.5rem 0rem 0.5rem 0rem;
 	font-size: 18px;
@@ -67,13 +102,17 @@
 	background: #FCF6E1;
 	text-align: center;
 }
-
+/* setting block preview */
 .sbp {
 	padding: 1rem;
 	border-radius: 3px;
-	background: rgba(252, 246, 225, 0.85);
+	transition-duration: 0.3s;
+	background-attachment: fixed; 
+    background-position: center;
+    background-repeat: no-repeat; 
+	background-size: cover;
 }
-
+/* setting block with no hover */
 .sbnh {
 	padding: 0.5rem 0rem 0.5rem 0rem;
 	font-size: 18px;
@@ -86,6 +125,11 @@
 .sb:hover {
 	color: rgb(105, 75, 0);
 	background: #E9E3D2;
+}
+
+.sb:active {
+	color: rgb(105, 75, 0);
+	background: rgb(212, 206, 187);
 }
 
 .sbtl {
