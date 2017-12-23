@@ -108,7 +108,7 @@ class Setting extends React.Component {
 			if (err) {
 				throw err;
 			} else {
-				this.setState({previewBackground: path[0]});
+				this.setState({previewBackground: path[0].replace(/\\/g,'/')});
 				console.log('Background setting done.');
 			}
 		});
