@@ -1,6 +1,6 @@
 {
   "name": "BTreader",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "start-mac": "webpack && ./node_modules/.bin/electron .",
     "start-win": "webpack && .\\node_modules\\.bin\\electron .",
     "package-mac": "electron-packager ./ BTreader --out ../BTreader.build --platform=darwin --overwrite",
+    "package-win": "electron-packager ./ BTreader --out ../BTreader.build --platform=win32 --overwrite",
     "comp": "webpack"
   },
   "author": "res876ttb",
