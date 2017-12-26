@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Style from 'style-it';
+import { ChromePicker } from 'react-color';
 
 import {
 	setAutoReading,
@@ -29,7 +30,8 @@ class Setting extends React.Component {
 		super(props);
 
 		this.state = {
-			previewBackground: window.appPath + 'image/background.jpeg'
+			previewBackground: window.appPath + 'image/background.jpeg',
+			showColorPicker: false,
 		};
 		
 		this.setAutoReading = this.setAutoReading.bind(this);
@@ -48,8 +50,11 @@ class Setting extends React.Component {
 		this.setFontColorGray = this.setFontColorGray.bind(this);
 		this.setFontColorGreen = this.setFontColorGreen.bind(this);
 		this.setFontColorYellow = this.setFontColorYellow.bind(this);
+		this.showColorPicker = this.showColorPicker.bind(this);
+		this.hideColorPicker = this.hideColorPicker.bind(this);
+		this.handleColorPickerShow = this.handleColorPickerShow.bind(this);
+		this.handleColorPickerClick = this.handleColorPickerClick.bind(this);
 		this.resetBackground = this.resetBackground.bind(this);
-		this.selecttest = true;
 	}
 	
 	render() {
@@ -69,7 +74,7 @@ class Setting extends React.Component {
 			<Style>
 				{`
 					.Blur:after {
-						background-image: url(\"` + this.state.previewBackground + `\");
+						background-image: url(\"${this.state.previewBackground}\");
 					}
 				`}
 				<div className='container setting-outter'>
@@ -165,7 +170,17 @@ class Setting extends React.Component {
 							<div className='sb sbfsc' style={{color: 'white'}}>
 								深黃</div>
 						</div>
-						<div className='ns sb sbbr' style={{display: 'inline-block', width: '20%'}}>自訂</div>
+						<div className='ns sb sbbr' style={{
+							display: 'inline-block', width: '20%', color: this.props.color}}
+							onClick={this.handleColorPickerShow}>自訂</div>	
+						<div className='sbcpc' onClick={this.hideColorPicker} 
+							style={this.state.showColorPicker ? {} : {display: 'none'}}/>
+						<div className={this.state.showColorPicker ? 'sbcp' : 'sbcp sbcp-hide'}>
+							<ChromePicker 
+								onChangeComplete={this.handleColorPickerClick} 
+								disableAlpha={true}
+								color={this.props.color}/>
+						</div>
 
 						{div20}
 						<div className='ns sbp' style={{
@@ -187,6 +202,30 @@ class Setting extends React.Component {
 				</div>
 			</Style>
 		);
+	}
+
+	handleColorPickerClick(colorObj) {
+		this.setFontColor(colorObj.hex);
+	}
+
+	showColorPicker() {
+		this.setState({
+			showColorPicker: true
+		});
+	}
+
+	hideColorPicker() {
+		this.setState({
+			showColorPicker: false
+		});
+	}
+
+	handleColorPickerShow() {
+		if (this.state.showColorPicker === true) {
+			this.hideColorPicker();
+		} else {
+			this.showColorPicker();
+		}
 	}
 
 	setFontColor(color) {
