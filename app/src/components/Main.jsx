@@ -46,6 +46,7 @@ import {
     dataReadingLoad,
     changeReadingBook,
     readingDataInitialize,
+    setReadingFontColor,
 } from 'states/reading-actions.js';
 import {
     dataSettingLoad,
@@ -62,27 +63,28 @@ const fs = require('fs');
 
 class Main extends React.Component {
     static propTypes = {
-        debug: PropTypes.bool,
-        navbarToggle: PropTypes.bool,
-        dispatch: PropTypes.func,
-        osVersion: PropTypes.string,
-        divWidth: PropTypes.number,
-        divHeight: PropTypes.number,
         autoReading: PropTypes.bool,
-        rerender: PropTypes.number,
-        searchText: PropTypes.string,
         bookTitle: PropTypes.string,
         curPositon: PropTypes.string,
+        debug: PropTypes.bool,
+        dispatch: PropTypes.func,
+        divHeight: PropTypes.number,
+        divWidth: PropTypes.number,
+        navbarToggle: PropTypes.bool,
+        osVersion: PropTypes.string,
+        rerender: PropTypes.number,
+        searchText: PropTypes.string,
+        settingColor: PropTypes.string,
     };
 
     constructor(props) {
         super(props);
-        this.debug = false;
-        this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
-        this.updateWindowSize = this.updateWindowSize.bind(this);
-        this.handleSearchKeyPress = this.handleSearchKeyPress.bind(this);
+        this.debug = true;
         this.handleClearSearch = this.handleClearSearch.bind(this);
         this.handleClearSearchEsc = this.handleClearSearchEsc.bind(this);
+        this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
+        this.handleSearchKeyPress = this.handleSearchKeyPress.bind(this);
+        this.updateWindowSize = this.updateWindowSize.bind(this);
 
         this.state = {
             content: 'Better Text Reader',
@@ -140,6 +142,7 @@ class Main extends React.Component {
                 };
             });
         }, 3000);
+        this.props.dispatch(setReadingFontColor(this.props.settingColor));
     }
     
     componentWillUnmount() {
@@ -344,4 +347,5 @@ export default connect (state => ({
     autoReading: state.setting.autoReading,
     searchText: state.library.searchText,
     bookTitle: state.reading.bookTitle,
+    settingCOlor: state.setting.color,
 }))(Main);

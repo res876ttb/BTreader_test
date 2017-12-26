@@ -72,3 +72,10 @@ export function readingDataInitialize() {
         type: '@READING/DATA_INITIALIZE'
     }
 }
+
+export function setReadingFontColor(color) {
+    return {
+        type: '@READING/SET_READING_FONT_COLOR',
+        color: color,
+    }
+}

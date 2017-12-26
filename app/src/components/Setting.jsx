@@ -5,25 +5,28 @@ import Style from 'style-it';
 import { ChromePicker } from 'react-color';
 
 import {
-	setAutoReading,
 	biggerFont,
-	smallerFont,
-	originalFont,
 	heigherLine,
 	lowerLine,
+	originalFont,
 	originalLineHeight,
+	setAutoReading,
 	setFontColor,
+	smallerFont,
 } from '../states/setting-actions.js';
+import {
+	setReadingFontColor,
+} from '../states/reading-actions.js';
 
 import './Setting.css';
 
 class Setting extends React.Component {
 	static propTypes = {
-		dispatch: PropTypes.func,
 		autoReading: PropTypes.bool,
+		color: PropTypes.string,
+		dispatch: PropTypes.func,
 		fontSize: PropTypes.number,
 		lineHeight: PropTypes.number,
-		color: PropTypes.string,
 	}
 	
 	constructor(props) {
@@ -34,27 +37,27 @@ class Setting extends React.Component {
 			showColorPicker: false,
 		};
 		
-		this.setAutoReading = this.setAutoReading.bind(this);
-		this.originalFont = this.originalFont.bind(this);
-		this.smallerFont = this.smallerFont.bind(this);
 		this.biggerFont = this.biggerFont.bind(this);
+		this.handleColorPickerClick = this.handleColorPickerClick.bind(this);
+		this.handleColorPickerShow = this.handleColorPickerShow.bind(this);
 		this.heigherLine = this.heigherLine.bind(this);
+		this.hideColorPicker = this.hideColorPicker.bind(this);
 		this.lowerLine = this.lowerLine.bind(this);
+		this.originalFont = this.originalFont.bind(this);
 		this.originalLineHeight = this.originalLineHeight.bind(this);
+		this.resetBackground = this.resetBackground.bind(this);
+		this.setAutoReading = this.setAutoReading.bind(this);
 		this.setBackground = this.setBackground.bind(this);
-		this.setBackgroundWhite = this.setBackgroundWhite.bind(this);
 		this.setBackgroundBlack = this.setBackgroundBlack.bind(this);
+		this.setBackgroundWhite = this.setBackgroundWhite.bind(this);
 		this.setFontColor = this.setFontColor.bind(this);
 		this.setFontColorBlack = this.setFontColorBlack.bind(this);
-		this.setFontColorWhite = this.setFontColorWhite.bind(this);
 		this.setFontColorGray = this.setFontColorGray.bind(this);
 		this.setFontColorGreen = this.setFontColorGreen.bind(this);
+		this.setFontColorWhite = this.setFontColorWhite.bind(this);
 		this.setFontColorYellow = this.setFontColorYellow.bind(this);
 		this.showColorPicker = this.showColorPicker.bind(this);
-		this.hideColorPicker = this.hideColorPicker.bind(this);
-		this.handleColorPickerShow = this.handleColorPickerShow.bind(this);
-		this.handleColorPickerClick = this.handleColorPickerClick.bind(this);
-		this.resetBackground = this.resetBackground.bind(this);
+		this.smallerFont = this.smallerFont.bind(this);
 	}
 	
 	render() {
@@ -229,6 +232,7 @@ class Setting extends React.Component {
 	}
 
 	setFontColor(color) {
+		this.props.dispatch(setReadingFontColor(color));
 		this.props.dispatch(setFontColor(color));
 	}
 
@@ -339,7 +343,7 @@ class Setting extends React.Component {
 
 export default connect(state => ({
 	autoReading: 	state.setting.autoReading,
+	color: 			state.setting.color,
 	fontSize: 		state.setting.fontSize,
 	lineHeight: 	state.setting.lineHeight,
-	color: 			state.setting.color,
 }))(Setting);

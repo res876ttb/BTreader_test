@@ -8,19 +8,20 @@ import ReactTooltip from 'react-tooltip';
 import ReadingCover from 'components/ReadingCover.jsx';
 
 import {
-    SetProgress,
     deleteSelect,
-    SetAbsoluteProgress,
     libraryAddBookmark,
+    SetAbsoluteProgress,
+    SetProgress,
 } from '../states/library-actions.js';
 import {
-    setProgress,
-    setJumpProgress,
     changeReadingBook,
-    setAbsoluteProgress,
     changeReadingContent,
-    setReadingCoverState,
+    setAbsoluteProgress,
+    setJumpProgress,
+    setProgress,
     setReadingCoverFadeoutState,
+    setReadingCoverState,
+    setReadingFontColor,
 } from '../states/reading-actions.js';
 import {
     Traditionalized,
@@ -30,41 +31,41 @@ import {
 import './Reading.css';
 
 // js import
+const {ipcRenderer} = require('electron');
 const fs = require('fs');
 const iconv = require('iconv-lite');
-const {ipcRenderer} = require('electron');
 const jcd = require('jschardet');
 
 class Reading extends React.Component {
     static props = {
-        dispatch: PropTypes.func,
+        bookContent: PropTypes.string,
         bookPath: PropTypes.string,
-        bookTitle: PropTypes.string,
         bookProgress: PropTypes.number,
         bookSize: PropTypes.number,
-        bookContent: PropTypes.string,
-        encoding: PropTypes.string,
-        divWidth: PropTypes.number,
-        divHeight: PropTypes.number,
-        fontSize: PropTypes.number,
-        lineHeight: PropTypes.number,
-        coverState: PropTypes.number,
-        jumpProgress: PropTypes.number,
+        bookTitle: PropTypes.string,
         color: PropTypes.string,
+        coverState: PropTypes.number,
+        dispatch: PropTypes.func,
+        divHeight: PropTypes.number,
+        divWidth: PropTypes.number,
+        encoding: PropTypes.string,
+        fontSize: PropTypes.number,
+        jumpProgress: PropTypes.number,
+        lineHeight: PropTypes.number,
     };
 
     constructor(props) {
         super(props);
         this.fontSize = this.props.fontSize;
         this.lineHeight = this.props.lineHeight;
-        this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.readFileContent = this.readFileContent.bind(this);
-        this.handleNextClick = this.handleNextClick.bind(this);
-        this.handleJumpClick = this.handleJumpClick.bind(this);
-        this.handleChapterClick = this.handleChapterClick.bind(this);
-        this.handlePreviousClick = this.handlePreviousClick.bind(this);
-        this.handleBookmarkClick = this.handleBookmarkClick.bind(this);
         this.handleAddBookmarkClick = this.handleAddBookmarkClick.bind(this);
+        this.handleBookmarkClick = this.handleBookmarkClick.bind(this);
+        this.handleChapterClick = this.handleChapterClick.bind(this);
+        this.handleJumpClick = this.handleJumpClick.bind(this);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleNextClick = this.handleNextClick.bind(this);
+        this.handlePreviousClick = this.handlePreviousClick.bind(this);
+        this.readFileContent = this.readFileContent.bind(this);
     }
 
     componentWillMount() {
@@ -558,17 +559,17 @@ class Reading extends React.Component {
 }
 
 export default connect(state => ({
+    bookContent:    state.reading.content,
     bookPath:       state.reading.bookPath,
-    bookTitle:      state.reading.bookTitle,
     bookProgress:   state.reading.bookProgress,
     bookSize:       state.reading.bookSize,
-    bookContent:    state.reading.content,
-    encoding:       state.reading.encoding,
+    bookTitle:      state.reading.bookTitle,
+    color:          state.reading.color,
     coverState:     state.reading.coverState,
-    jumpProgress:   state.reading.jumpProgress,
-    divWidth:       state.main.divWidth,
     divHeight:      state.main.divHeight,
+    divWidth:       state.main.divWidth,
+    encoding:       state.reading.encoding,
     fontSize:       state.setting.fontSize,
+    jumpProgress:   state.reading.jumpProgress,
     lineHeight:     state.setting.lineHeight,
-    color:          state.setting.color,
 }))(Reading);

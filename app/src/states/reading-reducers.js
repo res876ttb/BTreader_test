@@ -3,16 +3,17 @@ import {writeJson} from '../api/jsonrw.js';
 import {setProgress} from './library-actions.js';
 
 const initReadingState = {
-	bookTitle: '',
-	bookSize: 0,
-	bookProgress: 0,
-	bookPath: '',
-	content: '',
-	encoding: '',
-	coverState: 0,
-	coverFadeOut: 0,
-	jumpProgress: 0,
 	bookmark: {},
+	bookPath: '',
+	bookProgress: 0,
+	bookSize: 0,
+	bookTitle: '',
+	color: 'black',
+	content: '',
+	coverFadeOut: 0,
+	coverState: 0,
+	encoding: '',
+	jumpProgress: 0,
 };
 
 export function reading(state = initReadingState, action) {
@@ -72,14 +73,23 @@ export function reading(state = initReadingState, action) {
 			return {
 				...state,
 				coverFadeOut: action.state,
+			};
+		case '@READING/SET_READING_FONT_COLOR':
+			let color = action.color;
+			if (color === null) {
+				color = 'black';
 			}
+			return {
+				...state,
+				color: color
+			};
 		case '@READING/DATA_LOAD':
 			return {
 				...action.data,
 				coverState: 0,
 				coverFadeOut: 0,
 				jumpProgress: -1,
-			}
+			};
 		case '@READING/DATA_INITIALIZE':
 			return save({
 				...initReadingState
