@@ -66,6 +66,6 @@ export function main(state = initMainState, action) {
 }
 
 function save(obj) {
-    writeJson(window.appPath + 'data/data-main.json', obj);
+    writeJson(window.appDataPath + '/data/data-main.json', obj);
     return obj;
 }

@@ -41,6 +41,9 @@ app.on('activate', function () {
 ipcMain.on('synchronous-message', (event, arg) => {
 	let data;
 	switch(arg) {
+		case 'getDataPath':
+			event.returnValue = app.getPath('userData');
+			break;
 		case 'openTXT':
 			console.log('Main process is opening text file.');
 			data = dialog.showOpenDialog({

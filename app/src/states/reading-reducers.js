@@ -100,6 +100,6 @@ export function reading(state = initReadingState, action) {
 };
 
 function save(obj) {
-	writeJson(window.appPath + 'data/data-reading.json', obj);
+	writeJson(window.appDataPath + '/data/data-reading.json', obj);
 	return obj;
 }

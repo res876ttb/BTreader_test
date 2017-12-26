@@ -262,6 +262,10 @@ class Main extends React.Component {
     }
 
     getCurPath() {
+        const {ipcRenderer} = require('electron');
+        let path = ipcRenderer.sendSync('synchronous-message', 'getDataPath');
+        window.appDataPath = path;
+        console.log(path)
         let a = window.location.pathname;
         let b = a.split('/');
         let c = '';
@@ -275,9 +279,10 @@ class Main extends React.Component {
             window.appPath = c.slice(3,c.length);
         }
         console.log('Main: current Path is', window.appPath);
-        if (!fs.existsSync(window.appPath + '/data')) {
-            console.log('Folder ' + window.appPath + ' does NOT exist!');
-            fs.mkdirSync(window.appPath + '/data');
+        console.log('Main: app data path is', window.appDataPath);
+        if (!fs.existsSync(window.appDataPath + '/data')) {
+            console.log('Folder ' + window.appDataPath + ' does NOT exist!');
+            fs.mkdirSync(window.appDataPath + '/data');
         }
     }
 
@@ -311,29 +316,29 @@ class Main extends React.Component {
     }
 
     readRecord() {
-        if (fs.existsSync(window.appPath + 'data/data-main.json')) {
-            readJson(window.appPath + 'data/data-main.json').then(data => {
+        if (fs.existsSync(window.appDataPath + '/data/data-main.json')) {
+            readJson(window.appDataPath + '/data/data-main.json').then(data => {
                 this.props.dispatch(dataMainLoad(data));
             });
         } else {
             this.props.dispatch(mainDataInitialize());
         }
-        if (fs.existsSync(window.appPath + 'data/data-library.json')) {
-            readJson(window.appPath + 'data/data-library.json').then(data => {
+        if (fs.existsSync(window.appDataPath + '/data/data-library.json')) {
+            readJson(window.appDataPath + '/data/data-library.json').then(data => {
                 this.props.dispatch(dataLibraryLoad(data));
             });
         } else {
             this.props.dispatch(libraryDataInitialize());
         }
-        if (fs.existsSync(window.appPath + 'data/data-reading.json')) {
-            readJson(window.appPath + 'data/data-reading.json').then(data => {
+        if (fs.existsSync(window.appDataPath + '/data/data-reading.json')) {
+            readJson(window.appDataPath + '/data/data-reading.json').then(data => {
                 this.props.dispatch(dataReadingLoad(data));
             });
         } else {
             this.props.dispatch(readingDataInitialize());
         }
-        if (fs.existsSync(window.appPath + 'data/data-setting.json')) {
-            readJson(window.appPath + 'data/data-setting.json').then(data => {
+        if (fs.existsSync(window.appDataPath + '/data/data-setting.json')) {
+            readJson(window.appDataPath + '/data/data-setting.json').then(data => {
                 this.props.dispatch(dataSettingLoad(data));
             });
         } else {

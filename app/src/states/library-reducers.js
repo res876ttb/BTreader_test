@@ -154,6 +154,6 @@ export function library(state = initLibraryState, action) {
 }
 
 function save(obj) {
-    writeJson(window.appPath + 'data/data-library.json', obj);
+    writeJson(window.appDataPath + '/data/data-library.json', obj);
     return obj;
 }
