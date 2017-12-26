@@ -77,7 +77,7 @@ class Main extends React.Component {
 
     constructor(props) {
         super(props);
-        this.debug = true;
+        this.debug = false;
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
         this.updateWindowSize = this.updateWindowSize.bind(this);
         this.handleSearchKeyPress = this.handleSearchKeyPress.bind(this);
