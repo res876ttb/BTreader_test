@@ -1,11 +1,5 @@
 .setting-outter {
 	min-height: 200px;
-	position: fixed;
-	top: 56px;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;  
-	overflow: scroll;
 }
 
 .setting-outter .setting-inner {
@@ -22,14 +16,15 @@
 
 .Blur {
 	position: relative;
-	background: rgb(255,255,255);
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	background: rgba(255,255,255,0.2);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	overflow: hidden;
+	border-radius: 5px;
 	z-index: 2;
 }
 
 .Blur:after {
-	z-index: -1;
+	z-index: -2;
 	content: '';
 	position: absolute; 
 	top: 0; 
@@ -42,6 +37,17 @@
 	background-size: cover;
 	margin: -30px;
 	filter: blur(12px);
+}
+
+.Blur:before {
+	z-index: -1;
+	content: '';
+	position: absolute; 
+	top: 0; 
+	left: 0; 
+	right: 0; 
+	bottom: 0;
+	background: rgba(255,255,255,0.2);
 }
 
 /************** check list style **************/
@@ -95,12 +101,13 @@
 /************** setting block style **************/
 /* setting block */
 .sb {
-	padding: 0.5rem 0rem 0.5rem 0rem;
+	padding: 0.5rem;
 	font-size: 18px;
 	transition-duration: 0.3s;
 	color: rgb(105, 75, 0);
 	background: #FCF6E1;
 	text-align: center;
+	background-position: center;
 }
 /* setting block preview */
 .sbp {
@@ -108,8 +115,8 @@
 	border-radius: 3px;
 	transition-duration: 0.3s;
 	background-attachment: fixed; 
-    background-position: center;
-    background-repeat: no-repeat; 
+	background-position: center;
+	background-repeat: no-repeat; 
 	background-size: cover;
 }
 /* setting block with no hover */
@@ -118,18 +125,18 @@
 	font-size: 18px;
 	transition-duration: 0.3s;
 	color: rgb(105, 75, 0);
-	background: #FCF6E1;
+	background: rgb(240, 233, 209);
 	text-align: center;
 }
 
 .sb:hover {
-	color: rgb(105, 75, 0);
 	background: #E9E3D2;
+	background-position: center;
 }
 
 .sb:active {
-	color: rgb(105, 75, 0);
 	background: rgb(212, 206, 187);
+	background-position: center;
 }
 
 .sbtl {
@@ -146,4 +153,39 @@
 
 .sbbr {
 	border-bottom-right-radius: 3px;
+}
+/* setting block -- background */
+.sbb {
+	display: inline-block;
+	width: 25%;
+	height: 80px;
+	line-height: 80px;
+	padding: 0px;
+}
+/* setting block -- background blocker */
+.sbbb {
+	transition-duration: 0.3s;
+	overflow: hidden;
+}
+
+.sbbb:hover {
+	opacity: 0.8;
+	font-size: 115%;
+}
+
+.sbbb:active {
+	opacity: 0.7;
+}
+/* setting block -- font setting cover */
+.sbfsc {
+	background-color: rgba(0, 0, 0, 0);
+	transition-duration: 0.3s;
+}
+
+.sbfsc:hover {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.sbfsc:active {
+	background-color: rgba(0, 0, 0, 0.3);
 }

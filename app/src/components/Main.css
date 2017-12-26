@@ -39,6 +39,7 @@ html {
 
 .reader-bg {
     font-family: 'PingFang TC', 'Arial', 'LiHei Pro', 'Microsoft JhengHei';
+    background-image: url('image/background.jpeg');
     min-height: 100vh;
     min-height: 300px;
     min-width: 270px;
@@ -49,6 +50,7 @@ html {
 }
 
 .bg-light {
+    z-index: 1;
     position: fixed;
     left: 0px;
     top: 0px;

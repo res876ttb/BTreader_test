@@ -6,9 +6,10 @@ import {Link} from 'react-router-dom';
 
 import './Welcome.css';
 
-export default class Welcome extends React.Component {
+class Welcome extends React.Component {
     static propTypes = {
-        dispatch: PropTypes.func
+        dispatch: PropTypes.func,
+        color: PropTypes.string,
     };
 
     constructor(props) {
@@ -19,12 +20,12 @@ export default class Welcome extends React.Component {
         return (
             <div className="welcome-main container">
                 <div className="welcome-jumbotron blur">
-                    <div className="welcome-jumbotron-title">
+                    <div className="welcome-jumbotron-title" style={{color: this.props.color}}>
                         閱讀新世界
                     </div>
                     <br/>
                     {/* <div style={{border: "1px solid #999"}}></div> */}
-                    <div className="welcome-jumbotron-content">
+                    <div className="welcome-jumbotron-content" style={{color: this.props.color}}>
                         BTreader是您在電腦上閱讀txt文件的最佳利器。自動的書籤紀錄讓你不怕忘記上次的閱讀進度。
                     </div>
                     <br/>
@@ -35,3 +36,7 @@ export default class Welcome extends React.Component {
         );
     }
 }
+
+export default connect(state => ({
+    color:  state.setting.color,
+}))(Welcome);

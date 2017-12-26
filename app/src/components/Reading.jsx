@@ -50,6 +50,7 @@ class Reading extends React.Component {
         lineHeight: PropTypes.number,
         coverState: PropTypes.number,
         jumpProgress: PropTypes.number,
+        color: PropTypes.string,
     };
 
     constructor(props) {
@@ -89,7 +90,8 @@ class Reading extends React.Component {
             minHeight: '200px',
             maxWidth: '800px !important',
             color: 'black',
-            textAlign: 'center'
+            textAlign: 'center',
+            color: this.props.color,
         };
         this.readingInnerStyle = {
             height: this.props.divHeight - 120,
@@ -114,10 +116,7 @@ class Reading extends React.Component {
         } else {
             display = (
                 <div className="container" style={this.readingMainStyle}>
-                    <div 
-                        style={this.readingInnerStyle} 
-                        className='reading-content blur'
-                    >
+                    <div className='reading-content blur' style={this.readingInnerStyle}>
                         {content}
                     </div>
                     <div className='reading-content-enpty-div'>
@@ -571,4 +570,5 @@ export default connect(state => ({
     divHeight:      state.main.divHeight,
     fontSize:       state.setting.fontSize,
     lineHeight:     state.setting.lineHeight,
+    color:          state.setting.color,
 }))(Reading);

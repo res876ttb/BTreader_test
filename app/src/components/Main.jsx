@@ -77,7 +77,7 @@ class Main extends React.Component {
 
     constructor(props) {
         super(props);
-        this.debug = false;
+        this.debug = true;
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
         this.updateWindowSize = this.updateWindowSize.bind(this);
         this.handleSearchKeyPress = this.handleSearchKeyPress.bind(this);
@@ -121,11 +121,6 @@ class Main extends React.Component {
                 }
             }, 600);
         }
-
-        let ele = document.getElementsByClassName('reader-bg');
-        for (let i = 0; i < ele.length; i = i + 1) {
-            ele[i].setAttribute("style", "background-image: url('image/background.jpeg');");
-        }
     }
 
     componentDidMount() {
@@ -157,8 +152,8 @@ class Main extends React.Component {
             return (
                 <Router>
                     <Switch>
-                        <Route exact path="/library" render={() => (<div>Redirecting...</div>)}/>
-                        <Redirect to='/library'/>
+                        <Route exact path="/setting" render={() => (<div>Redirecting...</div>)}/>
+                        <Redirect to='/setting'/>
                     </Switch>
                 </Router>
             );

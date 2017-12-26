@@ -121,7 +121,7 @@ class ReadingCover extends React.Component {
             this.props.dispatch(setReadingCoverFadeoutState(1));
             setTimeout(() => {
                 this.props.dispatch(setReadingCoverState(0));
-            }, 400);
+            }, 390);
         }
     }
 

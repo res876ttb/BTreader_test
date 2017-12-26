@@ -15,10 +15,10 @@ const initMainState = {
 export function main(state = initMainState, action) {
     switch (action.type) {
         case '@MAIN/SET_OS_VERSION':
-            return save({
+            return {
                 ...state, 
                 osVersion: action.osVersion
-            });
+            };
             break;
         case '@MAIN/TOGGLE_NAVBAR':
             return {
@@ -36,11 +36,11 @@ export function main(state = initMainState, action) {
                 mainLoading: action.status,
             };
         case '@MAIN/CHANGE_WINDOW_SIZE':
-            return save({
+            return {
                 ...state,
                 divWidth: action.divWidth,
                 divHeight: action.divHeight
-            });
+            };
         case '@MAIN/RERENDER_TRIGGER':
             return {
                 ...state,
@@ -52,14 +52,14 @@ export function main(state = initMainState, action) {
                 debug: false
             };
         case '@MAIN/DATA_INITIALIZE':
-            return save({
+            return {
                 ...initMainState
-            });
+            };
         case '@MAIN/SET_CUR_POSITION':
-            return save({
+            return {
                 ...state,
                 curPosition: action.position,
-            });
+            };
         default:
             return state;
     }

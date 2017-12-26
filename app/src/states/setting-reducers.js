@@ -5,6 +5,7 @@ const initSettingState = {
 	fontSize: 18,
 	fontScale: 4,
 	lineHeight: 1.5,
+	color: 'rgb(105, 75, 0)',
 }
 
 export function setting(state = initSettingState, action) {
@@ -60,6 +61,11 @@ export function setting(state = initSettingState, action) {
 		case '@SETTING/DATA_INITIALIZE':
 			return save({
 				...initSettingState
+			});
+		case '@SETTING/SET_FONT_COLOR':
+			return save({
+				...state,
+				color: action.color
 			});
 		default:
 			return state;

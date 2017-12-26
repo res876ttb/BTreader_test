@@ -56,3 +56,10 @@ export function settingDataInitialize() {
 		type: '@SETTING/DATA_INITIALIZE'
 	}
 }
+
+export function setFontColor(color) {
+	return {
+		type: '@SETTING/SET_FONT_COLOR',
+		color: color
+	}
+}

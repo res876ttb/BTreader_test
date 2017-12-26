@@ -18,6 +18,7 @@
 }
 
 #readingFrame {
+    z-index: 1;
     position: fixed;
     top: 56px;
     bottom: 0px;
