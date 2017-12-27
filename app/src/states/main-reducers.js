@@ -7,7 +7,7 @@ const initMainState = {
     mainLoading: true,
     osVersion: 'Unknown',
     divWidth: 600,
-    divHeight: 400,
+    divHeight: 450,
     rerender: 0,
     curPosition: '',
 };
@@ -15,10 +15,10 @@ const initMainState = {
 export function main(state = initMainState, action) {
     switch (action.type) {
         case '@MAIN/SET_OS_VERSION':
-            return {
+            return save({
                 ...state, 
                 osVersion: action.osVersion
-            };
+            });
             break;
         case '@MAIN/TOGGLE_NAVBAR':
             return {
@@ -36,11 +36,11 @@ export function main(state = initMainState, action) {
                 mainLoading: action.status,
             };
         case '@MAIN/CHANGE_WINDOW_SIZE':
-            return {
+            return save({
                 ...state,
                 divWidth: action.divWidth,
                 divHeight: action.divHeight
-            };
+            });
         case '@MAIN/RERENDER_TRIGGER':
             return {
                 ...state,
@@ -52,9 +52,9 @@ export function main(state = initMainState, action) {
                 debug: false
             };
         case '@MAIN/DATA_INITIALIZE':
-            return {
+            return save({
                 ...initMainState
-            };
+            });
         case '@MAIN/SET_CUR_POSITION':
             return {
                 ...state,

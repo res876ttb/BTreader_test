@@ -1,6 +1,6 @@
 {
   "name": "BTreader",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A text reader, better than your imagination.",
   "author": "res876ttb",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "start-win": "webpack && .\\node_modules\\.bin\\electron .",
     "package-test-mac": "electron-packager ./ BTreader --out ./dist/ --platform=darwin --overwrite",
     "package-test-win": "electron-packager ./ BTreader --out ./dist/ --platform=win32 --overwrite",
-    "installer-win": "npm run clean-installer-win & npm run build-installer-win",
+    "installer-win": "webpack & npm run build-installer-win",
     "package-installer-win": "node ./installer/build-win-installer.js",
     "clean-installer-win": "rmdir /s /q dist",
     "clean-installer-mac": "rm -rf dist",

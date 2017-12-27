@@ -1,8 +1,3 @@
-const setupEvents = require('./installer/installer-build-config');
-if (setupEvents.handleSquirrelEvent()) {
-    return;
-}
-
 'use strict';
 
 const electron = require('electron');
@@ -14,8 +9,6 @@ let mainWindow;
 
 function createWindow() {
 	mainWindow = new BrowserWindow({
-		width: 1200,
-		height: 700,
 		minWidth: 600,
 		minHeight: 450,
 	});
@@ -23,7 +16,7 @@ function createWindow() {
 	mainWindow.loadURL('file://' + __dirname + '/app/index.html');
 
 	// developer tools
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
 
 	mainWindow.on('closed', function() {
 		mainWindow = null;	
