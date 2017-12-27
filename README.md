@@ -19,9 +19,15 @@ For macOS:
 npm run start-mac
 ```
 
+## Download
 
+Download installer [here](https://github.com/res876ttb/BTreader/releases). Only windows setup installer is available now.
 
 ## Log
+
+0.2.2
+
+修正程式載入後的跑版問題 (bug 待解)
 
 0.2.1
 
