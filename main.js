@@ -1,3 +1,8 @@
+const setupEvents = require('./installer/installer-build-config');
+if (setupEvents.handleSquirrelEvent()) {
+    return;
+}
+
 'use strict';
 
 const electron = require('electron');

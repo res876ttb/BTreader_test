@@ -3,4 +3,7 @@ node_modules/*
 app/dist/*
 app/data/
 app/image/default.jpeg
+BTreader-win32-x64/*
+BTreader-win32-x64-installer/*
+dist/*
 

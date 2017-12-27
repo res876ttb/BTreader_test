@@ -1,18 +1,30 @@
 {
   "name": "BTreader",
-  "version": "1.1.0",
-  "description": "",
-  "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start-mac": "webpack && ./node_modules/.bin/electron .",
-    "start-win": "webpack && .\\node_modules\\.bin\\electron .",
-    "package-mac": "electron-packager ./ BTreader --out ../BTreader.build --platform=darwin --overwrite",
-    "package-win": "electron-packager ./ BTreader --out ../BTreader.build --platform=win32 --overwrite",
-    "comp": "webpack"
-  },
+  "version": "0.2.1",
+  "description": "A text reader, better than your imagination.",
   "author": "res876ttb",
   "license": "MIT",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "electron-builder install-app-deps",
+    "start-mac": "webpack && ./node_modules/.bin/electron .",
+    "start-win": "webpack && .\\node_modules\\.bin\\electron .",
+    "package-test-mac": "electron-packager ./ BTreader --out ./dist/ --platform=darwin --overwrite",
+    "package-test-win": "electron-packager ./ BTreader --out ./dist/ --platform=win32 --overwrite",
+    "installer-win": "npm run clean-installer-win & npm run build-installer-win",
+    "package-installer-win": "node ./installer/build-win-installer.js",
+    "clean-installer-win": "rmdir /s /q dist",
+    "clean-installer-mac": "rm -rf dist",
+    "comp": "webpack",
+    "build-installer-win": "npm run clean-installer-win & build"
+  },
+  "build": {
+    "appId": "com.electron.BTreader",
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false
+    }
+  },
   "dependencies": {
     "bootstrap": "^4.0.0-beta",
     "fs-extra": "^5.0.0",
@@ -44,9 +56,10 @@
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.7",
     "electron": "^1.7.9",
+    "electron-builder": "^19.49.2",
     "electron-packager": "^9.1.0",
     "electron-prebuilt": "^1.4.13",
-    "electron-rebuild": "^1.6.0",
+    "electron-winstaller": "^2.6.3",
     "style-loader": "^0.18.2",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.3",
