@@ -38,5 +38,5 @@ class Welcome extends React.Component {
 }
 
 export default connect(state => ({
-    color:  state.setting.color,
+    color:  state.reading.color,
 }))(Welcome);

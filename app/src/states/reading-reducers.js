@@ -21,6 +21,7 @@ export function reading(state = initReadingState, action) {
 	switch(action.type) {
 		case '@READING/CHANGE_READING_BOOK':
 			return save({
+				...state,
 				bookTitle: action.bookTitle,
 				bookSize: action.bookSize,
 				bookProgress: action.bookProgress,
@@ -76,7 +77,7 @@ export function reading(state = initReadingState, action) {
 			};
 		case '@READING/SET_READING_FONT_COLOR':
 			let color = action.color;
-			if (color === null) {
+			if (color === null || color === undefined) {
 				color = 'black';
 			}
 			return {

@@ -259,7 +259,7 @@ class Setting extends React.Component {
 	setBackground() {
 		var fs = require('fs-extra');
 		const {ipcRenderer} = require('electron');
-		let path = ipcRenderer.sendSync('synchronous-message', 'openImage');
+		let path = ipcRenderer.sendSync('synchronous-message', ['openImage']);
 		if (path === null) {
 			return;
 		}

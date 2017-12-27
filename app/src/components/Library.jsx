@@ -32,6 +32,7 @@ class Library extends React.Component {
         edit: PropTypes.bool,
         select: PropTypes.array,
         searchText: PropTypes.string,
+        color: PropTypes.string,
     };
 
     constructor(props) {
@@ -87,7 +88,7 @@ class Library extends React.Component {
                 children = (
                     <div className="library-noRecord-outter container">
                         <div style={{height: "10px"}}></div>
-                        <div className="library-noRecord-inner blur">
+                        <div className="library-noRecord-inner blur" style={{color: this.props.color}}>
                             書架裡沒有符合搜尋結果的書！<br />
                         </div>
                     </div>
@@ -97,7 +98,7 @@ class Library extends React.Component {
                 children = (
                     <div className="library-noRecord-outter container">
                         <div style={{height: "10px"}}></div>
-                        <div className="library-noRecord-inner blur">
+                        <div className="library-noRecord-inner blur" style={{color: this.props.color}}>
                             書架裡沒有書！<br />
                             快加入幾本來滋潤你的大腦！
                         </div>
@@ -156,7 +157,7 @@ class Library extends React.Component {
     openFile() {
         const {ipcRenderer} = require('electron');
         const fs = require('fs');
-        let paths = ipcRenderer.sendSync('synchronous-message', 'openTXT');
+        let paths = ipcRenderer.sendSync('synchronous-message', ['openTXT']);
         console.log("Library: Open book path:", paths);
 
         // read info of files
@@ -215,4 +216,5 @@ export default connect(state => ({
     edit:   state.library.edit,
     select: state.library.select,
     searchText: state.library.searchText,
+    color:  state.reading.color,
 }))(Library);

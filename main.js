@@ -40,7 +40,7 @@ app.on('activate', function () {
 
 ipcMain.on('synchronous-message', (event, arg) => {
 	let data;
-	switch(arg) {
+	switch(arg[0]) {
 		case 'getDataPath':
 			event.returnValue = app.getPath('userData');
 			break;
@@ -71,6 +71,15 @@ ipcMain.on('synchronous-message', (event, arg) => {
 				type: 'error',
 				title: '檔案不存在',
 				message: '檔案可能已經被刪除、重新命名或搬移到其他資料夾。\n閱讀記錄將會被移除。'
+			});
+			break;
+		case 'fileNotInLibrary':
+			console.log('Book is removed from library!');
+			event.returnValue = null;
+			dialog.showMessageBox({
+				type: 'info',
+				title: '',
+				message: '書架上已經沒有 \"' + arg[1] + '\" 這本書囉！'
 			});
 			break;
 		default:

@@ -41,6 +41,7 @@ class Reading extends React.Component {
         bookContent: PropTypes.string,
         bookPath: PropTypes.string,
         bookProgress: PropTypes.number,
+        books: PropTypes.object,
         bookSize: PropTypes.number,
         bookTitle: PropTypes.string,
         color: PropTypes.string,
@@ -109,7 +110,7 @@ class Reading extends React.Component {
         if (this.props.bookPath === '') {
             display = (
                 <div className="reading-noRecord-outter container">
-                    <div className="reading-noRecord-inner blur">
+                    <div className="reading-noRecord-inner blur" style={{color: this.props.color}}>
                         沒有最近的閱讀紀錄，從書架選一本書來閱讀吧！
                     </div>
                 </div>
@@ -359,10 +360,14 @@ class Reading extends React.Component {
         console.log('Reading: Check if book exists:', this.props.bookPath);
         if (this.props.bookPath !== '' && fs.existsSync(this.props.bookPath) === false) {
             console.log('Reading: Book does not exist!');
-            ipcRenderer.sendSync('synchronous-message', 'fileNotExists');
-            this.props.dispatch(changeReadingBook('', 0, 0, '', ''));
+            ipcRenderer.sendSync('synchronous-message', ['fileNotExists']);
+            this.props.dispatch(changeReadingBook('', 0, 0, '', '', ''));
             this.props.dispatch(deleteSelect([this.props.bookPath]));
-        }
+        } else if (this.props.bookPath !== '' && !this.props.books.hasOwnProperty(this.props.bookPath)) {
+            console.log('Reading: Book does not in library!');
+            ipcRenderer.sendSync('synchronous-message', ['fileNotInLibrary',this.props.bookTitle]);
+            this.props.dispatch(changeReadingBook('', 0, 0, '', '', ''));
+        } 
     }
 
     readFileContent() {
@@ -562,6 +567,7 @@ export default connect(state => ({
     bookContent:    state.reading.content,
     bookPath:       state.reading.bookPath,
     bookProgress:   state.reading.bookProgress,
+    books:          state.library.books,
     bookSize:       state.reading.bookSize,
     bookTitle:      state.reading.bookTitle,
     color:          state.reading.color,

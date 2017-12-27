@@ -35,10 +35,10 @@ export function library(state = initLibraryState, action) {
             S = state.select.slice();
             S.push(action.bookPath);
 
-            return save({
+            return {
                 ...state,
                 select: S
-            });
+            };
         case '@LIBRARY/CANCEL_SELECT':
             S = state.select.slice();
             let i = S.indexOf(action.bookPath);
@@ -46,15 +46,15 @@ export function library(state = initLibraryState, action) {
                 S.splice(i, 1);
             }
 
-            return save({
+            return {
                 ...state,
                 select: S
-            });
+            };
         case '@LIBRARY/CANCEL_ALL_SELECT':
-            return save({
+            return {
                 ...state,
                 select: []
-            });
+            };
         case '@LIBRARY/ADD_BOOK':
             B = {
                 ...state.books

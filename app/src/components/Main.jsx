@@ -79,7 +79,7 @@ class Main extends React.Component {
 
     constructor(props) {
         super(props);
-        this.debug = true;
+        this.debug = false;
         this.handleClearSearch = this.handleClearSearch.bind(this);
         this.handleClearSearchEsc = this.handleClearSearchEsc.bind(this);
         this.handleNavbarToggle = this.handleNavbarToggle.bind(this);
@@ -263,7 +263,7 @@ class Main extends React.Component {
 
     getCurPath() {
         const {ipcRenderer} = require('electron');
-        let path = ipcRenderer.sendSync('synchronous-message', 'getDataPath');
+        let path = ipcRenderer.sendSync('synchronous-message', ['getDataPath']);
         window.appDataPath = path;
         console.log(path)
         let a = window.location.pathname;
@@ -352,5 +352,5 @@ export default connect (state => ({
     autoReading: state.setting.autoReading,
     searchText: state.library.searchText,
     bookTitle: state.reading.bookTitle,
-    settingCOlor: state.setting.color,
+    settingColor: state.setting.color,
 }))(Main);
