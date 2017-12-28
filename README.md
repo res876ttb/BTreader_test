@@ -25,6 +25,10 @@ Download installer [here](https://github.com/res876ttb/BTreader/releases). Only 
 
 ## Log
 
+0.2.3
+
+支援 macOS
+
 0.2.2
 
 修正程式載入後的跑版問題 (bug 待解)

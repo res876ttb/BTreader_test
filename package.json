@@ -1,6 +1,6 @@
 {
   "name": "BTreader",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A text reader, better than your imagination.",
   "author": "res876ttb",
   "license": "MIT",
@@ -11,18 +11,34 @@
     "start-win": "webpack && .\\node_modules\\.bin\\electron .",
     "package-test-mac": "electron-packager ./ BTreader --out ./dist/ --platform=darwin --overwrite",
     "package-test-win": "electron-packager ./ BTreader --out ./dist/ --platform=win32 --overwrite",
-    "installer-win": "webpack & npm run build-installer-win",
-    "package-installer-win": "node ./installer/build-win-installer.js",
+    "installer-win": "webpack && npm run package-installer-win",
+    "installer-mac": "webpack && npm run package-installer-mac",
     "clean-installer-win": "rmdir /s /q dist",
-    "clean-installer-mac": "rm -rf dist",
+    "clean-installer-mac": "rm -rf dist | true",
     "comp": "webpack",
-    "build-installer-win": "npm run clean-installer-win & build"
+    "package-installer-win": "npm run clean-installer-win & build",
+    "package-installer-mac": "npm run clean-installer-mac && build"
   },
   "build": {
     "appId": "com.electron.BTreader",
     "nsis": {
       "allowToChangeInstallationDirectory": true,
       "oneClick": false
+    },
+    "dmg": {
+      "backgroundColor": "#FCF6E1",
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
     }
   },
   "dependencies": {
