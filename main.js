@@ -2,21 +2,33 @@
 
 const electron = require('electron');
 const {dialog, ipcMain, Menu, MenuItem} = require('electron');
+const windowStateKeeper = require('electron-window-state');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 
 let mainWindow;
 
 function createWindow() {
+	var mainWindowState = windowStateKeeper({
+		defaultWidth: 800,
+		defaultHeight: 600
+	});
+
 	mainWindow = new BrowserWindow({
+		x: mainWindowState.x,
+		y: mainWindowState.y,
+		height: mainWindowState.height,
+		width: mainWindowState.width,
 		minWidth: 600,
 		minHeight: 450,
 	});
 
+	mainWindowState.manage(mainWindow); // let windowStateKeeper listen to the window state and save it when it change
+
 	mainWindow.loadURL('file://' + __dirname + '/app/index.html');
 
 	// developer tools
-	// mainWindow.webContents.openDevTools();
+	mainWindow.webContents.openDevTools();
 
 	mainWindow.on('closed', function() {
 		mainWindow = null;	
