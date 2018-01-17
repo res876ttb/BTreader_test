@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const HappyPack = require('happypack');
 
 const srcPath = path.resolve(__dirname, 'app/src');
 const distPath = path.resolve(__dirname, 'app/dist');
@@ -28,25 +29,29 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: [/node_modules/],
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [
-                                [
-                                    'es2015', {
-                                        modules: false
-                                    }
-                                ],
-                                'react'
-                            ],
-                            plugins: [
-                                'babel-plugin-transform-class-properties',
-                                'transform-object-rest-spread'
-                            ]
-                        }
-                    }
-                ]
+                use: 'happypack/loader'
+            // }, {
+            //     test: /\.(js|jsx)$/,
+            //     exclude: [/node_modules/],
+            //     use: [
+            //         {
+            //             loader: 'babel-loader',
+            //             options: {
+            //                 presets: [
+            //                     [
+            //                         'es2015', {
+            //                             modules: false
+            //                         }
+            //                     ],
+            //                     'react'
+            //                 ],
+            //                 plugins: [
+            //                     'babel-plugin-transform-class-properties',
+            //                     'transform-object-rest-spread'
+            //                 ]
+            //             }
+            //         }
+            //     ]
             }, {
                 test: /\.css$/,
                 use: [
@@ -61,7 +66,31 @@ module.exports = {
             }
         ]
     },
-    plugins: [new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js', minChunks: 2})],
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js', minChunks: 2}), 
+        new HappyPack({
+            // 3) re-add the loaders you replaced above in #1:
+            loaders: [ 
+                {
+                    loader: 'babel-loader',
+                    query: {
+                        presets: [
+                            [
+                                'es2015', {
+                                    modules: false
+                                }
+                            ],
+                            'react'
+                        ],
+                        plugins: [
+                            'babel-plugin-transform-class-properties',
+                            'transform-object-rest-spread'
+                        ]
+                    }
+                }
+            ]
+        })
+    ],
     devServer: {
         contentBase: distPath,
         compress: true,
