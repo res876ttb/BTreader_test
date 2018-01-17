@@ -171,7 +171,9 @@ class Main extends React.Component {
                     </Switch>
                 </Router>
             );
-        } else if (this.props.rerender === 2) {
+        } 
+        
+        if (this.props.rerender === 2) {
             return (
                 <Router>
                     <Switch>
@@ -190,11 +192,8 @@ class Main extends React.Component {
             </div>  
         );
 
-        if (this.props.curPosition === 'reading') {
+        if (this.props.curPosition === 'reading') { // let search bar display booktitle
             topRight = (
-                // <div className='main-showReadingBook'>
-                //     {this.props.bookTitle}
-                // </div>
                 <div className='search ml-auto'>
                     <Input tag={Link} to='/library' id='search-library' className='ml-auto' type='text' placeholder={this.props.bookTitle} onKeyPress={this.handleSearchKeyPress} onKeyDown={this.handleClearSearchEsc} disabled></Input>{
                         this.props.searchText && <i className='navbar-text fa fa-times' onClick={this.handleClearSearch}></i>

@@ -30,28 +30,6 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: [/node_modules/],
                 use: 'happypack/loader'
-            // }, {
-            //     test: /\.(js|jsx)$/,
-            //     exclude: [/node_modules/],
-            //     use: [
-            //         {
-            //             loader: 'babel-loader',
-            //             options: {
-            //                 presets: [
-            //                     [
-            //                         'es2015', {
-            //                             modules: false
-            //                         }
-            //                     ],
-            //                     'react'
-            //                 ],
-            //                 plugins: [
-            //                     'babel-plugin-transform-class-properties',
-            //                     'transform-object-rest-spread'
-            //                 ]
-            //             }
-            //         }
-            //     ]
             }, {
                 test: /\.css$/,
                 use: [
@@ -91,10 +69,5 @@ module.exports = {
             ]
         })
     ],
-    devServer: {
-        contentBase: distPath,
-        compress: true,
-        port: 8080
-    },
     devtool: 'cheap-source-map'
 };
