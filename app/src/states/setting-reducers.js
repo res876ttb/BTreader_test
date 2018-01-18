@@ -1,3 +1,4 @@
+// setting-reducers.js
 import {writeJson} from '../api/jsonrw.js';
 
 const initSettingState = {

@@ -1,3 +1,4 @@
+// main-actions.js
 export function setOsVersion() {
     if (navigator.appVersion.indexOf("Win") !== -1) {
         console.log("Set OS version: Windows");

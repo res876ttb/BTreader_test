@@ -1,3 +1,4 @@
+// traditionalization.js
 // api from https://github.com/webberwong/js-chinese-TraditionToSimple
 
 var FontsLib = (function () {

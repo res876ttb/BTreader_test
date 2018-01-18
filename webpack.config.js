@@ -46,8 +46,8 @@ module.exports = {
     },
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js', minChunks: 2}), 
+        new webpack.optimize.UglifyJsPlugin({test: /\.(js|jsx|css)$/, exclude: [/node_modules/, /bundle.js/], minimize: true, parallel: 4, sourceMap: true}),
         new HappyPack({
-            // 3) re-add the loaders you replaced above in #1:
             loaders: [ 
                 {
                     loader: 'babel-loader',

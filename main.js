@@ -1,3 +1,4 @@
+// main.js
 'use strict';
 
 const electron = require('electron');

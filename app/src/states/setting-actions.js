@@ -1,3 +1,4 @@
+// setting-actions.js
 export function setAutoReading() {
 	return {
 		type: '@SETTING/SET_AUTOREADING',

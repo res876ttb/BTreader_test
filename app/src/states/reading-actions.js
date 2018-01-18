@@ -1,3 +1,4 @@
+// reading-actions.js
 export function setProgress(bookProgress) {
 	return {
 		type: '@READING/SET_PROGRESS',

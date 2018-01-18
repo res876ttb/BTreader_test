@@ -1,3 +1,4 @@
+// Main.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -88,10 +89,12 @@ class Main extends React.Component {
 
         this.state = {
             content: 'Better Text Reader',
-            class: 'main-loading ns normal',
+            class: 'main-loading ns loading-normal',
             style: {
 
-            }
+            },
+            dataLoaded: false,
+            welcomeCover: true
         };
     }
 
@@ -102,16 +105,18 @@ class Main extends React.Component {
         
         this.props.dispatch(setDebug(false));
         this.props.dispatch(setOsVersion());
-        this.readRecord();
 
         if (this.debug) {
             this.props.dispatch(setDebug(true));
             setTimeout(() => {
                 this.props.dispatch(setDebug(false));
-            }, 600);
+            }, 200);
         } else {
             this.props.dispatch(setDebug(false));
-            setTimeout(() => {
+        }
+
+        var readRecordDone = this.readRecord().then(() => {
+            if (this.debug === false) {
                 if (this.props.autoReading) {
                     this.props.dispatch(rerenderTrigger(2));
                     this.props.dispatch(rerenderTrigger(0));
@@ -121,28 +126,29 @@ class Main extends React.Component {
                     this.props.dispatch(rerenderTrigger(0));
                     this.props.dispatch(setCurPosition('welcome'));
                 }
-            }, 600);
-        }
+            }
+            this.props.dispatch(setReadingFontColor(this.props.settingColor));
+            this.setState(() => {return {dataLoaded: true}});
+        }).catch(err => {
+            console.error("Something go wrong when loading data...\n" + err);
+        });
     }
 
-    componentDidMount() {
-        setTimeout(() => {
-            this.setState(() => {
-                return {
-                    class: 'main-loading ns disappear',
-                };
-            });
-        }, 1500);
-        setTimeout(() => {
-            this.setState(() => {
-                return {
-                    style: {
-                        display: 'none'
-                    }
-                };
-            });
-        }, 3000);
-        this.props.dispatch(setReadingFontColor(this.props.settingColor));
+    componentDidUpdate() {
+        if (this.state.dataLoaded === true && this.state.welcomeCover === true) {
+            this.setState({welcomeCover: false});
+            // If not set timeout, transition-duration will not take effect
+            setTimeout(() => {
+                this.setState(() => {
+                    return {
+                        class: 'main-loading ns loading-hide',
+                    };
+                });
+            }, 100);
+            setTimeout(() => {
+                this.setState(() => {return {style: {display: 'none'}};});
+            }, 1100);
+        }
     }
     
     componentWillUnmount() {
@@ -315,34 +321,60 @@ class Main extends React.Component {
     }
 
     readRecord() {
-        if (fs.existsSync(window.appDataPath + '/data/data-main.json')) {
-            readJson(window.appDataPath + '/data/data-main.json').then(data => {
-                this.props.dispatch(dataMainLoad(data));
-            });
-        } else {
-            this.props.dispatch(mainDataInitialize());
-        }
-        if (fs.existsSync(window.appDataPath + '/data/data-library.json')) {
-            readJson(window.appDataPath + '/data/data-library.json').then(data => {
-                this.props.dispatch(dataLibraryLoad(data));
-            });
-        } else {
-            this.props.dispatch(libraryDataInitialize());
-        }
-        if (fs.existsSync(window.appDataPath + '/data/data-reading.json')) {
-            readJson(window.appDataPath + '/data/data-reading.json').then(data => {
-                this.props.dispatch(dataReadingLoad(data));
-            });
-        } else {
-            this.props.dispatch(readingDataInitialize());
-        }
-        if (fs.existsSync(window.appDataPath + '/data/data-setting.json')) {
-            readJson(window.appDataPath + '/data/data-setting.json').then(data => {
-                this.props.dispatch(dataSettingLoad(data));
-            });
-        } else {
-            this.props.dispatch(settingDataInitialize());
-        }
+        return new Promise((res, rej) => {
+            var mainloaded = false;
+            var libraryloaded = false;
+            var readingloaded = false;
+            var settingloaded = false;
+            if (fs.existsSync(window.appDataPath + '/data/data-main.json')) {
+                readJson(window.appDataPath + '/data/data-main.json').then(data => {
+                    this.props.dispatch(dataMainLoad(data));
+                }).then(() => {
+                    mainloaded = true;
+                    if (mainloaded && libraryloaded && readingloaded && settingloaded) res();
+                });
+            } else {
+                this.props.dispatch(mainDataInitialize());
+                mainloaded = true;
+                if (mainloaded && libraryloaded && readingloaded && settingloaded) res();
+            }
+            if (fs.existsSync(window.appDataPath + '/data/data-library.json')) {
+                readJson(window.appDataPath + '/data/data-library.json').then(data => {
+                    this.props.dispatch(dataLibraryLoad(data));
+                }).then(() => {
+                    libraryloaded = true;
+                    if (mainloaded && libraryloaded && readingloaded && settingloaded) res();
+                });
+            } else {
+                this.props.dispatch(libraryDataInitialize());
+                libraryloaded = true;
+                if (mainloaded && libraryloaded && readingloaded && settingloaded) res();
+            }
+            if (fs.existsSync(window.appDataPath + '/data/data-reading.json')) {
+                readJson(window.appDataPath + '/data/data-reading.json').then(data => {
+                    this.props.dispatch(dataReadingLoad(data));
+                }).then(() => {
+                    readingloaded = true;
+                    if (mainloaded && libraryloaded && readingloaded && settingloaded) res();
+                });
+            } else {
+                this.props.dispatch(readingDataInitialize());
+                readingloaded = true;
+                if (mainloaded && libraryloaded && readingloaded && settingloaded) res();
+            }
+            if (fs.existsSync(window.appDataPath + '/data/data-setting.json')) {
+                readJson(window.appDataPath + '/data/data-setting.json').then(data => {
+                    this.props.dispatch(dataSettingLoad(data));
+                }).then(() => {
+                    settingloaded = true;
+                    if (mainloaded && libraryloaded && readingloaded && settingloaded) res();
+                });
+            } else {
+                this.props.dispatch(settingDataInitialize());
+                settingloaded = true;
+                if (mainloaded && libraryloaded && readingloaded && settingloaded) res();
+            }
+        });
     }
 }
 
