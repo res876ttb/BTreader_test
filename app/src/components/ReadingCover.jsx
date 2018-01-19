@@ -103,7 +103,7 @@ class ReadingCover extends React.Component {
                 </div>
             );
         } else if (this.props.coverState === 3) {
-            console.log(this.props.books[this.props.bookPath].bookmark);
+            // console.log(this.props.books[this.props.bookPath].bookmark);
             return (
                 <div>
                     <div className={this.props.coverFadeOut === 1 ? "reading-cover-background reading-cover-background-fadeout" : "reading-cover-background"} onClick={this.hideCover}></div>

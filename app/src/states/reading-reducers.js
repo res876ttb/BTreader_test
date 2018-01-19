@@ -37,7 +37,7 @@ export function reading(state = initReadingState, action) {
 		case '@READING/CHANGE_READING_CONTENT': 
 			return save({
 				...state,
-				content: action.content,
+				content: '',
 			});
 		case '@READING/SET_PROGRESS':
 			console.log('Current progress:', state.bookProgress);
@@ -91,6 +91,7 @@ export function reading(state = initReadingState, action) {
 				coverState: 0,
 				coverFadeOut: 0,
 				jumpProgress: -1,
+				content: ''
 			};
 		case '@READING/DATA_INITIALIZE':
 			return save({

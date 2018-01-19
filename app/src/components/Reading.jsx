@@ -38,7 +38,6 @@ const jcd = require('jschardet');
 
 class Reading extends React.Component {
     static props = {
-        bookContent: PropTypes.string,
         bookPath: PropTypes.string,
         bookProgress: PropTypes.number,
         books: PropTypes.object,
@@ -67,6 +66,13 @@ class Reading extends React.Component {
         this.handleNextClick = this.handleNextClick.bind(this);
         this.handlePreviousClick = this.handlePreviousClick.bind(this);
         this.readFileContent = this.readFileContent.bind(this);
+
+        // object in nex/prevBookContent: {progress: number, width: number, height: number, content: string}
+        this.state = {
+            bookContent: "",
+            nextBookContent: [{},{},{},{},{}],
+            prevBookContent: [{},{},{}]
+        };
     }
 
     componentWillMount() {
@@ -208,10 +214,10 @@ class Reading extends React.Component {
     }
 
     handleAddBookmarkClick() {
-        console.log("Reading: AddBookmark is clicked!");
+        console.log("Reading: AddBookmark is clicked!"); 
         let d = new Date();
         let t = [d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()];
-        let c = this.getContent100(this.props.bookContent);
+        let c = this.getContent100(this.state.bookContent);
         let p = this.props.bookProgress;
         let s = this.props.bookSize;
         let b = this.props.bookPath;
@@ -242,6 +248,7 @@ class Reading extends React.Component {
     }
 
     getContent100(content) {
+        // get preview text for bookmark
         let result = '';
         for (let i = 0; i < content.length && i < 100; i++) {
             if (content[i] !== ' ' && content[i] !== '\n' && content[i] !== '\r' && content[i] !== '\t') {
@@ -252,8 +259,8 @@ class Reading extends React.Component {
     }
 
     formatContent(fontSize, lineHeight) {
-        let oriContent = this.props.bookContent;
-        let _content = this.formatWidth(fontSize, String(this.props.bookContent));
+        let oriContent = this.state.bookContent;
+        let _content = this.formatWidth(fontSize, String(oriContent));
         let content = '';
         let height = this.props.divHeight - 160;
         let fixError = 0, i = 0, j = 0, numOfLines = 0;
@@ -371,7 +378,7 @@ class Reading extends React.Component {
     }
 
     readFileContent() {
-        let buffer = new Buffer(8000);
+        let buffer = new Buffer(8000); 
         if (this.props.bookPath !== '') {
             fs.open(this.props.bookPath, 'r', (err1, fd) => {
                 if (err1 !== null) {
@@ -403,16 +410,57 @@ class Reading extends React.Component {
                     let result = readResult.slice(0, byteRead);
                     // decode text by utf-8
                     let translated = Traditionalized(iconv.decode(result, encoding));
-                    this.props.dispatch(changeReadingContent(translated));
+                    this.setState({bookContent: translated});
                     fs.close(fd);
                 });
             });
         }
     }
+
+    readFileContent2(progress) {
+        return new Promise((res, rej) => {
+            let buffer = new Buffer(8000); 
+            let nextProgress = 0;
+            fs.open(this.props.bookPath, 'r', (err1, fd) => {
+                if (err1 !== null) {
+                    console.error(err1);
+                }
+                fs.read(fd, buffer, 0, buffer.length, progress, (err2, byteRead, readResult) => {
+                    // if (byteRead === 0) {
+                    //     this.props.dispatch(setProgress(0 - this.bufferLength));
+                    //     this.props.dispatch(SetProgress(this.props.bookPath, 0 - this.bufferLength));
+                    //     console.log('ReadFile: Cannot read this page!');
+                    //     return;
+                    // }
+                    
+                    if (err2 !== null) {
+                        console.error(err2);
+                    } else if (readResult === null) {
+                        console.error('ReadFile: Empty content!');
+                    }
+                    
+                    // if encoding is null, set default encoding to utf-8
+                    let encoding = this.props.encoding;
+                    if (encoding === null || encoding === 'utf-8') {
+                        console.log('ReadFile: Use encoding: utf-8');
+                        encoding = 'utf-8';
+                    } else {
+                        console.log('ReadFile: Use encoding:', encoding);
+                    }
+                    // copy readResult to a new array
+                    let result = readResult.slice(0, byteRead);
+                    // decode text by utf-8
+                    let translated = Traditionalized(iconv.decode(result, encoding));
+                    res(translated);
+                    fs.close(fd);
+                });
+            });
+        });
+    }
     
     nextPage() {
         console.log('Next Page: Key press detected!');
-        let text = this.props.bookContent;
+        let text = this.state.bookContent;
         let numOfWords = this.numOfWords;
         let oriTxt = '';
         for (let i = 0; i < numOfWords; i += 1) {
@@ -564,7 +612,6 @@ class Reading extends React.Component {
 }
 
 export default connect(state => ({
-    bookContent:    state.reading.content,
     bookPath:       state.reading.bookPath,
     bookProgress:   state.reading.bookProgress,
     books:          state.library.books,

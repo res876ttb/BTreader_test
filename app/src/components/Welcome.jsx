@@ -7,6 +7,10 @@ import {Link} from 'react-router-dom';
 
 import './Welcome.css';
 
+import {
+    setCurPosition,
+} from 'states/main-actions.js';
+
 class Welcome extends React.Component {
     static propTypes = {
         dispatch: PropTypes.func,
@@ -30,8 +34,10 @@ class Welcome extends React.Component {
                         BTreader是您在電腦上閱讀txt文件的最佳利器。自動的書籤紀錄讓你不怕忘記上次的閱讀進度。
                     </div>
                     <br/>
-                    <Button color='primary' className="welcome-buttons" tag={Link} to='/reading'>閱讀上次進度</Button>
-                    <Button color='secondary' className="welcome-buttons" tag={Link} to='/library'>立刻前往書架</Button> 
+                    <Button color='primary' className="welcome-buttons" tag={Link} to='/reading'
+                        onClick={() => {this.props.dispatch(setCurPosition('reading'));}}>閱讀上次進度</Button>
+                    <Button color='secondary' className="welcome-buttons" tag={Link} to='/library'
+                        onClick={() => {this.props.dispatch(setCurPosition('library'));}}>立刻前往書架</Button> 
                 </div>
             </div>
         );
